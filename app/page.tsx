@@ -1,13 +1,37 @@
-import { site } from '@/lib/site';
+import { SiteFooter } from '@/components/layout/SiteFooter';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { About } from '@/components/sections/About';
+import { Career } from '@/components/sections/Career';
+import { Contact } from '@/components/sections/Contact';
+import { Extras } from '@/components/sections/Extras';
+import { Hero } from '@/components/sections/Hero';
+import { Intro } from '@/components/sections/Intro';
+import { Process } from '@/components/sections/Process';
+import { ProjectStage } from '@/components/sections/ProjectStage';
+import { Services } from '@/components/sections/Services';
 
 export default function Page() {
   return (
-    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col justify-center gap-4 px-6">
-      <h1 className="font-serif text-4xl">{site.name}</h1>
-      <p className="text-neutral-600">
-        Basis-Branch ohne Design. Die beiden Entwürfe liegen auf den Branches{' '}
-        <code>Version1</code> und <code>entwurf</code>.
-      </p>
-    </main>
+    <>
+      <a
+        href="#main"
+        className="fixed top-[-100px] left-3 z-[1000] bg-white px-3.5 py-2.5 focus:top-3"
+      >
+        Zum Inhalt
+      </a>
+      <SiteHeader />
+      <main id="main">
+        <Hero />
+        <Intro />
+        <Services />
+        <ProjectStage />
+        <Extras />
+        <Process />
+        <About />
+        <Career />
+        <Contact />
+      </main>
+      <SiteFooter />
+    </>
   );
 }
