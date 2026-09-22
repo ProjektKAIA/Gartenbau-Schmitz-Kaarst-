@@ -37,10 +37,9 @@ export function BeforeAfter({
   };
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setSplit(FALLBACK_SPLIT);
-      return;
-    }
+    // Bei reduzierter Bewegung bleibt der Regler auf dem Startwert stehen –
+    // der entspricht bereits FALLBACK_SPLIT, es ist also nichts zu setzen.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const start = performance.now();
     const animate = (now: number) => {
