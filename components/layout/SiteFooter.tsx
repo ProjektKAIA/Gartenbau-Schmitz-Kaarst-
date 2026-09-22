@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { site } from '@/lib/site';
 
 export function SiteFooter() {
@@ -18,8 +19,8 @@ export function SiteFooter() {
             aria-label="Rechtliches und Social Media"
             className="flex flex-wrap gap-5 text-[0.82rem] text-white/72"
           >
-            <a href="/impressum">Impressum</a>
-            <a href="/datenschutz">Datenschutz</a>
+            <Link href="/impressum">Impressum</Link>
+            <Link href="/datenschutz">Datenschutz</Link>
             <a href={site.social.instagram} target="_blank" rel="noreferrer noopener">
               Instagram
             </a>

@@ -10,7 +10,10 @@ type RevealProps = {
 
 /**
  * Blendet den Inhalt beim ersten Sichtkontakt ein.
- * Ohne IntersectionObserver (oder bei reduzierter Bewegung) bleibt alles sofort sichtbar.
+ *
+ * Der Zustand wird ausschließlich aus dem Observer-Callback gesetzt – ein
+ * synchrones setState im Effect würde eine zusätzliche Renderrunde auslösen.
+ * Läuft kein JavaScript, hebt der noscript-Block im Layout das Ausblenden auf.
  */
 export function Reveal({ children, className }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -19,11 +22,6 @@ export function Reveal({ children, className }: RevealProps) {
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-
-    if (!('IntersectionObserver' in window)) {
-      setVisible(true);
-      return;
-    }
 
     const observer = new IntersectionObserver(
       (entries) => {
