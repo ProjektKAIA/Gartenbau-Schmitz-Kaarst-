@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { site } from '@/lib/site';
 
@@ -37,9 +38,9 @@ export default function DatenschutzPage() {
             .
           </p>
           <p>
-            <a href="/" className="border-b border-current text-ink">
+            <Link href="/" className="border-b border-current text-ink">
               Zurück zur Startseite
-            </a>
+            </Link>
           </p>
         </div>
       </main>

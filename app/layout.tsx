@@ -22,6 +22,12 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="de">
+      <head>
+        {/* Ohne JavaScript läuft der Einblend-Effekt nie – der Inhalt muss trotzdem sichtbar sein. */}
+        <noscript>
+          <style>{`.reveal { opacity: 1 !important; transform: none !important; }`}</style>
+        </noscript>
+      </head>
       <body className="bg-paper font-sans text-ink antialiased">{children}</body>
     </html>
   );
