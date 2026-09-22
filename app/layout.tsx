@@ -7,6 +7,12 @@ export const metadata: Metadata = {
   title: `${site.name} | ${site.owner}`,
   description: site.description,
   icons: { icon: '/assets/favicon.svg' },
+  openGraph: {
+    title: `${site.name} | ${site.owner}`,
+    description: site.description,
+    locale: 'de_DE',
+    type: 'website',
+  },
 };
 
 export const viewport: Viewport = {
@@ -16,7 +22,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="de">
-      <body className="font-sans antialiased">{children}</body>
+      <body className="bg-paper font-sans text-ink antialiased">{children}</body>
     </html>
   );
 }

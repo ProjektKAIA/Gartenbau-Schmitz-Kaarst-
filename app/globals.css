@@ -1,16 +1,119 @@
 @import "tailwindcss";
 
+/* Design-Tokens aus dem Entwurf „Variante B" – einzige Quelle für Farben und Schriften. */
 @theme {
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-pine: #17342d;
+  --color-pine-light: #244b40;
+  --color-pine-deep: #10231e;
+  --color-olive: #687240;
+  --color-bronze: #b48a55;
+  --color-bronze-light: #d9c8a7;
+  --color-sand: #e8dfcf;
+  --color-cream: #f7f3e9;
+  --color-paper: #fcfaf5;
+  --color-ink: #1d2925;
+  --color-muted: #6f756e;
+  --color-line: rgba(29, 41, 37, 0.16);
+  --color-care: #cbd0b4;
+
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
+
+  --container-shell: 1280px;
+
+  /* Breakpoints exakt wie im Entwurf, damit die Umbrüche identisch sitzen. */
+  --breakpoint-sm: 560px;
+  --breakpoint-md: 820px;
+  --breakpoint-lg: 1050px;
 }
 
-html {
-  scroll-behavior: smooth;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    line-height: 1.65;
+  }
+
+  /* Fokus bleibt sichtbar und wird nicht vom Rand abgeschnitten (WCAG 2.2, 2.4.11). */
+  :focus-visible {
+    outline: 2px solid var(--color-bronze);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Innenbreite inkl. Seitenrand – entspricht `.container` des Entwurfs. */
+  .shell {
+    width: min(calc(100% - 56px), var(--container-shell));
+    margin-inline: auto;
+  }
+
+  @media (max-width: 820px) {
+    .shell {
+      width: min(calc(100% - 34px), var(--container-shell));
+    }
+  }
+
+  /* Serifen-Headlines des Entwurfs: sehr groß, eng, mit knapper Zeilenhöhe. */
+  .display-1 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    font-size: clamp(4rem, 6.8vw, 7.5rem);
+  }
+
+  .display-2 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    font-size: clamp(2.8rem, 4.8vw, 5rem);
+  }
+
+  @media (max-width: 560px) {
+    .display-1 {
+      font-size: clamp(3.8rem, 17vw, 5.5rem);
+    }
+
+    .display-2 {
+      font-size: clamp(2.55rem, 12vw, 3.6rem);
+    }
+  }
+}
+
+/* Einblenden beim Scrollen – ohne JS-Start sichtbar, damit Inhalt nie verschwindet. */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 620ms ease,
+    transform 620ms ease;
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 }
