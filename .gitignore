@@ -1,0 +1,41 @@
+# Abhängigkeiten
+node_modules/
+.pnp
+.pnp.*
+
+# Build-Artefakte
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+# Umgebung und Geheimnisse
+.env
+.env.*
+!.env.example
+*.pem
+
+# Hosting
+.vercel
+
+# Referenzmaterial – bleibt lokal, gehört nicht in ein öffentliches Repo
+# (Spiegel der bestehenden Kundenseite und die Original-Entwürfe inkl. Kundenfotos)
+altseite/
+entwuerfe/
+
+# Test und Werkzeuge
+coverage/
+.eslintcache
+
+# Betriebssystem und Editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+npm-debug.log*
+yarn-error.log*
