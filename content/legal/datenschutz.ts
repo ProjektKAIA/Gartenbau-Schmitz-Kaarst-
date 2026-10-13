@@ -3,9 +3,10 @@
  * Entwurf – vor Veröffentlichung anwaltlich prüfen lassen.
  *
  * Stand der Technik laut Projekt: Hosting bei Vercel, keine Cookies, kein Tracking, keine
- * externen Schriften/Karten/Videos/Social-Plugins, Shop-Anfragen werden per SMTP als E-Mail
- * versendet und nicht in einer Datenbank gespeichert. Ändert sich daran etwas, muss dieser
- * Text nachgezogen werden.
+ * externen Schriften/Karten/Videos/Social-Plugins. Shop-Anfragen/-Bestellungen, Kontaktformular
+ * und Online-Widerruf werden per SMTP als E-Mail versendet und nicht in einer Datenbank gespeichert.
+ * Der Warenkorb liegt ausschließlich im sessionStorage des Browsers (lib/shop/cart-storage.ts).
+ * Ändert sich daran etwas, muss dieser Text nachgezogen werden.
  */
 
 import { site } from '@/lib/site';
@@ -17,7 +18,7 @@ export const datenschutz = {
   title: 'Datenschutzerklärung',
   updated: 'Oktober 2026',
   intro:
-    'Hier erfahren Sie, welche personenbezogenen Daten wir verarbeiten, wenn Sie diese Website besuchen oder über den Shop Material bestellen, wofür wir sie verwenden und welche Rechte Sie haben.',
+    'Hier erfahren Sie, welche personenbezogenen Daten wir verarbeiten, wenn Sie diese Website besuchen, uns über das Kontaktformular schreiben oder über den Shop Material anfragen oder bestellen, wofür wir sie verwenden und welche Rechte Sie haben.',
   sections: [
     {
       heading: '1. Verantwortlicher',
@@ -41,7 +42,9 @@ export const datenschutz = {
             'Diese Website setzt keine Cookies und verwendet keine Analyse-, Tracking- oder Werbedienste.',
             'Schriften werden nicht von fremden Servern geladen; es werden keine Karten, Videos oder Social-Media-Plugins eingebunden.',
             'Beim Aufruf der Website entstehen technisch notwendige Server-Logdaten beim Hoster.',
-            'Wenn Sie über den Shop bestellen, erhalten wir Ihre Angaben per E-Mail und verwenden sie für Ihre Bestellung.',
+            'Der Warenkorb des Shops wird nur im Speicher Ihres Browsers (sessionStorage) abgelegt – technisch notwendig, ohne Cookie und ohne Tracking.',
+            'Wenn Sie über den Shop anfragen oder bestellen, erhalten wir Ihre Angaben per E-Mail und verwenden sie für Ihre Anfrage bzw. Bestellung.',
+            'Wenn Sie uns über das Kontaktformular schreiben, erhalten wir Ihre Angaben per E-Mail und verwenden sie für die Bearbeitung Ihres Anliegens.',
           ],
         },
       ],
@@ -83,11 +86,15 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '4. Bestellungen über den Shop',
+      heading: '4. Anfragen und Bestellungen über den Shop',
       blocks: [
         {
           type: 'p',
-          text: 'Wenn Sie über den Shop eine Bestellung abschicken, verarbeiten wir folgende Angaben:',
+          text: 'Warenkorb: Was Sie in den Warenkorb legen (Artikel und Mengen), speichern wir ausschließlich im sogenannten sessionStorage Ihres Browsers, damit der Warenkorb beim Wechsel zwischen den Seiten erhalten bleibt. Diese Daten verlassen Ihr Gerät erst, wenn Sie das Formular abschicken. Sie werden gelöscht, sobald Sie den Browser-Tab bzw. das Fenster schließen; Sie können sie auch jederzeit über die Einstellungen Ihres Browsers löschen. Es handelt sich nicht um ein Cookie, und die Daten werden nicht für Analyse- oder Werbezwecke verwendet. Die Speicherung ist für den von Ihnen gewünschten Warenkorb unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG).',
+        },
+        {
+          type: 'p',
+          text: 'Wenn Sie über den Warenkorb eine Anfrage oder Bestellung abschicken, verarbeiten wir folgende Angaben:',
         },
         {
           type: 'list',
@@ -99,19 +106,20 @@ export const datenschutz = {
             'die bestellten Materialien und Mengen',
             'Ihre Nachricht an uns, falls Sie eine schreiben',
             'Ihre Bestätigung, dass die Lieferadresse eine Privatadresse im Liefergebiet ist',
+            'Ihre Bestätigung, dass Sie die AGB akzeptieren und die Datenschutzerklärung zur Kenntnis genommen haben',
           ],
         },
         {
           type: 'p',
-          text: 'Wir verwenden diese Daten, um Ihre Bestellung zu prüfen, mit Ihnen Rückfragen und den Liefertermin zu klären, die Ware zu beschaffen und zu liefern und die Rechnung zu stellen. Rechtsgrundlage ist die Durchführung vorvertraglicher Maßnahmen und die Erfüllung des Vertrags mit Ihnen (Art. 6 Abs. 1 lit. b DSGVO).',
+          text: 'Wir verwenden diese Daten, um Ihre Anfrage zu beantworten (Preis und möglicher Liefertermin) bzw. Ihre Bestellung zu prüfen, mit Ihnen Rückfragen und den Liefertermin zu klären, die Ware zu beschaffen und zu liefern und die Rechnung zu stellen. Rechtsgrundlage ist die Durchführung vorvertraglicher Maßnahmen und die Erfüllung des Vertrags mit Ihnen (Art. 6 Abs. 1 lit. b DSGVO).',
         },
         {
           type: 'p',
-          text: 'Die Pflichtfelder sind für die Bestellung erforderlich. Ohne diese Angaben können wir Ihre Bestellung nicht bearbeiten und nicht liefern. Eine Nachricht ist freiwillig.',
+          text: 'Die Pflichtfelder sind für die Anfrage bzw. Bestellung erforderlich. Ohne diese Angaben können wir sie nicht bearbeiten und nicht liefern. Eine Nachricht ist freiwillig.',
         },
         {
           type: 'p',
-          text: 'Technischer Ablauf: Ihre Angaben werden verschlüsselt an unseren Server bei Vercel übertragen, dort geprüft und als E-Mail an unser Postfach gesendet. Gleichzeitig erhalten Sie eine automatische Eingangsbestätigung an die angegebene E-Mail-Adresse. Wir speichern die Bestellung nicht in einer Datenbank, sondern nur als E-Mail in unserem Postfach.',
+          text: 'Technischer Ablauf: Ihre Angaben werden verschlüsselt an unseren Server bei Vercel übertragen, dort geprüft und als E-Mail an unser Postfach gesendet. Gleichzeitig erhalten Sie eine automatische Eingangsbestätigung an die angegebene E-Mail-Adresse. Wir speichern Anfrage und Bestellung nicht in einer Datenbank, sondern nur als E-Mail in unserem Postfach.',
         },
         {
           type: 'p',
@@ -128,7 +136,52 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '5. Online-Widerruf',
+      heading: '5. Kontaktformular',
+      blocks: [
+        {
+          type: 'p',
+          text: 'Wenn Sie uns über das Kontaktformular schreiben, verarbeiten wir folgende Angaben:',
+        },
+        {
+          type: 'list',
+          items: [
+            'Name und E-Mail-Adresse (Pflicht)',
+            'Telefonnummer (freiwillig; erforderlich, wenn Sie einen Rückruf wünschen)',
+            'den gewünschten Weg unserer Rückmeldung (E-Mail oder Telefon)',
+            'Ihr Anliegen (Auswahl) und Ihre Nachricht (Pflicht)',
+            'Adresse des Objekts (Straße, Postleitzahl, Ort) und gewünschter Zeitraum (freiwillig)',
+            'Ihre Bestätigung, dass Sie die Datenschutzerklärung gelesen haben und mit der Verarbeitung Ihrer Angaben für Ihre Anfrage einverstanden sind',
+            'Datum und Uhrzeit des Eingangs',
+          ],
+        },
+        {
+          type: 'p',
+          text: 'Zweck: Wir verwenden die Angaben, um Ihr Anliegen zu bearbeiten, mit Ihnen auf dem gewünschten Weg Kontakt aufzunehmen und gegebenenfalls einen Termin vor Ort vorzubereiten. Geht es um einen möglichen oder bestehenden Auftrag, ist Rechtsgrundlage die Durchführung vorvertraglicher Maßnahmen bzw. die Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO). Bei sonstigen Anfragen (z. B. allgemeine Fragen oder eine erste Kontaktaufnahme wegen einer Bewerbung) ist Rechtsgrundlage unser berechtigtes Interesse an der Beantwortung Ihrer Anfrage (Art. 6 Abs. 1 lit. f DSGVO).',
+        },
+        {
+          type: 'p',
+          text: 'Technischer Ablauf und Empfänger: Ihre Angaben werden verschlüsselt an unseren Server bei Vercel übertragen (Abschnitt 3), dort geprüft und als E-Mail an unser Postfach gesendet. Empfänger sind damit unser E-Mail-Versanddienst und der Anbieter unseres Postfachs, die jeweils in unserem Auftrag tätig sind (Art. 28 DSGVO; Angaben siehe Abschnitt 4). Eine automatische Bestätigungs-E-Mail an Sie wird derzeit nicht versendet. Wir speichern die Anfrage nicht in einer Datenbank, sondern nur als E-Mail in unserem Postfach.',
+        },
+        {
+          type: 'p',
+          text: 'Schutz vor Missbrauch: Damit die Formulare dieser Website (Kontakt, Shop, Online-Widerruf) nicht massenhaft automatisiert genutzt werden, zählt unser Server kurzzeitig, wie viele Anfragen von einer IP-Adresse kommen. Diese Zählung liegt nur im Arbeitsspeicher und wird nach spätestens zehn Minuten verworfen. Rechtsgrundlage ist unser berechtigtes Interesse an einem sicheren Betrieb der Formulare (Art. 6 Abs. 1 lit. f DSGVO).',
+        },
+        {
+          type: 'p',
+          text: 'Speicherdauer: Wir löschen Ihre Anfrage, sobald sie abschließend bearbeitet ist und keine Rückfragen mehr zu erwarten sind. Entsteht daraus ein Auftrag, gelten die gesetzlichen Aufbewahrungsfristen (Abschnitt 8).',
+        },
+        {
+          type: 'todo',
+          text: 'Mit dem Betrieb klären, ob eine automatische Eingangsbestätigung an Kunden eingerichtet werden soll – dann diesen Abschnitt anpassen („Eine automatische Bestätigungs-E-Mail … wird derzeit nicht versendet").',
+        },
+        {
+          type: 'todo',
+          text: 'Anwaltlich prüfen: Die Pflicht-Checkbox ist als Einverständnis formuliert, die Verarbeitung stützt sich aber auf Art. 6 Abs. 1 lit. b/f DSGVO. Entweder die Checkbox als Kenntnisnahme formulieren oder die Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, jederzeit widerrufbar) zusätzlich als Rechtsgrundlage nennen.',
+        },
+      ],
+    },
+    {
+      heading: '6. Online-Widerruf',
       blocks: [
         {
           type: 'p',
@@ -137,7 +190,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '6. Kontakt per E-Mail oder Telefon',
+      heading: '7. Kontakt per E-Mail oder Telefon',
       blocks: [
         {
           type: 'p',
@@ -146,7 +199,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '7. Speicherdauer',
+      heading: '8. Speicherdauer',
       blocks: [
         {
           type: 'p',
@@ -154,7 +207,7 @@ export const datenschutz = {
         },
         {
           type: 'p',
-          text: 'Kommt kein Vertrag zustande, löschen wir Ihre Bestellung, sobald sie abschließend bearbeitet ist und keine Rückfragen mehr zu erwarten sind.',
+          text: 'Kommt kein Vertrag zustande – etwa bei unverbindlichen Shop-Anfragen oder Kontaktanfragen ohne Auftrag –, löschen wir Ihre Angaben, sobald die Anfrage bzw. Bestellung abschließend bearbeitet ist und keine Rückfragen mehr zu erwarten sind.',
         },
         {
           type: 'todo',
@@ -163,7 +216,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '8. Links zu Instagram und Facebook',
+      heading: '9. Links zu Instagram und Facebook',
       blocks: [
         {
           type: 'p',
@@ -172,16 +225,16 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '9. Verschlüsselung',
+      heading: '10. Verschlüsselung',
       blocks: [
         {
           type: 'p',
-          text: 'Diese Website nutzt eine TLS-Verschlüsselung. Sie erkennen sie an „https://" in der Adresszeile Ihres Browsers. Ihre Angaben im Bestellformular werden dadurch verschlüsselt übertragen.',
+          text: 'Diese Website nutzt eine TLS-Verschlüsselung. Sie erkennen sie an „https://" in der Adresszeile Ihres Browsers. Ihre Angaben in den Formularen (Kontakt, Shop, Online-Widerruf) werden dadurch verschlüsselt übertragen.',
         },
       ],
     },
     {
-      heading: '10. Ihre Rechte',
+      heading: '11. Ihre Rechte',
       blocks: [
         {
           type: 'p',
@@ -208,7 +261,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '11. Beschwerderecht bei der Aufsichtsbehörde',
+      heading: '12. Beschwerderecht bei der Aufsichtsbehörde',
       blocks: [
         {
           type: 'p',
@@ -221,7 +274,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '12. Keine automatisierte Entscheidungsfindung',
+      heading: '13. Keine automatisierte Entscheidungsfindung',
       blocks: [
         {
           type: 'p',

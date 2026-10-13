@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { CartButton } from '@/components/shop/CartButton';
 import { nav, navContact, type NavItem } from '@/content/home';
 import { cn } from '@/lib/cn';
 import { site } from '@/lib/site';
@@ -74,7 +75,7 @@ function NavEntry({ item, variant, onNavigate }: NavEntryProps) {
 }
 
 type SiteHeaderProps = {
-  /** Startseite: transparent über dem Hero-Bild. Unterseiten: dunkel hinterlegt. */
+  /** Startseite: transparent über dem Hero-Bild. Unterseiten: hell hinterlegt. */
   readonly overlay?: boolean;
 };
 
@@ -97,22 +98,10 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
     <header
       id={overlay ? undefined : 'top'}
       className={cn(
-        'inset-x-0 top-0 z-20 text-white',
-        overlay ? 'absolute' : 'relative bg-charcoal-deep',
+        'inset-x-0 top-0 z-20',
+        overlay ? 'absolute text-white' : 'relative border-b border-line bg-mist text-charcoal',
       )}
     >
-      <div className="border-b border-white/20 text-[0.78rem] tracking-[0.04em]">
-        <div className="shell flex min-h-9 items-center justify-between max-sm:justify-end">
-          <span className="max-sm:hidden">{site.serviceArea}</span>
-          <div className="flex gap-6">
-            <a href={site.contact.phoneHref} className="max-md:hidden">
-              {site.contact.phone}
-            </a>
-            <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
-          </div>
-        </div>
-      </div>
-
       <div className="shell relative flex min-h-[104px] items-center justify-between max-md:min-h-[86px]">
         <Link href="/" className="inline-flex items-center gap-3" aria-label={`${site.name} – Startseite`}>
           <Image
@@ -129,30 +118,33 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
           </span>
         </Link>
 
-        <button
-          type="button"
-          aria-label={open ? 'Menü schließen' : 'Menü öffnen'}
-          aria-expanded={open}
-          aria-controls="hauptnavigation"
-          onClick={() => setOpen((value) => !value)}
-          className="hidden size-[46px] p-2.5 text-white max-md:block"
-        >
-          <span className="my-1.5 block h-0.5 bg-current" />
-          <span className="my-1.5 block h-0.5 bg-current" />
-          <span className="my-1.5 block h-0.5 bg-current" />
-        </button>
-
-        <nav
-          id="hauptnavigation"
-          aria-label="Hauptnavigation"
-          data-open={open}
-          className="flex items-center gap-1.5 text-[0.91rem] font-semibold max-lg:gap-1 max-lg:text-[0.82rem] max-md:absolute max-md:top-[86px] max-md:right-0 max-md:left-0 max-md:z-30 max-md:hidden max-md:flex-col max-md:items-stretch max-md:gap-1 max-md:bg-paper max-md:p-6 max-md:text-charcoal max-md:shadow-frame max-md:data-[open=true]:flex"
-        >
-          {nav.map((item) => (
-            <NavEntry key={item.href} item={item} variant="plain" onNavigate={close} />
-          ))}
-          <NavEntry item={navContact} variant="cta" onNavigate={close} />
-        </nav>
+        {/* Warenkorb: Desktop rechts neben dem Kontakt-Knopf, mobil rechts neben dem Burger (nicht im Menü). */}
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            aria-label={open ? 'Menü schließen' : 'Menü öffnen'}
+            aria-expanded={open}
+            aria-controls="hauptnavigation"
+            onClick={() => setOpen((value) => !value)}
+            className="hidden size-[46px] p-2.5 max-md:block"
+          >
+            <span className="my-1.5 block h-0.5 bg-current" />
+            <span className="my-1.5 block h-0.5 bg-current" />
+            <span className="my-1.5 block h-0.5 bg-current" />
+          </button>
+          <nav
+            id="hauptnavigation"
+            aria-label="Hauptnavigation"
+            data-open={open}
+            className="flex items-center gap-1.5 text-[0.91rem] font-semibold max-lg:gap-1 max-lg:text-[0.82rem] max-md:absolute max-md:top-[86px] max-md:right-0 max-md:left-0 max-md:z-30 max-md:hidden max-md:flex-col max-md:items-stretch max-md:gap-1 max-md:bg-paper max-md:p-6 max-md:text-charcoal max-md:shadow-frame max-md:data-[open=true]:flex"
+          >
+            {nav.map((item) => (
+              <NavEntry key={item.href} item={item} variant="plain" onNavigate={close} />
+            ))}
+            <NavEntry item={navContact} variant="cta" onNavigate={close} />
+          </nav>
+          <CartButton className="ml-2 max-lg:ml-1 max-md:ml-0" />
+        </div>
       </div>
     </header>
   );

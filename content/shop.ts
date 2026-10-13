@@ -1,3 +1,5 @@
+import { site } from '@/lib/site';
+
 /**
  * Material-Katalog des Shops – einzige Quelle für Produkte, Körnungen, Gebinde und Preise.
  *
@@ -39,6 +41,8 @@ export const shopCategories = [
 ] as const;
 
 export type ShopCategoryId = (typeof shopCategories)[number]['id'];
+
+export type ShopCategory = (typeof shopCategories)[number];
 
 /** Einheit für lose geladene Schüttgüter – hier zentral, falls auf Tonnen umgestellt wird. */
 const LOOSE_UNIT = 'm³';
@@ -193,36 +197,56 @@ export const shopProducts = [
   },
 ] as const satisfies readonly ShopProduct[];
 
+/** Liefergebiet in km um den Betriebssitz – einzige Quelle (AGB, Shop-Hinweise, Formular). */
+const DELIVERY_RADIUS_KM = 30;
+
 export const shopTerms = {
   /**
-   * Vorschau-Modus: Solange `false`, nimmt der Shop keine Online-Bestellungen an
-   * (Formular ausgeblendet, API antwortet 503) – Bestellung nur per Telefon/E-Mail.
-   * Erst auf `true` setzen, wenn alle Preise gesetzt und die Rechtstexte anwaltlich geprüft sind.
+   * Bestell-Modus. Solange `false`, sendet der Warenkorb eine **unverbindliche Anfrage**
+   * (Preise folgen, Knopf „Unverbindlich anfragen", keine AGB-Anhänge in der Bestätigung).
+   * Erst auf `true` setzen, wenn alle Preise gesetzt und die Rechtstexte anwaltlich geprüft sind –
+   * dann gilt die verbindliche Bestellung mit „zahlungspflichtig bestellen".
    */
   ordersOpen: false,
-  deliveryRadiusKm: 30,
-  /** Liefer- und Zahlungsbedingungen, so wie sie auf der Shop-Seite stehen. */
+  deliveryRadiusKm: DELIVERY_RADIUS_KM,
+  /** Liefer- und Zahlungsbedingungen als kurze Hinweise oben im Shop. */
   items: [
-    { title: 'Lieferung bis zum Haus', body: 'Im Umkreis von ca. 30 km um Kaarst, an Privatkunden.' },
-    { title: 'Zahlung auf Rechnung', body: 'Sie zahlen bequem nach Lieferung per Überweisung.' },
-    { title: 'Preise inkl. MwSt. & Lieferung', body: 'Keine versteckten Kosten – den Liefertermin stimmen wir mit Ihnen ab.' },
+    `Lieferung bis zum Haus · ca. ${DELIVERY_RADIUS_KM} km um ${site.address.city}`,
+    'Zahlung auf Rechnung',
+    'Preise inkl. MwSt. & Lieferung',
   ],
+} as const;
+
+/** Texte, die vom Modus abhängen – Bestellung (Shop offen) oder Anfrage (Vorschau). */
+export const shopModeCopy = {
+  order: {
+    /** Wortlaut nach § 312j Abs. 3 BGB – nicht ändern ohne rechtliche Prüfung. */
+    submitLabel: 'zahlungspflichtig bestellen',
+    summaryTitle: 'Bestellübersicht',
+    totalLabel: 'Gesamtpreis inkl. MwSt. & Lieferung',
+    submitHint:
+      'Sie erhalten sofort eine Eingangsbestätigung per E-Mail. Der Vertrag kommt mit unserer Annahme per E-Mail oder Telefon zustande.',
+    sentMessage:
+      'Vielen Dank! Ihre Bestellung ist bei uns eingegangen. Die Eingangsbestätigung ist per E-Mail unterwegs – wir melden uns zur Annahme und zum Liefertermin.',
+  },
+  inquiry: {
+    submitLabel: 'Unverbindlich anfragen',
+    summaryTitle: 'Ihre Anfrage',
+    totalLabel: 'Gesamt',
+    submitHint:
+      'Die Preise werden gerade festgelegt. Ihre Anfrage ist unverbindlich – wir melden uns mit Preis und Liefertermin.',
+    sentMessage:
+      'Vielen Dank! Ihre Anfrage ist bei uns eingegangen. Eine Bestätigung ist per E-Mail unterwegs – wir melden uns mit Preis und Liefertermin.',
+  },
 } as const;
 
 export const shopCopy = {
   label: 'Materiallieferung',
-  title: 'Kies, Schotter & Rinde – geliefert bis vor Ihr Haus.',
-  intro:
-    'Wählen Sie Material, Körnung und Menge und stellen Sie Ihre Bestellung zusammen. Wir bestätigen sie und stimmen den Liefertermin mit Ihnen ab – bezahlt wird auf Rechnung.',
+  title: 'Kies, Schotter & Rinde – bis vor Ihr Haus.',
+  intro: 'Material wählen, in den Warenkorb legen – wir liefern und Sie zahlen auf Rechnung.',
   moreTitle: 'Ihre Anfrage ist hier nicht aufgeführt?',
   moreBody: 'Wir bieten vieles mehr an – kontaktieren Sie uns direkt.',
-  /** Wortlaut nach § 312j Abs. 3 BGB – nicht ändern ohne rechtliche Prüfung. */
-  submitLabel: 'zahlungspflichtig bestellen',
-  submitHint:
-    'Sie erhalten sofort eine Eingangsbestätigung per E-Mail. Der Vertrag kommt mit unserer Annahme per E-Mail oder Telefon zustande.',
-  previewTitle: 'Online-Bestellung startet in Kürze',
-  previewBody:
-    'Die Preise werden gerade festgelegt. Bis dahin nehmen wir Ihre Bestellung gern telefonisch oder per E-Mail auf – Ihre Liste übernehmen wir in die E-Mail.',
-  sentMessage:
-    'Vielen Dank! Ihre Bestellung ist bei uns eingegangen. Die Eingangsbestätigung ist per E-Mail unterwegs – wir melden uns zur Annahme und zum Liefertermin.',
+  noResultsTitle: 'Keine Treffer',
+  noResultsBody: 'Ihr Material ist nicht dabei? Wir besorgen vieles auf Anfrage – rufen Sie uns an oder schreiben Sie uns.',
+  emptyCart: 'Ihr Warenkorb ist leer. Wählen Sie Material, Körnung und Menge im Shop.',
 } as const;

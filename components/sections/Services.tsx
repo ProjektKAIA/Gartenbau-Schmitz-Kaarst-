@@ -1,7 +1,9 @@
+import Link from 'next/link';
 import { Reveal } from '@/components/ui/Reveal';
 import { Eyebrow } from '@/components/ui/SectionLabel';
 import { services, type ServiceIcon } from '@/content/home';
 import { cn } from '@/lib/cn';
+import { contactHref } from '@/lib/contact';
 
 /** Die drei Icons sind reine CSS-Formen – kein Bild, keine Icon-Bibliothek. */
 function ServiceMark({ icon, dark }: { readonly icon: ServiceIcon; readonly dark: boolean }) {
@@ -106,15 +108,15 @@ export function Services() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href="#kontakt"
+                <Link
+                  href={contactHref(service.contactTopic)}
                   className={cn(
                     'mt-auto font-bold',
                     service.dark ? 'text-olive-pale' : 'text-olive',
                   )}
                 >
                   {service.cta} <span aria-hidden="true">→</span>
-                </a>
+                </Link>
               </article>
             </Reveal>
           ))}

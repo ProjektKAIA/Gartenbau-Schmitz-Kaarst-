@@ -14,6 +14,15 @@ export type ResolvedLine = {
   readonly totalCents: number;
 };
 
+/**
+ * Art des Vorgangs: verbindliche Bestellung (Shop offen) oder unverbindliche Anfrage
+ * (Vorschau-Modus, Preise folgen). Einzige Stelle, die den Schalter auswertet –
+ * UI und API leiten beide daraus ab.
+ */
+export type ShopRequestKind = 'order' | 'inquiry';
+
+export const requestKindOf = (ordersOpen: boolean): ShopRequestKind => (ordersOpen ? 'order' : 'inquiry');
+
 /** Bestellzeilen gegen den Katalog auflösen; unbekannte Varianten fallen heraus. */
 export const resolveLines = (
   products: readonly ShopProduct[],
@@ -41,12 +50,12 @@ export const totalCents = (lines: readonly ResolvedLine[]): number =>
 export const formatOrderTotal = (lines: readonly ResolvedLine[]): string =>
   lines.some((line) => isPricePending(line.unitPriceCents)) ? PRICE_PENDING_LABEL : formatPrice(totalCents(lines));
 
-/** Bestellliste als Mail-Text für die Bestellung per E-Mail im Vorschau-Modus. */
+/** Warenkorb als Mail-Text – Ausweg per E-Mail, wenn der Online-Versand nicht klappt. */
 export const orderListMailBody = (lines: readonly ResolvedLine[]): string =>
   [
     'Guten Tag,',
     '',
-    'ich möchte folgendes Material bestellen:',
+    'ich möchte folgendes Material anfragen:',
     ...lines.map((line) => `- ${line.quantity} ${line.unit} ${line.label}`),
     '',
     'Lieferadresse:',
@@ -54,15 +63,27 @@ export const orderListMailBody = (lines: readonly ResolvedLine[]): string =>
     'Telefon:',
   ].join('\n');
 
-const positionLines = (lines: readonly ResolvedLine[]): string[] => [
-  ...lines.map(
-    (line) =>
-      `- ${line.quantity} ${line.unit} ${line.label} (à ${formatPrice(line.unitPriceCents)}) = ${formatPrice(line.totalCents)}`,
-  ),
-  '',
-  `Gesamt inkl. MwSt. und Lieferung: ${formatPrice(totalCents(lines))}`,
-  'Zahlung auf Rechnung.',
-];
+/** Positionen mit Preisen (Bestellung) bzw. nur Mengen (Anfrage – Preise folgen). */
+const positionLines = (lines: readonly ResolvedLine[], kind: ShopRequestKind): string[] => {
+  switch (kind) {
+    case 'order':
+      return [
+        ...lines.map(
+          (line) =>
+            `- ${line.quantity} ${line.unit} ${line.label} (à ${formatPrice(line.unitPriceCents)}) = ${formatPrice(line.totalCents)}`,
+        ),
+        '',
+        `Gesamt inkl. MwSt. und Lieferung: ${formatPrice(totalCents(lines))}`,
+        'Zahlung auf Rechnung.',
+      ];
+    case 'inquiry':
+      return lines.map((line) => `- ${line.quantity} ${line.unit} ${line.label}`);
+    default: {
+      const unreachable: never = kind;
+      return unreachable;
+    }
+  }
+};
 
 const addressLines = (customer: ShopCustomer): string[] => [
   customer.name,
@@ -70,13 +91,25 @@ const addressLines = (customer: ShopCustomer): string[] => [
   `${customer.postalCode} ${customer.city}`,
 ];
 
+const businessMailCopy = {
+  order: { subject: 'Shop-Bestellung', intro: 'Neue Bestellung aus dem Material-Shop (noch nicht angenommen):' },
+  inquiry: {
+    subject: 'Shop-Anfrage',
+    intro: 'Neue unverbindliche Anfrage aus dem Material-Shop – bitte mit Preis und Liefertermin antworten:',
+  },
+} as const satisfies Record<ShopRequestKind, { subject: string; intro: string }>;
+
 /** Mail an den Betrieb: alle Angaben, Antworten gehen per Reply-To direkt an den Kunden. */
-export const buildBusinessMail = (lines: readonly ResolvedLine[], customer: ShopCustomer): MailContent => ({
-  subject: `Shop-Bestellung – ${customer.name}`,
+export const buildBusinessMail = (
+  lines: readonly ResolvedLine[],
+  customer: ShopCustomer,
+  kind: ShopRequestKind,
+): MailContent => ({
+  subject: `${businessMailCopy[kind].subject} – ${customer.name}`,
   text: [
-    'Neue Bestellung aus dem Material-Shop (noch nicht angenommen):',
+    businessMailCopy[kind].intro,
     '',
-    ...positionLines(lines),
+    ...positionLines(lines, kind),
     '',
     'Lieferadresse:',
     ...addressLines(customer),
@@ -84,6 +117,7 @@ export const buildBusinessMail = (lines: readonly ResolvedLine[], customer: Shop
     `Telefon: ${customer.phone}`,
     `E-Mail: ${customer.email}`,
     'Lieferadresse als Privatadresse im Liefergebiet bestätigt: ja',
+    'AGB akzeptiert und Datenschutzerklärung zur Kenntnis genommen: ja',
     ...(customer.message ? ['', 'Nachricht:', customer.message] : []),
   ].join('\n'),
 });
@@ -108,7 +142,7 @@ export const buildCustomerConfirmation = (
     'Dies ist noch keine Annahme Ihrer Bestellung: Der Vertrag kommt erst zustande, wenn wir Ihre Bestellung per E-Mail oder telefonisch annehmen oder die Ware liefern. Dabei stimmen wir auch den Liefertermin mit Ihnen ab.',
     '',
     'Ihre Bestellung:',
-    ...positionLines(lines),
+    ...positionLines(lines, 'order'),
     '',
     'Lieferadresse:',
     ...addressLines(customer),
@@ -117,5 +151,33 @@ export const buildCustomerConfirmation = (
     business.name,
     `Telefon ${business.phone} · ${business.email}`,
     ...legalTexts.flatMap((text) => ['', '', '----------------------------------------', '', text]),
+  ].join('\n'),
+});
+
+/**
+ * Bestätigung einer unverbindlichen Anfrage an den Kunden – ohne Rechtstexte (kein Vertrag)
+ * und, wie bei der Bestellung, ohne Freitext-Nachricht des Kunden.
+ */
+export const buildCustomerInquiryConfirmation = (
+  lines: readonly ResolvedLine[],
+  customer: ShopCustomer,
+  business: BusinessContact,
+): MailContent => ({
+  subject: `Ihre Anfrage bei ${business.name}`,
+  text: [
+    `Guten Tag ${customer.name},`,
+    '',
+    'vielen Dank für Ihre Anfrage. Sie ist bei uns eingegangen.',
+    'Die Anfrage ist unverbindlich – wir melden uns in Kürze mit Preis und möglichem Liefertermin bei Ihnen.',
+    '',
+    'Ihre Anfrage:',
+    ...positionLines(lines, 'inquiry'),
+    '',
+    'Lieferadresse:',
+    ...addressLines(customer),
+    '',
+    'Viele Grüße',
+    business.name,
+    `Telefon ${business.phone} · ${business.email}`,
   ].join('\n'),
 });

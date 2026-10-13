@@ -1,4 +1,4 @@
-import type { ShopProduct, ShopVariant } from '@/content/shop';
+import type { ShopCategory, ShopCategoryId, ShopProduct, ShopVariant } from '@/content/shop';
 
 /** Körnungen eines Produkts in Katalog-Reihenfolge, ohne Dubletten. */
 export const sizesOf = (product: ShopProduct): string[] => [
@@ -29,3 +29,7 @@ export const variantLabel = (product: ShopProduct, variant: ShopVariant): string
 /** Bezugsgröße des Preises: „m³" bei loser Ware, sonst das Gebinde („70-L-Sack"). */
 export const priceUnitLabel = (variant: ShopVariant): string =>
   variant.packaging === 'lose' ? `${variant.unit} lose` : variant.packaging;
+
+/** Anzeigename einer Kategorie – einzige Stelle für dieses Nachschlagen (Karte, Suche, JSON-LD). */
+export const categoryLabel = (categories: readonly ShopCategory[], id: ShopCategoryId): string =>
+  categories.find((category) => category.id === id)?.label ?? '';

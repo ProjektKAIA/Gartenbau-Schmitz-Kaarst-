@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { serviceAreas } from '@/content/areas';
 import { withdrawalCopy } from '@/content/withdrawal';
+import { areaPath } from '@/lib/seo';
 import { site } from '@/lib/site';
 
 export function SiteFooter() {
@@ -41,11 +43,26 @@ export function SiteFooter() {
             {withdrawalCopy.entryLabel}
           </Link>
         </div>
+        <nav aria-label="Einsatzgebiete" className="mt-10 text-[0.82rem] text-white/72">
+          <p className="mb-2 text-[0.72rem] font-bold tracking-[0.14em] text-white/50 uppercase">Einsatzgebiete</p>
+          <ul className="flex list-none flex-wrap gap-x-5 gap-y-2 p-0">
+            {serviceAreas.map((area) => (
+              <li key={area.slug}>
+                <Link href={areaPath(area.slug)}>Gartenbau {area.city}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
         <div className="mt-[50px] flex justify-between border-t border-white/12 pt-[22px] text-[0.75rem] text-white/44 max-sm:flex-col max-sm:gap-2.5">
           <p>
             © {new Date().getFullYear()} {site.name} · {site.owner}
           </p>
-          <a href="#top">Nach oben ↑</a>
+          <p className="flex gap-5">
+            <a href="https://kaiashapes.de" target="_blank" rel="noopener">
+              Made by KAIA Shapes
+            </a>
+            <a href="#top">Nach oben ↑</a>
+          </p>
         </div>
       </div>
     </footer>

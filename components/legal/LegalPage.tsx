@@ -4,12 +4,19 @@ import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SkipLink } from '@/components/ui/SkipLink';
 import type { LegalBlock, LegalDocument } from '@/content/legal/types';
+import { pageMetadata } from '@/lib/seo';
 import { site } from '@/lib/site';
 
-export const legalMetadata = (document: LegalDocument): Metadata => ({
-  title: `${document.title} | ${site.name}`,
-  robots: { index: false },
-});
+/**
+ * Metadaten der Rechtstexte: indexierbar (stehen in der Sitemap), mit Canonical.
+ * Die Beschreibung entsteht aus Titel und Betrieb, damit jede Seite eine eigene hat.
+ */
+export const legalMetadata = (document: LegalDocument, path: string): Metadata =>
+  pageMetadata({
+    title: document.title,
+    description: `${document.title} von ${site.name} (${site.legalName}), ${site.address.city}. Stand: ${document.updated}.`,
+    path,
+  });
 
 function Block({ block }: { readonly block: LegalBlock }) {
   switch (block.type) {
@@ -42,14 +49,15 @@ export function LegalPage({ document }: { readonly document: LegalDocument }) {
     <>
       <SkipLink />
       <SiteHeader />
-      <main id="main" className="shell py-[100px] max-md:py-16">
-        <h1 className="display-2 mb-4 hyphens-auto wrap-break-word">{document.title}</h1>
+      <main id="main" className="shell py-14 max-md:py-10">
+        {/* Rechtstitel sind lange Komposita („Geschäftsbedingungen“) – hier trennen statt hart umbrechen. */}
+        <h1 className="display-page mb-4 hyphens-auto">{document.title}</h1>
         <p className="mb-12 text-[0.85rem] text-stone">Stand: {document.updated}</p>
-        <div className="grid max-w-[760px] gap-10 text-stone">
+        <div className="grid max-w-[760px] gap-10 text-stone wrap-anywhere">
           {document.intro ? <p className="text-[1.05rem] text-charcoal">{document.intro}</p> : null}
           {document.sections.map((section) => (
             <section key={section.heading} className="grid gap-3">
-              <h2 className="text-[1.5rem] leading-tight text-charcoal">{section.heading}</h2>
+              <h2 className="text-[1.5rem] leading-tight font-bold text-charcoal">{section.heading}</h2>
               {section.blocks.map((block, index) => (
                 <Block key={index} block={block} />
               ))}

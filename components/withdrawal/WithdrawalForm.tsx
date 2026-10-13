@@ -75,7 +75,7 @@ export function WithdrawalForm() {
   if (state.step === 'sent') {
     return (
       <div role="status" className="border-l-4 border-olive bg-mist p-6">
-        <h2 className="text-[1.6rem] text-charcoal">{copy.sentTitle}</h2>
+        <h2 className="text-[1.6rem] font-bold text-charcoal">{copy.sentTitle}</h2>
         <p className="mt-2">{copy.sentBody}</p>
       </div>
     );
@@ -113,7 +113,7 @@ export function WithdrawalForm() {
   const { withdrawal } = state;
   return (
     <div className="grid gap-5">
-      <h2 className="text-[1.6rem] text-charcoal">{copy.reviewTitle}</h2>
+      <h2 className="text-[1.6rem] font-bold text-charcoal">{copy.reviewTitle}</h2>
       <dl className="grid gap-3 border border-line bg-white p-5 text-charcoal">
         <div>
           <dt className="text-[0.75rem] font-bold text-stone">{copy.fields.name}</dt>

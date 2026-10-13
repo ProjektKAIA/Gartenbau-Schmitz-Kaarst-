@@ -3,6 +3,8 @@
  * Alle Texte liegen hier, damit Komponenten reine Darstellung bleiben.
  */
 
+import type { ContactTopicId } from '@/content/contact';
+
 export type NavLink = {
   readonly label: string;
   readonly href: string;
@@ -15,7 +17,7 @@ export type NavItem = NavLink & {
 
 /** Hrefs mit `/` davor, damit die Anker auch von Unterseiten (Shop, AGB …) funktionieren. */
 export const nav = [
-  { label: 'Leistungen', href: '/#leistungen' },
+  { label: 'Leistungen', href: '/leistungen' },
   {
     label: 'Projekte',
     href: '/#projekte',
@@ -24,16 +26,16 @@ export const nav = [
       { label: 'Ablauf', href: '/#ablauf' },
     ],
   },
-  { label: 'Über uns', href: '/#ueber-uns' },
+  { label: 'Über uns', href: '/ueber-uns' },
   { label: 'Shop', href: '/shop' },
 ] as const satisfies readonly NavItem[];
 
 /** Hervorgehobener Kontakt-Button rechts in der Navigation. */
 export const navContact = {
   label: 'Kontakt',
-  href: '/#kontakt',
+  href: '/kontakt',
   children: [
-    { label: 'Anfrage', href: '/#kontakt' },
+    { label: 'Kontaktformular', href: '/kontakt' },
     { label: 'Karriere', href: '/#karriere' },
   ],
 } as const satisfies NavItem;
@@ -63,6 +65,8 @@ export const intro = {
 export type ServiceIcon = 'leaf' | 'paver' | 'shear';
 
 export type Service = {
+  /** Vorbelegtes Anliegen im Kontaktformular. */
+  readonly contactTopic: ContactTopicId;
   readonly index: string;
   readonly icon: ServiceIcon;
   readonly title: string;
@@ -83,6 +87,7 @@ export const services = {
       index: '01',
       icon: 'leaf',
       title: 'Gestalten',
+      contactTopic: 'gestaltung',
       body: 'Wir entwickeln Außenbereiche, die Architektur, Grundstück und persönliche Wünsche sinnvoll verbinden.',
       items: ['Beratung & Planung', 'Neu- und Umgestaltung', 'Rasen, Beete & Pflanzung'],
       cta: 'Projekt planen',
@@ -92,6 +97,7 @@ export const services = {
       index: '02',
       icon: 'paver',
       title: 'Bauen',
+      contactTopic: 'pflaster',
       body: 'Saubere Linien, passende Materialien und ein tragfähiger Aufbau schaffen Flächen, die dauerhaft funktionieren.',
       items: ['Terrassen & Gartenwege', 'Pflaster- & Naturstein', 'Einfahrten, Einfassungen & Zäune'],
       cta: 'Bauvorhaben anfragen',
@@ -101,6 +107,7 @@ export const services = {
       index: '03',
       icon: 'shear',
       title: 'Pflegen',
+      contactTopic: 'pflege',
       body: 'Damit ein Garten seinen Charakter behält, kümmern wir uns fachgerecht um Grünflächen, Gehölze und Saisonarbeiten.',
       items: ['Garten- & Grünflächenpflege', 'Hecken-, Strauch- & Baumschnitt', 'Einmalig oder regelmäßig'],
       cta: 'Pflege besprechen',
@@ -123,10 +130,10 @@ export const extras = {
   title: 'Damit draußen alles läuft.',
   body: 'Durchdachte Technik und zuverlässige Zusatzleistungen machen die Außenanlage im Alltag einfacher und sicherer.',
   items: [
-    { number: '01', title: 'Bewässerungssysteme', text: 'Planung, Installation & Wartung' },
-    { number: '02', title: 'Mähroboter', text: 'Einrichtung, Kabel & Service' },
-    { number: '03', title: 'Winterdienst', text: 'Für sichere Wege und Flächen' },
-    { number: '04', title: 'Sturmschäden', text: 'Schnelle Hilfe und Wiederherstellung' },
+    { number: '01', title: 'Bewässerungssysteme', contactTopic: 'bewaesserung', text: 'Planung, Installation & Wartung' },
+    { number: '02', title: 'Mähroboter', contactTopic: 'maehroboter', text: 'Einrichtung, Kabel & Service' },
+    { number: '03', title: 'Winterdienst', contactTopic: 'winterdienst', text: 'Für sichere Wege und Flächen' },
+    { number: '04', title: 'Sturmschäden', contactTopic: 'sturmschaden', text: 'Schnelle Hilfe und Wiederherstellung' },
   ],
 } as const;
 

@@ -1,6 +1,8 @@
 import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/SectionLabel';
+import { contactCopy } from '@/content/contact';
 import { contact } from '@/content/home';
+import { contactHref } from '@/lib/contact';
 import { site } from '@/lib/site';
 
 const rows = [
@@ -38,10 +40,14 @@ export function Contact() {
               </div>
             ))}
           </dl>
+          <ButtonLink href={contactHref()} wide className="mt-7">
+            {contactCopy.formLinkLabel}
+          </ButtonLink>
           <ButtonLink
             href={`mailto:${site.contact.email}?subject=Projektanfrage`}
+            variant="dark"
             wide
-            className="mt-7"
+            className="mt-3"
           >
             {contact.cta}
           </ButtonLink>
