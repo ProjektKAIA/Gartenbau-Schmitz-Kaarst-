@@ -3,6 +3,8 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Keine generierten AGENTS.md/CLAUDE.md – es gilt die AGENTS.md des Workspaces.
+  agentRules: false,
   images: {
     formats: ['image/avif', 'image/webp'],
   },

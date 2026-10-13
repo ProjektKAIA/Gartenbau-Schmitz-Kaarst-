@@ -15,7 +15,7 @@ export type NavItem = NavLink & {
 
 /** Hrefs mit `/` davor, damit die Anker auch von Unterseiten (Shop, AGB …) funktionieren. */
 export const nav = [
-  { label: 'Leistungen', href: '/#leistungen' },
+  { label: 'Leistungen', href: '/leistungen' },
   {
     label: 'Projekte',
     href: '/#projekte',
@@ -24,16 +24,16 @@ export const nav = [
       { label: 'Ablauf', href: '/#ablauf' },
     ],
   },
-  { label: 'Über uns', href: '/#ueber-uns' },
+  { label: 'Über uns', href: '/ueber-uns' },
   { label: 'Shop', href: '/shop' },
 ] as const satisfies readonly NavItem[];
 
 /** Hervorgehobener Kontakt-Button rechts in der Navigation. */
 export const navContact = {
   label: 'Kontakt',
-  href: '/#kontakt',
+  href: '/kontakt',
   children: [
-    { label: 'Anfrage', href: '/#kontakt' },
+    { label: 'Kontaktformular', href: '/kontakt' },
     { label: 'Karriere', href: '/#karriere' },
   ],
 } as const satisfies NavItem;
