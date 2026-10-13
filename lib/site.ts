@@ -7,9 +7,9 @@
 export const site = {
   /**
    * Kanonische Adresse der Website (ohne abschließenden Slash) – Basis für Canonicals,
-   * Sitemap, Open Graph und JSON-LD. Bestätigte Live-Domain des Betriebs (mit www).
+   * Sitemap, Open Graph und JSON-LD. Vor dem Livegang Domain bestätigen.
    */
-  url: 'https://www.gartenbau-kaarst.de',
+  url: 'https://gartenbau-kaarst.de',
   name: 'Gartenbau Kaarst',
   owner: 'Matthias Schmitz',
   legalName: 'Gartenbau Matthias Schmitz',
