@@ -57,20 +57,19 @@ export function SiteHeader() {
           id="hauptnavigation"
           aria-label="Hauptnavigation"
           data-open={open}
-          className="flex items-center gap-7 text-[0.91rem] font-semibold max-lg:gap-[17px] max-lg:text-[0.82rem] max-md:absolute max-md:top-[122px] max-md:right-4 max-md:left-4 max-md:hidden max-md:flex-col max-md:items-stretch max-md:gap-3.5 max-md:bg-paper max-md:p-6 max-md:text-charcoal max-md:shadow-frame max-md:data-[open=true]:flex"
+          className="flex items-center gap-1.5 text-[0.91rem] font-semibold max-lg:gap-1 max-lg:text-[0.82rem] max-md:absolute max-md:top-[122px] max-md:right-4 max-md:left-4 max-md:hidden max-md:flex-col max-md:items-stretch max-md:gap-3.5 max-md:bg-paper max-md:p-6 max-md:text-charcoal max-md:shadow-frame max-md:data-[open=true]:flex"
         >
           {nav.map((item) => (
             <a
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="group relative whitespace-nowrap max-md:p-2"
+              className="inline-flex min-h-[44px] items-center px-3.5 whitespace-nowrap transition-colors duration-200 hover:bg-white hover:text-charcoal focus-visible:bg-white focus-visible:text-charcoal max-lg:px-2.5 max-md:min-h-0 max-md:p-2 max-md:hover:bg-mist"
             >
               {item.label}
-              <span className="absolute -bottom-[7px] left-0 block h-px w-0 bg-current transition-[width] duration-200 group-hover:w-full max-md:hidden" />
             </a>
           ))}
-          <ButtonLink href="#kontakt" size="small" onClick={() => setOpen(false)}>
+          <ButtonLink href="#kontakt" size="small" onClick={() => setOpen(false)} className="ml-4 max-lg:ml-2 max-md:ml-0">
             Projekt anfragen
           </ButtonLink>
         </nav>
