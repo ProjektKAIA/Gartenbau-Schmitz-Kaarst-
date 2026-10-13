@@ -23,6 +23,8 @@ next-env.d.ts
 # (Spiegel der bestehenden Kundenseite und die Original-Entwürfe inkl. Kundenfotos)
 altseite/
 entwuerfe/
+# Original-Fotos des Shops (optimierte Fassung liegt in public/assets/shop)
+/shop/
 
 # Test und Werkzeuge
 coverage/

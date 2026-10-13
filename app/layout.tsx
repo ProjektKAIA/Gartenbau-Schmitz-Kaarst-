@@ -7,16 +7,28 @@ export const metadata: Metadata = {
   title: `${site.name} | ${site.owner}`,
   description: site.description,
   icons: { icon: '/assets/favicon.svg' },
+  openGraph: {
+    title: `${site.name} | ${site.owner}`,
+    description: site.description,
+    locale: 'de_DE',
+    type: 'website',
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#17342d',
+  themeColor: '#535c26',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="de">
-      <body className="font-sans antialiased">{children}</body>
+      <head>
+        {/* Ohne JavaScript läuft der Einblend-Effekt nie – der Inhalt muss trotzdem sichtbar sein. */}
+        <noscript>
+          <style>{`.reveal { opacity: 1 !important; transform: none !important; }`}</style>
+        </noscript>
+      </head>
+      <body className="bg-paper font-sans text-charcoal antialiased">{children}</body>
     </html>
   );
 }
