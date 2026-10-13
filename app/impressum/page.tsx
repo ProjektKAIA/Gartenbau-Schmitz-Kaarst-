@@ -1,20 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteFooter } from '@/components/layout/SiteFooter';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { SkipLink } from '@/components/ui/SkipLink';
+import { pageMetadata, routes } from '@/lib/seo';
 import { site } from '@/lib/site';
 
-export const metadata: Metadata = {
-  title: `Impressum | ${site.name}`,
-  robots: { index: false },
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Impressum',
+  description: `Impressum von ${site.name} – ${site.legalName}, ${site.address.street}, ${site.address.postalCode} ${site.address.city}.`,
+  path: routes.imprint.path,
+});
 
 export default function ImpressumPage() {
   return (
     <>
-      <main id="main" className="shell py-[120px] max-md:py-20">
-        <h1 className="display-2 mb-12">Impressum</h1>
+      <SkipLink />
+      <SiteHeader />
+      <main id="main" className="shell py-14 max-md:py-10">
+        <h1 className="display-page mb-12">Impressum</h1>
 
-        <div className="grid max-w-[720px] gap-8 text-stone">
+        <div className="grid max-w-[720px] gap-8 text-stone wrap-anywhere">
           <section>
             <h2 className="mb-2 text-[1.5rem] font-bold text-charcoal">Angaben gemäß § 5 DDG</h2>
             <p>

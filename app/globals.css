@@ -72,6 +72,16 @@
     letter-spacing: -0.035em;
   }
 
+  /* Seitentitel der Unterseiten: kompakt, damit der Inhalt im Fokus steht (Shop, Leistungen, Rechtliches …). */
+  .display-page {
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    /* Keine Auto-Silbentrennung (zerlegt Ortsnamen); Notfall-Umbruch nur bei Überlänge. */
+    overflow-wrap: break-word;
+  }
+
   @media (max-width: 590px) {
     .display-1 {
       font-size: clamp(3.4rem, 17vw, 5rem);

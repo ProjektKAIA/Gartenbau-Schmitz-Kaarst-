@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import { Eyebrow } from '@/components/ui/SectionLabel';
 import { extras } from '@/content/home';
+import { contactHref } from '@/lib/contact';
 
 export function Extras() {
   return (
@@ -28,8 +30,8 @@ export function Extras() {
         <ul className="list-none border-t border-line p-0">
           {extras.items.map((item) => (
             <li key={item.number}>
-              <a
-                href="#kontakt"
+              <Link
+                href={contactHref(item.contactTopic)}
                 className="grid min-h-[112px] grid-cols-[54px_1fr_1fr_30px] items-center gap-[18px] border-b border-line transition-[color,padding] duration-200 hover:pl-2 hover:text-olive max-sm:min-h-24 max-sm:grid-cols-[40px_1fr_25px]"
               >
                 <span className="text-[0.73rem] text-stone">{item.number}</span>
@@ -38,7 +40,7 @@ export function Extras() {
                 <span aria-hidden="true" className="text-[1.2rem]">
                   ↗
                 </span>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

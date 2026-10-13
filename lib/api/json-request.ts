@@ -29,6 +29,12 @@ export const readJsonRequest = async (request: Request, options: ReadOptions): P
     };
   }
 
+  // Vorab per Content-Length ablehnen, damit große Bodies gar nicht erst eingelesen werden.
+  const declaredLength = Number(request.headers.get('content-length'));
+  if (Number.isFinite(declaredLength) && declaredLength > options.maxBytes) {
+    return { ok: false, response: jsonResponse({ ok: false, error: 'Die Anfrage ist zu groß.' }, 413) };
+  }
+
   const raw = await request.text();
   if (raw.length > options.maxBytes) {
     return { ok: false, response: jsonResponse({ ok: false, error: 'Die Anfrage ist zu groß.' }, 413) };

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { serviceAreas } from '@/content/areas';
 import { withdrawalCopy } from '@/content/withdrawal';
+import { areaPath } from '@/lib/seo';
 import { site } from '@/lib/site';
 
 export function SiteFooter() {
@@ -47,7 +48,7 @@ export function SiteFooter() {
           <ul className="flex list-none flex-wrap gap-x-5 gap-y-2 p-0">
             {serviceAreas.map((area) => (
               <li key={area.slug}>
-                <Link href={`/gartenbau/${area.slug}`}>Gartenbau {area.city}</Link>
+                <Link href={areaPath(area.slug)}>Gartenbau {area.city}</Link>
               </li>
             ))}
           </ul>

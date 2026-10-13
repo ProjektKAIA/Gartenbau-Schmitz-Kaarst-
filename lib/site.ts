@@ -5,6 +5,11 @@
  */
 
 export const site = {
+  /**
+   * Kanonische Adresse der Website (ohne abschließenden Slash) – Basis für Canonicals,
+   * Sitemap, Open Graph und JSON-LD. Vor dem Livegang Domain bestätigen.
+   */
+  url: 'https://gartenbau-kaarst.de',
   name: 'Gartenbau Kaarst',
   owner: 'Matthias Schmitz',
   legalName: 'Gartenbau Matthias Schmitz',
@@ -21,6 +26,16 @@ export const site = {
     postalCode: '41564',
     city: 'Kaarst',
     country: 'DE',
+    /** ISO-3166-2-Code des Bundeslands (Nordrhein-Westfalen). */
+    regionCode: 'DE-NW',
+  },
+  /**
+   * Ortsmitte Kaarst, auf zwei Nachkommastellen (~1 km) gerundet – bewusst keine
+   * Scheingenauigkeit. Bei Bedarf auf die Betriebsadresse präzisieren.
+   */
+  geo: {
+    latitude: 51.23,
+    longitude: 6.62,
   },
   contact: {
     phone: '0177 2770274',

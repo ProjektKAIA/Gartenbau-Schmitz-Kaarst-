@@ -1,56 +1,122 @@
 'use client';
 
-import { useMemo, useReducer } from 'react';
-import { shopCategories, shopProducts } from '@/content/shop';
-import { cartReducer, countItems } from '@/lib/shop/cart';
-import { resolveLines } from '@/lib/shop/order';
+import { useMemo, useState } from 'react';
+import { ButtonLink } from '@/components/ui/Button';
+import { shopCategories, shopCopy, shopProducts } from '@/content/shop';
+import { cn } from '@/lib/cn';
+import { filterProducts, type CategoryFilter } from '@/lib/shop/search';
+import { site } from '@/lib/site';
 import { ProductCard } from './ProductCard';
-import { OrderPanel } from './OrderPanel';
+import { categoryLabel } from '@/lib/shop/catalog';
 
-/** Katalog nach Kategorien plus Bestellliste; der Zustand der Liste lebt nur hier. */
+const categoryChips: readonly { readonly id: CategoryFilter; readonly label: string }[] = [
+  { id: 'all', label: 'Alle' },
+  ...shopCategories,
+];
+
+/** Die ersten Produktbilder laden vorrangig (LCP) – so viele, wie in die erste Reihe passen. */
+const PRIORITY_IMAGES = 4;
+
+/** Katalog mit Suche und Kategorie-Filter; der Warenkorb liegt global im Header. */
 export function ShopCatalog() {
-  const [cart, dispatch] = useReducer(cartReducer, []);
-  const lines = useMemo(() => resolveLines(shopProducts, cart), [cart]);
-  const count = countItems(cart);
+  const [query, setQuery] = useState('');
+  const [category, setCategory] = useState<CategoryFilter>('all');
+
+  const matches = useMemo(
+    () => filterProducts(shopProducts, shopCategories, { query, category }),
+    [query, category],
+  );
+  // Ein durchgehendes Raster statt Gruppen je Kategorie: keine halbleeren Reihen, weniger Höhe.
+  // Die Gruppierung übernehmen die Kategorie-Chips, die Karte nennt ihre Kategorie.
 
   return (
-    <div className="grid grid-cols-[1fr_380px] items-start gap-10 max-lg:grid-cols-1">
-      <div className="grid gap-16">
-        {shopCategories.map((category) => {
-          const products = shopProducts.filter((product) => product.category === category.id);
-          if (products.length === 0) return null;
-          return (
-            <section key={category.id} aria-labelledby={`cat-${category.id}`}>
-              <h2 id={`cat-${category.id}`} className="mb-6 border-b border-line pb-3 text-[2rem] font-bold">
-                {category.label}
-              </h2>
-              <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
-                {products.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onAdd={(variantId, quantity) => dispatch({ type: 'add', variantId, quantity })}
-                  />
-                ))}
-              </div>
-            </section>
-          );
-        })}
-      </div>
-
-      <div className="sticky top-6 max-h-[calc(100vh-48px)] overflow-y-auto max-lg:static max-lg:max-h-none">
-        <OrderPanel lines={lines} dispatch={dispatch} />
-      </div>
-
-      {/* Unterhalb von 1050px liegt die Bestellliste unter dem Katalog – der Knopf führt hin. */}
-      {count > 0 ? (
-        <a
-          href="#bestellung"
-          className="fixed right-4 bottom-4 z-40 hidden min-h-[48px] items-center gap-2 bg-charcoal px-5 text-[0.88rem] font-bold text-white shadow-[0_14px_34px_rgba(0,0,0,.25)] max-lg:flex"
+    <div>
+      <div className="grid gap-3 border-b border-line pb-5 xl:flex xl:items-center xl:gap-5">
+        <div role="search" className="relative max-w-[560px] xl:w-[360px] xl:shrink-0">
+          <label htmlFor="shop-search" className="sr-only">
+            Material suchen
+          </label>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-stone"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+          </svg>
+          <input
+            id="shop-search"
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Suchen: Material, Körnung, Einsatz …"
+            autoComplete="off"
+            className="min-h-[48px] w-full border border-line bg-white pr-3 pl-11 text-[0.95rem] text-charcoal placeholder:text-stone"
+          />
+        </div>
+        <div
+          role="group"
+          aria-label="Kategorie"
+          className="flex gap-2 max-sm:-mx-4 max-sm:overflow-x-auto max-sm:px-4 max-sm:pb-1 sm:flex-wrap"
         >
-          Zur Bestellung <span className="grid size-6 place-items-center rounded-full bg-olive text-[0.75rem] text-white">{count}</span>
-        </a>
-      ) : null}
+          {categoryChips.map((chip) => {
+            const active = chip.id === category;
+            return (
+              <button
+                key={chip.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setCategory(chip.id)}
+                className={cn(
+                  'min-h-[36px] rounded-full border px-3.5 text-[0.82rem] font-semibold whitespace-nowrap transition-colors',
+                  active
+                    ? 'border-charcoal bg-charcoal text-white'
+                    : 'border-line bg-white text-charcoal hover:border-charcoal',
+                )}
+              >
+                {chip.label}
+              </button>
+            );
+          })}
+        </div>
+        <p aria-live="polite" className="sr-only">
+          {matches.length === 1 ? '1 Produkt gefunden' : `${matches.length} Produkte gefunden`}
+        </p>
+      </div>
+
+      {matches.length === 0 ? (
+        <div className="mt-8 max-w-[620px] border-l-4 border-olive bg-mist p-5">
+          <h2 className="text-[1.2rem] font-bold">{shopCopy.noResultsTitle}</h2>
+          <p className="mt-1 text-[0.9rem] text-stone">{shopCopy.noResultsBody}</p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <ButtonLink href={site.contact.phoneHref} variant="dark" size="small">
+              {site.contact.phone}
+            </ButtonLink>
+            <ButtonLink href={`mailto:${site.contact.email}?subject=Materialanfrage`} variant="olive" size="small">
+              E-Mail schreiben
+            </ButtonLink>
+          </div>
+        </div>
+      ) : (
+        <section aria-labelledby="shop-products-title" className="mt-6">
+          <h2 id="shop-products-title" className="sr-only">
+            Produkte
+          </h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 min-[1024px]:grid-cols-3 xl:grid-cols-4">
+            {matches.map((product, index) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                categoryLabel={categoryLabel(shopCategories, product.category)}
+                priority={index < PRIORITY_IMAGES}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

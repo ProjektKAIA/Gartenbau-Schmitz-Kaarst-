@@ -5,11 +5,11 @@ import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SkipLink } from '@/components/ui/SkipLink';
 import { WithdrawalForm } from '@/components/withdrawal/WithdrawalForm';
 import { withdrawalCopy } from '@/content/withdrawal';
-import { site } from '@/lib/site';
 
+// Formularseite: nicht indexieren, Links aber verfolgen lassen.
 export const metadata: Metadata = {
-  title: `${withdrawalCopy.title} | ${site.name}`,
-  robots: { index: false },
+  title: withdrawalCopy.title,
+  robots: { index: false, follow: true },
 };
 
 export default function WithdrawalPage() {
@@ -17,8 +17,8 @@ export default function WithdrawalPage() {
     <>
       <SkipLink />
       <SiteHeader />
-      <main id="main" className="shell py-[100px] max-md:py-16">
-        <h1 className="display-2 mb-6">{withdrawalCopy.title}</h1>
+      <main id="main" className="shell py-14 max-md:py-10">
+        <h1 className="display-page mb-6">{withdrawalCopy.title}</h1>
         <div className="grid max-w-[680px] gap-8 text-stone">
           <p className="text-[1.05rem]">{withdrawalCopy.intro}</p>
           <WithdrawalForm />

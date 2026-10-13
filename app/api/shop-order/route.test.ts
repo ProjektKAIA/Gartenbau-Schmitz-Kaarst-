@@ -8,7 +8,7 @@ vi.mock('@/services/mail', () => ({
   sendMail: (mail: { to: string; subject: string; text: string; replyTo?: string }) => sendMail(mail),
 }));
 
-// Der Shop steht im Vorschau-Modus; die Tests prüfen den Bestellweg mit offenem Shop.
+// Der Schalter `ordersOpen` wird je Test gesetzt: Bestellung (true) oder Anfrage (false).
 const shop = vi.hoisted(() => ({ ordersOpen: true }));
 
 vi.mock('@/content/shop', async (importOriginal) => {
@@ -35,6 +35,7 @@ const customer = {
   email: 'erika@example.de',
   message: '',
   confirmDeliveryArea: true,
+  acceptTerms: true,
 };
 
 let ipCounter = 0;
@@ -56,10 +57,40 @@ beforeEach(() => {
 });
 
 describe('POST /api/shop-order', () => {
-  it('nimmt im Vorschau-Modus keine Bestellung an und verschickt nichts', async () => {
+  it('nimmt im Vorschau-Modus eine unverbindliche Anfrage an – ohne AGB-Anhang und ohne Freitext', async () => {
     shop.ordersOpen = false;
-    const response = await post(valid);
-    expect(response.status).toBe(503);
+    const response = await post({ ...valid, customer: { ...customer, message: 'Bitte vormittags' } });
+    expect(response.status).toBe(200);
+    expect(sendMail).toHaveBeenCalledTimes(2);
+    const business = sendMail.mock.calls[0]?.[0];
+    expect(business).toMatchObject({ to: 'info@example.de', replyTo: 'erika@example.de' });
+    expect(business?.subject).toBe('Shop-Anfrage – Erika Muster');
+    expect(business?.text).toContain('- 2 m³ Kies, 16–32 mm, lose');
+    expect(business?.text).toContain('Bitte vormittags');
+    expect(business?.text).not.toContain('0,00');
+    const confirmation = sendMail.mock.calls[1]?.[0];
+    expect(confirmation?.to).toBe('erika@example.de');
+    expect(confirmation?.text).toContain('unverbindlich');
+    expect(confirmation?.text).toContain('Preis und möglichem Liefertermin');
+    expect(confirmation?.text).not.toContain('ALLGEMEINE GESCHÄFTSBEDINGUNGEN');
+    expect(confirmation?.text).not.toContain('Bitte vormittags');
+  });
+
+  it('meldet auch im Anfrage-Modus 503, wenn der Mailversand nicht konfiguriert ist', async () => {
+    shop.ordersOpen = false;
+    tryReadMailConfig.mockReturnValue(undefined);
+    expect((await post(valid)).status).toBe(503);
+    expect(sendMail).not.toHaveBeenCalled();
+  });
+
+  it('verlangt in beiden Modi die Annahme der AGB und die Bestätigung des Liefergebiets', async () => {
+    for (const open of [true, false]) {
+      shop.ordersOpen = open;
+      expect((await post({ ...valid, customer: { ...customer, acceptTerms: false } })).status).toBe(400);
+      const withoutTerms = Object.fromEntries(Object.entries(customer).filter(([key]) => key !== 'acceptTerms'));
+      expect((await post({ ...valid, customer: withoutTerms })).status).toBe(400);
+      expect((await post({ ...valid, customer: { ...customer, confirmDeliveryArea: false } })).status).toBe(400);
+    }
     expect(sendMail).not.toHaveBeenCalled();
   });
 
@@ -68,6 +99,7 @@ describe('POST /api/shop-order', () => {
     expect(response.status).toBe(200);
     expect(sendMail).toHaveBeenCalledTimes(2);
     expect(sendMail.mock.calls[0]?.[0]).toMatchObject({ to: 'info@example.de', replyTo: 'erika@example.de' });
+    expect(sendMail.mock.calls[0]?.[0].subject).toBe('Shop-Bestellung – Erika Muster');
     const confirmation = sendMail.mock.calls[1]?.[0];
     expect(confirmation?.to).toBe('erika@example.de');
     expect(confirmation?.text).toContain('ALLGEMEINE GESCHÄFTSBEDINGUNGEN');
@@ -101,6 +133,21 @@ describe('POST /api/shop-order', () => {
   it('bleibt erfolgreich, wenn nur die Eingangsbestätigung scheitert', async () => {
     sendMail.mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('Postfach voll'));
     expect((await post(valid)).status).toBe(200);
+  });
+
+  it('lehnt zu große Anfragen schon anhand von Content-Length ab', async () => {
+    const response = await post(valid, { 'content-length': '5000000' });
+    expect(response.status).toBe(413);
+    expect(sendMail).not.toHaveBeenCalled();
+  });
+
+  it('lehnt doppelte Artikel ab (Umgehung der Höchstmenge)', async () => {
+    const lines = [
+      { variantId: 'kies-16-32', quantity: 99 },
+      { variantId: 'kies-16-32', quantity: 99 },
+    ];
+    expect((await post({ ...valid, lines })).status).toBe(400);
+    expect(sendMail).not.toHaveBeenCalled();
   });
 
   it('begrenzt Anfragen je IP', async () => {

@@ -9,6 +9,32 @@ export const singleLine = (min: number, max: number, message: string) =>
     .max(max, message)
     .regex(/^[^\p{Cc}]*$/u, message);
 
+/**
+ * Webadressen (http://, www., „name.tld“). Einzige Quelle für diese Erkennung.
+ * Hintergrund: Bestätigungsmails gehen an eine vom Besucher eingegebene, ungeprüfte Adresse.
+ * Felder, die darin zurückgespiegelt werden, dürfen deshalb keine Links tragen – sonst
+ * ließe sich das Formular nutzen, um Phishing-Texte mit unserer Absender-Domain zu versenden.
+ */
+const WEB_ADDRESS = /(https?:\/\/|www\.|[\p{L}\d-]{2,}\.[a-z]{2,24}(?![\p{L}\d]))/iu;
+
+export const NO_WEB_ADDRESS_MESSAGE = 'Bitte ohne Web- oder E-Mail-Adressen.';
+
+export const hasWebAddress = (value: string): boolean => WEB_ADDRESS.test(value);
+
+/** Einzeiliger Text, der in einer Mail an den Kunden zurückgespiegelt wird – ohne Webadressen. */
+export const echoedLine = (min: number, max: number, message: string) =>
+  singleLine(min, max, message).refine((value) => !hasWebAddress(value), NO_WEB_ADDRESS_MESSAGE);
+
+export const postalCodeField = z
+  .string('Bitte geben Sie eine fünfstellige Postleitzahl an.')
+  .trim()
+  .regex(/^\d{5}$/, 'Bitte geben Sie eine fünfstellige Postleitzahl an.');
+
+export const phoneField = z
+  .string('Bitte geben Sie eine Telefonnummer für Rückfragen an.')
+  .trim()
+  .regex(/^[+\d][\d\s/()-]{5,30}$/, 'Bitte geben Sie eine Telefonnummer für Rückfragen an.');
+
 export const emailField = z.email('Bitte geben Sie eine gültige E-Mail-Adresse an.').max(254);
 
 /** Honeypot: für Menschen unsichtbar, Bots füllen es aus. */

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { shopProducts, shopTerms, type ShopProduct } from '@/content/shop';
+import { shopModeCopy, shopProducts, shopTerms, type ShopProduct } from '@/content/shop';
 import { findVariant, priceUnitLabel, sizesOf, variantLabel, variantsForSize } from './catalog';
 
 const product = (id: string): ShopProduct => {
@@ -46,5 +46,9 @@ describe('findVariant / Labels', () => {
     expect(variantLabel(erde.product, erde.variant)).toBe('Pflanzenerde, 70-L-Sack');
     expect(priceUnitLabel(rinde.variant)).toBe('70-L-Sack');
     expect(priceUnitLabel(product('kies').variants[0])).toBe('m³ lose');
+  });
+
+  it('beschriftet den Bestellknopf exakt nach § 312j Abs. 3 BGB', () => {
+    expect(shopModeCopy.order.submitLabel).toBe('zahlungspflichtig bestellen');
   });
 });

@@ -5,8 +5,10 @@ import { formatPrice, formatShopPrice } from './price';
 import {
   buildBusinessMail,
   buildCustomerConfirmation,
+  buildCustomerInquiryConfirmation,
   formatOrderTotal,
   orderListMailBody,
+  requestKindOf,
   resolveLines,
   totalCents,
 } from './order';
@@ -31,6 +33,7 @@ const customer: ShopCustomer = {
   email: 'erika@example.de',
   message: '',
   confirmDeliveryArea: true,
+  acceptTerms: true,
 };
 
 /** Intl setzt vor das Euro-Zeichen ein geschütztes Leerzeichen. */
@@ -85,16 +88,47 @@ describe('resolveLines / totalCents', () => {
 
 const business = { name: 'Gartenbau Matthias Schmitz', phone: '0177 2770274', email: 'info@example.de' };
 
+describe('requestKindOf', () => {
+  it('leitet aus dem Schalter Bestellung oder Anfrage ab', () => {
+    expect(requestKindOf(true)).toBe('order');
+    expect(requestKindOf(false)).toBe('inquiry');
+  });
+});
+
 describe('buildBusinessMail', () => {
   it('enthält Positionen, Gesamtsumme, Rechnungshinweis, Adresse und Nachricht', () => {
     const lines = resolveLines(catalog, [{ variantId: 'kies-16-32', quantity: 2 }]);
-    const mail = buildBusinessMail(lines, { ...customer, message: 'Bitte vormittags.' });
+    const mail = buildBusinessMail(lines, { ...customer, message: 'Bitte vormittags.' }, 'order');
     expect(mail.subject).toBe('Shop-Bestellung – Erika Muster');
     expect(mail.text).toContain(`- 2 m³ Kies, 16–32 mm, lose (à ${eur('45,50')}) = ${eur('91,00')}`);
     expect(mail.text).toContain(`Gesamt inkl. MwSt. und Lieferung: ${eur('91,00')}`);
     expect(mail.text).toContain('Zahlung auf Rechnung');
     expect(mail.text).toContain('41564 Kaarst');
     expect(mail.text).toContain('Bitte vormittags.');
+    expect(mail.text).toContain('AGB akzeptiert');
+  });
+
+  it('kennzeichnet Anfragen und nennt keine (Null-)Preise', () => {
+    const lines = resolveLines(catalog, [{ variantId: 'kies-16-32', quantity: 2 }]);
+    const mail = buildBusinessMail(lines, customer, 'inquiry');
+    expect(mail.subject).toBe('Shop-Anfrage – Erika Muster');
+    expect(mail.text).toContain('unverbindliche Anfrage');
+    expect(mail.text).toContain('- 2 m³ Kies, 16–32 mm, lose');
+    expect(mail.text).not.toContain('€');
+  });
+});
+
+describe('buildCustomerInquiryConfirmation', () => {
+  it('bestätigt unverbindlich, ohne Rechtstexte, Preise oder Freitext', () => {
+    const lines = resolveLines(catalog, [{ variantId: 'kies-16-32', quantity: 1 }]);
+    const mail = buildCustomerInquiryConfirmation(lines, { ...customer, message: 'SPAM http://evil' }, business);
+    expect(mail.subject).toBe('Ihre Anfrage bei Gartenbau Matthias Schmitz');
+    expect(mail.text).toContain('unverbindlich');
+    expect(mail.text).toContain('Preis und möglichem Liefertermin');
+    expect(mail.text).toContain('- 1 m³ Kies, 16–32 mm, lose');
+    expect(mail.text).not.toContain('€');
+    expect(mail.text).not.toContain('SPAM');
+    expect(mail.text).not.toContain('----');
   });
 });
 
@@ -119,16 +153,17 @@ describe('shopCustomerSchema', () => {
     expect(shopCustomerSchema.safeParse(customer).success).toBe(true);
   });
 
-  it('lehnt falsche PLZ, fehlende Bestätigung und Formular-null ab', () => {
+  it('lehnt falsche PLZ, fehlende Bestätigungen und Formular-null ab', () => {
     const result = shopCustomerSchema.safeParse({
       ...customer,
       postalCode: '4156',
       confirmDeliveryArea: false,
+      acceptTerms: false,
       email: null,
     });
     expect(result.success).toBe(false);
     const paths = result.error?.issues.map((issue) => issue.path[0]);
-    expect(paths).toEqual(expect.arrayContaining(['postalCode', 'confirmDeliveryArea', 'email']));
+    expect(paths).toEqual(expect.arrayContaining(['postalCode', 'confirmDeliveryArea', 'acceptTerms', 'email']));
   });
 });
 

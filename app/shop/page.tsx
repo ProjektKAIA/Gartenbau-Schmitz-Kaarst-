@@ -1,18 +1,22 @@
 import type { Metadata } from 'next';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { ShopCatalog } from '@/components/shop/ShopCatalog';
 import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/SectionLabel';
 import { SkipLink } from '@/components/ui/SkipLink';
-import { shopCopy, shopTerms } from '@/content/shop';
+import { shopCategories, shopCopy, shopProducts, shopTerms } from '@/content/shop';
+import { pageMetadata, routes } from '@/lib/seo';
+import { buildShopItemList } from '@/lib/shop/structured-data';
 import { site } from '@/lib/site';
 
-export const metadata: Metadata = {
-  title: `Materiallieferung – Kies, Schotter & Rinde | ${site.name}`,
-  description:
-    'Kies, Splitt, Schotter, Sand, Pinienrinde und Rindenmulch bestellen – Lieferung bis zum Haus im Umkreis von 30 km um Kaarst, Zahlung auf Rechnung.',
-};
+const title = 'Kies, Schotter & Rindenmulch mit Lieferung';
+const description = `Kies, Schotter, Splitt, Sand, Rindenmulch und Pinienrinde online anfragen – Lieferung bis zum Haus in Kaarst, Neuss und Umgebung (ca. ${shopTerms.deliveryRadiusKm} km), Zahlung auf Rechnung.`;
+
+export const metadata: Metadata = pageMetadata({ title, description, path: routes.shop.path });
+
+const itemListJsonLd = buildShopItemList(shopProducts, shopCategories, routes.shop.path);
 
 export default function ShopPage() {
   return (
@@ -20,30 +24,38 @@ export default function ShopPage() {
       <SkipLink />
       <SiteHeader />
       <main id="main" className="bg-paper">
-        <section className="bg-mist pt-[96px] pb-14 max-md:pt-16">
+        <JsonLd data={itemListJsonLd} />
+        <section className="border-b border-line bg-mist py-7 max-md:py-5">
           <div className="shell">
-            <Eyebrow>{shopCopy.label}</Eyebrow>
-            <h1 className="display-2 max-w-[900px]">{shopCopy.title}</h1>
-            <p className="mt-6 max-w-[640px] text-[1.05rem] text-stone">{shopCopy.intro}</p>
-            <ul className="mt-10 grid list-none grid-cols-3 gap-0 border-t border-line p-0 max-md:grid-cols-1">
+            <Eyebrow className="mb-2">{shopCopy.label}</Eyebrow>
+            <h1 className="display-page">
+              {shopCopy.title}
+            </h1>
+            <p className="mt-2 text-[0.98rem] text-stone">{shopCopy.intro}</p>
+            <ul className="mt-4 flex list-none flex-wrap gap-2 p-0 max-sm:mt-3 max-sm:gap-1.5">
               {shopTerms.items.map((term) => (
-                <li key={term.title} className="border-line py-5 pr-6 md:border-r md:last:border-r-0 max-md:border-b">
-                  <strong className="block text-[0.95rem]">{term.title}</strong>
-                  <span className="text-[0.85rem] text-stone">{term.body}</span>
+                <li
+                  key={term}
+                  className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-line bg-white px-3 text-[0.8rem] font-semibold max-sm:min-h-7 max-sm:px-2.5 max-sm:text-[0.72rem]"
+                >
+                  <span aria-hidden="true" className="text-olive">
+                    ✓
+                  </span>
+                  {term}
                 </li>
               ))}
             </ul>
           </div>
         </section>
 
-        <div className="shell py-16">
+        <div className="shell pt-6 pb-16">
           <ShopCatalog />
         </div>
 
-        <section aria-labelledby="more-title" className="bg-olive py-20 text-white">
+        <section aria-labelledby="more-title" className="bg-olive py-16 text-white">
           <div className="shell flex items-center justify-between gap-10 max-md:flex-col max-md:items-start">
             <div>
-              <h2 id="more-title" className="text-[clamp(2rem,3.4vw,3rem)] leading-tight font-bold">
+              <h2 id="more-title" className="text-[clamp(1.8rem,3vw,2.6rem)] leading-tight font-bold">
                 {shopCopy.moreTitle}
               </h2>
               <p className="mt-3 max-w-[560px] text-white/75">{shopCopy.moreBody}</p>
