@@ -16,7 +16,7 @@ export default function ImpressumPage() {
 
         <div className="grid max-w-[720px] gap-8 text-stone">
           <section>
-            <h2 className="mb-2 text-[1.5rem] font-bold text-charcoal">Angaben gemäß § 5 TMG</h2>
+            <h2 className="mb-2 text-[1.5rem] font-bold text-charcoal">Angaben gemäß § 5 DDG</h2>
             <p>
               {site.owner}
               <br />

@@ -9,17 +9,13 @@ import { Intro } from '@/components/sections/Intro';
 import { Process } from '@/components/sections/Process';
 import { ProjectStage } from '@/components/sections/ProjectStage';
 import { Services } from '@/components/sections/Services';
+import { SkipLink } from '@/components/ui/SkipLink';
 
 export default function Page() {
   return (
     <>
-      <a
-        href="#main"
-        className="fixed top-[-100px] left-3 z-[1000] bg-white px-3.5 py-2.5 focus:top-3"
-      >
-        Zum Inhalt
-      </a>
-      <SiteHeader />
+      <SkipLink />
+      <SiteHeader overlay />
       <main id="main">
         <Hero />
         <Intro />

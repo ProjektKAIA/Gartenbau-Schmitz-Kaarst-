@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { withdrawalCopy } from '@/content/withdrawal';
 import { site } from '@/lib/site';
 
 export function SiteFooter() {
@@ -17,10 +18,12 @@ export function SiteFooter() {
           <p className="text-white/58">{site.claim}</p>
           <nav
             aria-label="Rechtliches und Social Media"
-            className="flex flex-wrap gap-5 text-[0.82rem] text-white/72"
+            className="flex flex-wrap gap-x-5 gap-y-2 text-[0.82rem] text-white/72"
           >
             <Link href="/impressum">Impressum</Link>
             <Link href="/datenschutz">Datenschutz</Link>
+            <Link href="/agb">AGB</Link>
+            <Link href="/widerruf">Widerruf</Link>
             <a href={site.social.instagram} target="_blank" rel="noreferrer noopener">
               Instagram
             </a>
@@ -28,6 +31,15 @@ export function SiteFooter() {
               Facebook
             </a>
           </nav>
+        </div>
+        {/* § 356a BGB: auf jeder Seite verfügbar und hervorgehoben – nicht in ein Menü verschieben. */}
+        <div className="mt-10">
+          <Link
+            href="/vertrag-widerrufen"
+            className="inline-flex min-h-[44px] items-center rounded-[2px] border-2 border-olive-pale px-5 text-[0.85rem] font-bold text-white transition-colors hover:bg-olive-pale hover:text-charcoal-deep"
+          >
+            {withdrawalCopy.entryLabel}
+          </Link>
         </div>
         <div className="mt-[50px] flex justify-between border-t border-white/12 pt-[22px] text-[0.75rem] text-white/44 max-sm:flex-col max-sm:gap-2.5">
           <p>

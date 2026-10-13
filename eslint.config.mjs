@@ -7,7 +7,7 @@ const config = [
   ...nextTypescript,
   {
     // Referenzmaterial (Original-Entwürfe, Spiegel der Altseite) wird nicht gelintet.
-    ignores: ['entwuerfe/**', 'altseite/**'],
+    ignores: ['entwuerfe/**', 'altseite/**', 'shop/**'],
   },
 ];
 

@@ -1,18 +1,11 @@
 # Gartenbau Kaarst — Matthias Schmitz
 
-Website-Relaunch für einen Garten- und Landschaftsbaubetrieb in Kaarst.
-Zwei Design-Varianten, jede vollständig umgesetzt und deployed, damit der Kunde
-nicht an Bildschirmfotos, sondern an der fertigen Seite entscheiden kann.
+Website-Relaunch für einen Garten- und Landschaftsbaubetrieb in Kaarst: Startseite,
+Material-Shop, Rechtstexte und Online-Widerruf.
 
-| Branch     | Variante                             | Live                                           |
-| ---------- | ------------------------------------ | ---------------------------------------------- |
-| `main`     | Fundament ohne Design                | –                                              |
-| `Version1` | Editorial, Serifen, Vorher-Nachher   | https://gartenbau-kaarst-version1.vercel.app   |
-| `entwurf`  | Bildstark, serifenlos, Karten-Layout | https://gartenbau-kaarst-entwurf.vercel.app    |
-
-`main` enthält nur, was beide Varianten teilen: Toolchain, Stammdaten und die
-rechtlichen Seiten. Die beiden Design-Branches zweigen davon ab und laufen als
-getrennte Vercel-Projekte.
+Gewählt wurde das bildstarke, serifenlose Design mit großem Hero (vormals Branch
+`entwurf`). Es liegt auf `main`; die zweite Variante (`Version1`) ist verworfen.
+Vorschau: https://gartenbau-kaarst-entwurf.vercel.app
 
 ## Stack
 
@@ -32,12 +25,16 @@ CSS-Custom-Properties nicht).
 ## Aufbau
 
 ```
-app/              Routen: Startseite, Impressum, Datenschutz
+app/              Routen: Startseite, Shop, Rechtsseiten, Widerruf, API (shop-order, withdrawal)
 components/
   layout/         Kopf- und Fußzeile
   sections/       Je eine Komponente pro Abschnitt der Startseite
-  ui/             Primitive: Button, Eyebrow, Reveal, Vorher-Nachher-Regler
-content/home.ts   Sämtliche Texte der Startseite
+  shop/, legal/, withdrawal/  Shop, Rechtsseiten, Widerrufsformular
+  ui/             Primitive: Button, Eyebrow, Reveal, Formularfelder
+content/          Texte: home.ts, shop.ts (Katalog + Preise), withdrawal.ts, legal/
+lib/              Reine Logik (Shop, Formulare, Rate-Limit, Widerruf) mit Tests
+services/mail.ts  Mailversand (Nodemailer) – einziger Ort mit SMTP-Zugriff
+types/            Zod-Schemas – Schema-Wahrheit für Formulare und API
 lib/site.ts       Stammdaten des Betriebs — einzige Quelle
 lib/cn.ts         Klassen zusammenfügen
 ```
@@ -57,13 +54,12 @@ keiner Klasse in Berührung.
 Ziel ist WCAG 2.2 Level AA:
 
 - Skip-Link, durchgehende Tastaturbedienung, sichtbarer Fokus mit Abstand zum Element
-- Der Vorher-Nachher-Regler ist ein echter `<input type="range">` mit `aria-valuetext`,
-  also auch ohne Maus bedienbar
+- Navigation mit Unterpunkten öffnet bei Hover und bei Tastaturfokus
 - Bedienelemente mindestens 44 px hoch
 - Dekorative Grafiken sind konsequent `aria-hidden`, Bilder mit Aussage haben eine Beschreibung
 - `prefers-reduced-motion` schaltet Einblend- und Übergangseffekte ab
 
-Breakpoints liegen bei 560/590, 820 und 1050 px. Geprüft wird zusätzlich bei
+Breakpoints liegen bei 590, 820 und 1050 px. Geprüft wird zusätzlich bei
 1280 px, weil Windows-Anzeigeskalierung von 150 % aus einem 1920-px-Monitor
 genau diese Breite macht — dort bricht eine Desktop-Navigation zuerst.
 
@@ -75,26 +71,58 @@ npm run dev          # http://localhost:3000
 
 npm run lint
 npm run typecheck
+npm run test
 npm run build
 ```
 
-Deployment pro Branch:
+### Shop und Mailversand
+
+Der Material-Shop (`/shop`) hat kein Zahlungssystem (Zahlung auf Rechnung). Bestellungen
+(Knopf „zahlungspflichtig bestellen", § 312j BGB) gehen an `POST /api/shop-order`; der
+Server prüft sie mit Zod, rechnet die Preise selbst aus `content/shop.ts` und verschickt
+per Nodemailer zwei Mails: an den Betrieb und eine Eingangsbestätigung mit AGB und
+Widerrufsbelehrung an den Kunden. Produkte und Preise stehen ausschließlich in
+`content/shop.ts`.
+
+Online-Widerruf (§ 356a BGB): Knopf „Vertrag widerrufen" im Footer jeder Seite →
+`/vertrag-widerrufen` (zweistufig) → `POST /api/withdrawal` mit Eingangszeitpunkt.
+Rechtstexte liegen als Daten in `content/legal/` (Entwürfe, anwaltlich zu prüfen).
+
+Benötigte Umgebungsvariablen (Vorlage: `.env.example`; lokal in `.env.local`, auf
+Vercel im Dashboard, nie committen):
+
+| Variable | Zweck |
+| --- | --- |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE` | SMTP-Server des Mail-Anbieters (465/`true` oder 587/`false`) |
+| `SMTP_USER`, `SMTP_PASS` | Zugangsdaten des Absender-Postfachs |
+| `MAIL_FROM` | Absender, z. B. `Gartenbau Kaarst <shop@gartenbau-kaarst.de>` |
+| `MAIL_TO` | Empfänger der Anfragen im Betrieb |
+
+Fehlen sie, antwortet die API mit 503 und das Formular nennt die Telefonnummer.
+Die Begrenzung auf 5 Anfragen pro IP in 10 Minuten gilt je Funktionsinstanz; für ein
+hartes Limit eine Rate-Limit-Regel in der Vercel Firewall auf `/api/shop-order` und
+`/api/withdrawal` setzen.
+
+Deployment:
 
 ```bash
-vercel link --yes --project gartenbau-kaarst-version1   # bzw. gartenbau-kaarst-entwurf
+vercel link --yes --project gartenbau-kaarst-entwurf
 vercel deploy --prod
 ```
 
 ## Stand
 
-Beide Varianten sind vollständig gebaut und live. Offen ist:
+Offen ist:
 
-- Der Kunde entscheidet sich für eine Variante; die andere Branch wird dann archiviert.
 - Die Projektbilder sind Platzhalter und werden durch echte Referenzfotos ersetzt.
-- Die Datenschutzerklärung ist bewusst ein Platzhalter (`noindex`): Die bestehende
-  beschreibt Webflow als Hoster und passt zu diesem Deployment nicht.
-- Kontakt läuft über `mailto:`; ein Formular mit serverseitiger Validierung folgt.
-- `package-lock.json` wird beim ersten lokalen `npm install` erzeugt und nachgereicht.
+- AGB, Widerrufsbelehrung und Datenschutzerklärung sind recherchierte Entwürfe mit
+  markierten offenen Punkten („Offen:") und müssen vor dem Livegang anwaltlich geprüft werden.
+- Shop-Preise stehen auf 0 € (Anzeige „Preis folgt"). Bis dahin läuft der Shop im
+  Vorschau-Modus (`shopTerms.ordersOpen: false` in `content/shop.ts`): Katalog und
+  Bestellliste funktionieren, bestellt wird per Telefon oder E-Mail, die API nimmt nichts an.
+  Freischalten erst mit echten Preisen und geprüften Rechtstexten – ein Test verhindert
+  das Freischalten, solange ein Preis fehlt.
+- Kontakt läuft über `mailto:`; der Shop verschickt Anfragen serverseitig (s. oben).
 
 ## Rechtliches
 
