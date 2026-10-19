@@ -33,7 +33,6 @@ const valid = {
     city: '',
     timeframe: '',
     message: 'Bitte um ein Angebot für die Heckenpflege.',
-    privacyConsent: true,
   },
   website: '',
 };
@@ -55,7 +54,7 @@ describe('POST /api/contact', () => {
   });
 
   it('lehnt ungültige Anfragen ab und verwirft Bots still', async () => {
-    expect((await post({ ...valid, contact: { ...valid.contact, privacyConsent: false } })).status).toBe(400);
+    expect((await post({ ...valid, contact: { ...valid.contact, message: 'kurz' } })).status).toBe(400);
     expect((await post({ ...valid, extra: 1 })).status).toBe(400);
     expect((await post({ ...valid, website: 'spam' })).status).toBe(200);
     expect(sendMail).not.toHaveBeenCalled();

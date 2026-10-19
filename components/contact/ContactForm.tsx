@@ -61,7 +61,6 @@ export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactT
       city: text(data, 'city'),
       timeframe: text(data, 'timeframe'),
       message: text(data, 'message'),
-      privacyConsent: data.get('privacyConsent') === 'on',
     });
     if (!parsed.success) {
       const nextErrors = fieldErrorsFrom(parsed.error.issues);
@@ -93,7 +92,16 @@ export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactT
 
   if (status.state === 'sent') {
     return (
-      <div role="status" className="border-l-4 border-olive bg-mist p-6">
+      <div
+        role="status"
+        tabIndex={-1}
+        // Nach dem Absenden steht man unten am Formular – die Meldung ins Bild holen und fokussieren.
+        ref={(node) => {
+          node?.scrollIntoView({ block: 'center' });
+          node?.focus({ preventScroll: true });
+        }}
+        className="border-l-4 border-olive bg-mist p-6 outline-none"
+      >
         <h2 className="text-[1.6rem] leading-tight font-bold text-charcoal">{copy.sentTitle}</h2>
         <p className="mt-2 text-stone">{copy.sentBody}</p>
       </div>
@@ -197,27 +205,6 @@ export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactT
       />
       <TextField name="message" label={copy.fields.message} rows={6} maxLength={3000} error={errors.message} className="col-span-full" />
 
-      <div className="col-span-full grid gap-1">
-        <label className="flex items-start gap-3 text-[0.85rem] text-stone">
-          <input
-            type="checkbox"
-            name="privacyConsent"
-            required
-            aria-invalid={errors.privacyConsent ? true : undefined}
-            aria-describedby={errors.privacyConsent ? 'err-privacyConsent' : undefined}
-            className="mt-0.5 size-5 shrink-0 accent-olive"
-          />
-          <span>
-            {copy.fields.privacyBefore}
-            <Link href="/datenschutz" target="_blank" className="font-semibold text-charcoal underline">
-              {copy.fields.privacyLink}
-            </Link>
-            {copy.fields.privacyAfter}
-          </span>
-        </label>
-        <ErrorText name="privacyConsent" error={errors.privacyConsent} />
-      </div>
-
       <div className="col-span-full grid gap-3">
         <button
           type="submit"
@@ -229,6 +216,13 @@ export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactT
         >
           {sending ? copy.sendingLabel : copy.submitLabel}
         </button>
+        <p className="text-[0.85rem] text-stone">
+          {copy.fields.privacyBefore}
+          <Link href="/datenschutz" target="_blank" className="font-semibold text-charcoal underline">
+            {copy.fields.privacyLink}
+          </Link>
+          {copy.fields.privacyAfter}
+        </p>
         <p aria-live="polite" className="text-[0.88rem] text-error">
           {status.state === 'failed' ? status.message : ''}
         </p>

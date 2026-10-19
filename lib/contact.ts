@@ -47,7 +47,6 @@ export const buildContactBusinessMail = (contact: ContactRequest, receivedAt: st
       contact.message,
       '',
       `Eingegangen am: ${receivedAt}`,
-      'Einwilligung in die Datenverarbeitung (Datenschutzerklärung): erteilt',
     ].join('\n'),
   };
 };

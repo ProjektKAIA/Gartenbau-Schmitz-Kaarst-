@@ -13,7 +13,6 @@ const valid = {
   city: '',
   timeframe: '',
   message: 'Wir brauchen Winterdienst für unsere Einfahrt.',
-  privacyConsent: true,
 };
 
 const parse = (overrides: Record<string, unknown>) => contactSchema.safeParse({ ...valid, ...overrides });
@@ -24,12 +23,13 @@ describe('contactSchema', () => {
     expect(parse({}).success).toBe(true);
   });
 
-  it('verlangt Name, E-Mail, Anliegen, Nachricht und Einwilligung', () => {
+  it('verlangt Name, E-Mail, Anliegen und Nachricht – aber keine Einwilligung', () => {
     expect(firstPath({ name: ' ' })).toBe('name');
     expect(firstPath({ email: 'kein-at' })).toBe('email');
     expect(firstPath({ topic: 'garten' })).toBe('topic');
     expect(firstPath({ message: 'kurz' })).toBe('message');
-    expect(firstPath({ privacyConsent: false })).toBe('privacyConsent');
+    // Rechtsgrundlage ist Art. 6 Abs. 1 lit. b/f DSGVO, kein Einwilligungs-Haken nötig.
+    expect(parse({ privacyConsent: undefined }).success).toBe(true);
   });
 
   it('prüft optionale Felder nur, wenn sie ausgefüllt sind', () => {

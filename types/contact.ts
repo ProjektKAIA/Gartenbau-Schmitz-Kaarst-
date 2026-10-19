@@ -38,7 +38,6 @@ export const contactSchema = z
       .trim()
       .min(10, 'Bitte schreiben Sie uns kurz, worum es geht (mindestens 10 Zeichen).')
       .max(3000, 'Bitte fassen Sie sich kürzer (höchstens 3000 Zeichen).'),
-    privacyConsent: z.literal(true, { error: 'Bitte stimmen Sie der Verarbeitung Ihrer Angaben zu.' }),
   })
   .refine((contact) => contact.replyVia !== 'phone' || contact.phone !== '', {
     path: ['phone'],

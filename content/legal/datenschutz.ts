@@ -152,7 +152,6 @@ export const datenschutz = {
             'den gewünschten Weg unserer Rückmeldung (E-Mail oder Telefon)',
             'Ihr Anliegen (Auswahl) und Ihre Nachricht (Pflicht)',
             'Adresse des Objekts (Straße, Postleitzahl, Ort) und gewünschter Zeitraum (freiwillig)',
-            'Ihre Bestätigung, dass Sie die Datenschutzerklärung gelesen haben und mit der Verarbeitung Ihrer Angaben für Ihre Anfrage einverstanden sind',
             'Datum und Uhrzeit des Eingangs',
           ],
         },
@@ -162,7 +161,7 @@ export const datenschutz = {
         },
         {
           type: 'p',
-          text: 'Technischer Ablauf und Empfänger: Ihre Angaben werden verschlüsselt an unseren Server bei Vercel übertragen (Abschnitt 3), dort geprüft und als E-Mail an unser Postfach gesendet. Empfänger sind damit unser E-Mail-Versanddienst und der Anbieter unseres Postfachs, die jeweils in unserem Auftrag tätig sind (Art. 28 DSGVO; Angaben siehe Abschnitt 4). Eine automatische Bestätigungs-E-Mail an Sie wird derzeit nicht versendet. Wir speichern die Anfrage nicht in einer Datenbank, sondern nur als E-Mail in unserem Postfach.',
+          text: 'Technischer Ablauf und Empfänger: Ihre Angaben werden verschlüsselt an unseren Server bei Vercel übertragen (Abschnitt 3), dort geprüft und als E-Mail an unser Postfach gesendet. Empfänger sind damit unser E-Mail-Versanddienst und der Anbieter unseres Postfachs, die jeweils in unserem Auftrag tätig sind (Art. 28 DSGVO; Angaben siehe Abschnitt 4). Eine Bestätigungs-E-Mail an Sie versenden wir nicht; nach dem Absenden sehen Sie direkt auf der Seite, dass Ihre Anfrage angekommen ist. Wir speichern die Anfrage nicht in einer Datenbank, sondern nur als E-Mail in unserem Postfach.',
         },
         {
           type: 'p',
@@ -171,14 +170,6 @@ export const datenschutz = {
         {
           type: 'p',
           text: 'Speicherdauer: Wir löschen Ihre Anfrage, sobald sie abschließend bearbeitet ist und keine Rückfragen mehr zu erwarten sind. Entsteht daraus ein Auftrag, gelten die gesetzlichen Aufbewahrungsfristen (Abschnitt 8).',
-        },
-        {
-          type: 'todo',
-          text: 'Mit dem Betrieb klären, ob eine automatische Eingangsbestätigung an Kunden eingerichtet werden soll – dann diesen Abschnitt anpassen („Eine automatische Bestätigungs-E-Mail … wird derzeit nicht versendet").',
-        },
-        {
-          type: 'todo',
-          text: 'Anwaltlich prüfen: Die Pflicht-Checkbox ist als Einverständnis formuliert, die Verarbeitung stützt sich aber auf Art. 6 Abs. 1 lit. b/f DSGVO. Entweder die Checkbox als Kenntnisnahme formulieren oder die Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, jederzeit widerrufbar) zusätzlich als Rechtsgrundlage nennen.',
         },
       ],
     },

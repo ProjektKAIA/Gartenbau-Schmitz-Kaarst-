@@ -50,16 +50,17 @@ export const contactCopy = {
     timeframe: 'Gewünschter Zeitraum (optional)',
     timeframeHint: 'z. B. „Frühjahr 2027" oder „so bald wie möglich"',
     message: 'Ihre Nachricht *',
-    privacyBefore: 'Ich habe die ',
+    // Bewusst Hinweis statt Pflicht-Checkbox: Rechtsgrundlage ist Art. 6 Abs. 1 lit. b/f DSGVO,
+    // keine Einwilligung (Art. 13 DSGVO verlangt Information, keine Zustimmung).
+    privacyBefore: 'Informationen zur Verarbeitung Ihrer personenbezogenen Daten finden Sie in unserer ',
     privacyLink: 'Datenschutzerklärung',
-    privacyAfter:
-      ' gelesen und bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage verwendet werden. *',
+    privacyAfter: '.',
   },
   requiredNote: 'Mit * markierte Felder sind Pflichtfelder.',
   submitLabel: 'Anfrage senden',
   sendingLabel: 'Wird gesendet …',
-  sentTitle: 'Vielen Dank – Ihre Anfrage ist bei uns angekommen.',
-  sentBody: 'Wir melden uns so bald wie möglich persönlich bei Ihnen.',
+  sentTitle: 'Vielen Dank für Ihre Kontaktaufnahme.',
+  sentBody: 'Wir melden uns zeitnah bei Ihnen.',
   asideTitle: 'Direkter Draht',
   asideBody: 'Lieber gleich sprechen? Rufen Sie an oder schreiben Sie uns eine E-Mail.',
 } as const;
