@@ -1,7 +1,8 @@
-import { ButtonLink } from '@/components/ui/Button';
+import { ButtonLink, TextLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/SectionLabel';
 import { career } from '@/content/home';
-import { site } from '@/lib/site';
+import { careerApplyHref } from '@/content/karriere';
+import { routes } from '@/lib/seo';
 
 export function Career() {
   return (
@@ -20,9 +21,14 @@ export function Career() {
         <h2 id="career-title" className="text-[clamp(2rem,3vw,3.35rem)] leading-[1.02] font-bold tracking-[-0.035em]">
           {career.title}
         </h2>
-        <p className="text-stone max-lg:col-start-2 max-md:col-start-auto">{career.body}</p>
+        <div className="max-lg:col-start-2 max-md:col-start-auto">
+          <p className="text-stone">{career.body}</p>
+          <TextLink href={routes.career.path} className="mt-4">
+            {career.moreLink}
+          </TextLink>
+        </div>
         <ButtonLink
-          href={`mailto:${site.contact.email}?subject=Bewerbung%20als%20Landschaftsg%C3%A4rtner%2Fin`}
+          href={careerApplyHref}
           variant="dark"
           className="max-lg:col-start-2 max-lg:justify-self-start max-md:col-start-auto"
         >

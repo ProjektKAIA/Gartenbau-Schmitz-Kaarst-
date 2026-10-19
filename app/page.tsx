@@ -30,7 +30,7 @@ export default function Page() {
         <Hero />
         <Intro />
         <Services />
-        <ProjectStage />
+        <ProjectStage showMoreLink />
         <Extras />
         <Process />
         <About />

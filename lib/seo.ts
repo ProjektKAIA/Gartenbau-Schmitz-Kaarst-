@@ -50,6 +50,8 @@ export const routes = {
   home: { path: '/', changeFrequency: 'monthly', priority: 1 },
   services: { path: '/leistungen', changeFrequency: 'monthly', priority: 0.9 },
   about: { path: '/ueber-uns', changeFrequency: 'yearly', priority: 0.6 },
+  projects: { path: '/projekte', changeFrequency: 'monthly', priority: 0.7 },
+  career: { path: '/karriere', changeFrequency: 'monthly', priority: 0.5 },
   contact: { path: '/kontakt', changeFrequency: 'yearly', priority: 0.8 },
   shop: { path: '/shop', changeFrequency: 'weekly', priority: 0.8 },
   imprint: { path: '/impressum', changeFrequency: 'yearly', priority: 0.2 },

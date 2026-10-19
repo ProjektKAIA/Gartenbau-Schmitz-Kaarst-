@@ -110,7 +110,7 @@ export default function UeberUnsPage() {
               </h2>
               <p className="mt-4 max-w-[560px] text-stone">{careerTeaser.body}</p>
             </div>
-            <ButtonLink href="/#karriere" variant="dark">
+            <ButtonLink href="/karriere" variant="dark">
               {careerTeaser.cta}
             </ButtonLink>
           </div>

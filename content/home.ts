@@ -20,10 +20,10 @@ export const nav = [
   { label: 'Leistungen', href: '/leistungen' },
   {
     label: 'Projekte',
-    href: '/#projekte',
+    href: '/projekte',
     children: [
-      { label: 'Projekte', href: '/#projekte' },
-      { label: 'Ablauf', href: '/#ablauf' },
+      { label: 'Projekte', href: '/projekte' },
+      { label: 'Ablauf', href: '/projekte#ablauf' },
     ],
   },
   { label: 'Über uns', href: '/ueber-uns' },
@@ -36,7 +36,7 @@ export const navContact = {
   href: '/kontakt',
   children: [
     { label: 'Kontaktformular', href: '/kontakt' },
-    { label: 'Karriere', href: '/#karriere' },
+    { label: 'Karriere', href: '/karriere' },
   ],
 } as const satisfies NavItem;
 
@@ -82,6 +82,7 @@ export const services = {
   titleSecond: 'Ein stimmiges Ergebnis.',
   intro:
     'Vom ersten Entwurf bis zur dauerhaften Pflege: Wir begleiten Gartenprojekte durchgängig und mit einem festen Ansprechpartner.',
+  moreLink: 'Alle Leistungen ansehen',
   items: [
     {
       index: '01',
@@ -121,6 +122,7 @@ export const project = {
   titleFirst: 'Garten und Wege',
   titleSecond: 'als eine Einheit',
   cta: 'Ähnliches Projekt anfragen',
+  moreLink: 'Alle Projekte & unser Ablauf',
   imageAlt: 'Moderner Garten mit Natursteinwegen und gepflegten Grünflächen',
   draftNote: 'Entwurfsbild – wird später durch ein echtes Kundenprojekt ersetzt.',
 } as const;
@@ -185,6 +187,7 @@ export const career = {
   title: 'Gute Arbeit entsteht im Team.',
   body: 'Du bist Landschaftsgärtner/in und möchtest abwechslungsreiche Projekte in einem motivierten Team umsetzen?',
   cta: 'Jetzt bewerben',
+  moreLink: 'Mehr zur Karriere',
 } as const;
 
 export const contact = {

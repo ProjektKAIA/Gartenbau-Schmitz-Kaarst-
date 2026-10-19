@@ -4,6 +4,8 @@ import { Eyebrow } from '@/components/ui/SectionLabel';
 import { services, type ServiceIcon } from '@/content/home';
 import { cn } from '@/lib/cn';
 import { contactHref } from '@/lib/contact';
+import { routes } from '@/lib/seo';
+import { TextLink } from '@/components/ui/Button';
 
 /** Die drei Icons sind reine CSS-Formen – kein Bild, keine Icon-Bibliothek. */
 function ServiceMark({ icon, dark }: { readonly icon: ServiceIcon; readonly dark: boolean }) {
@@ -69,7 +71,12 @@ export function Services() {
               {services.titleSecond}
             </h2>
           </div>
-          <p className="max-w-[460px] text-stone">{services.intro}</p>
+          <div className="max-w-[460px]">
+            <p className="text-stone">{services.intro}</p>
+            <TextLink href={routes.services.path} className="mt-6">
+              {services.moreLink}
+            </TextLink>
+          </div>
         </div>
 
         <div className="grid grid-cols-3 items-stretch gap-[18px] max-lg:grid-cols-2 max-sm:grid-cols-1">

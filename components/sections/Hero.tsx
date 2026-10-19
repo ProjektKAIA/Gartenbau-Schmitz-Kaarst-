@@ -1,5 +1,7 @@
 import { ButtonLink, TextLink } from '@/components/ui/Button';
 import { hero } from '@/content/home';
+import { contactHref } from '@/lib/contact';
+import { routes } from '@/lib/seo';
 
 export function Hero() {
   return (
@@ -36,8 +38,8 @@ export function Hero() {
             {hero.text}
           </p>
           <div className="mt-[42px] flex items-center gap-[30px] max-sm:flex-col max-sm:items-start max-sm:gap-5">
-            <ButtonLink href="#kontakt">{hero.primaryCta}</ButtonLink>
-            <TextLink href="#leistungen" arrow="↘" className="text-white">
+            <ButtonLink href={contactHref()}>{hero.primaryCta}</ButtonLink>
+            <TextLink href={routes.services.path} className="text-white">
               {hero.secondaryCta}
             </TextLink>
           </div>

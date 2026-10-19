@@ -3,6 +3,7 @@ import { Reveal } from '@/components/ui/Reveal';
 import { TextLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/SectionLabel';
 import { about } from '@/content/home';
+import { routes } from '@/lib/seo';
 
 export function About() {
   return (
@@ -38,7 +39,7 @@ export function About() {
               </div>
             ))}
           </dl>
-          <TextLink href="#kontakt" className="text-white">
+          <TextLink href={routes.about.path} className="text-white">
             {about.cta}
           </TextLink>
         </Reveal>
