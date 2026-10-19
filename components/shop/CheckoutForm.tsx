@@ -9,7 +9,7 @@ import { shopModeCopy, shopTerms } from '@/content/shop';
 import { fieldErrorsFrom, readApiError, type FieldErrors } from '@/lib/forms';
 import { cartStore } from '@/lib/shop/cart-store';
 import { formatOrderTotal, orderListMailBody, type ResolvedLine, type ShopRequestKind } from '@/lib/shop/order';
-import { formatShopPrice } from '@/lib/shop/price';
+import { formatPrice } from '@/lib/shop/price';
 import { site } from '@/lib/site';
 import { cn } from '@/lib/cn';
 import { shopCustomerSchema } from '@/types/shop';
@@ -196,7 +196,7 @@ export function CheckoutForm({ lines, kind, onSent }: CheckoutFormProps) {
               <span>
                 {line.quantity} {line.unit} {line.label}
               </span>
-              <span className="whitespace-nowrap">{formatShopPrice(line.totalCents)}</span>
+              <span className="whitespace-nowrap">{formatPrice(line.totalCents)}</span>
             </li>
           ))}
         </ul>

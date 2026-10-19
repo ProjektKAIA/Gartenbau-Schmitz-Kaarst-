@@ -6,16 +6,16 @@ import { shopCategories, shopCopy, shopProducts } from '@/content/shop';
 import { cn } from '@/lib/cn';
 import { filterProducts, type CategoryFilter } from '@/lib/shop/search';
 import { site } from '@/lib/site';
-import { ProductCard } from './ProductCard';
 import { categoryLabel } from '@/lib/shop/catalog';
+import { ProductCard } from './ProductCard';
 
 const categoryChips: readonly { readonly id: CategoryFilter; readonly label: string }[] = [
   { id: 'all', label: 'Alle' },
   ...shopCategories,
 ];
 
-/** Die ersten Produktbilder laden vorrangig (LCP) – so viele, wie in die erste Reihe passen. */
-const PRIORITY_IMAGES = 4;
+/** Die ersten Produktbilder laden vorrangig (LCP) – so viele, wie in die erste Reihe passen (max. 3 Spalten). */
+const PRIORITY_IMAGES = 3;
 
 /** Katalog mit Suche und Kategorie-Filter; der Warenkorb liegt global im Header. */
 export function ShopCatalog() {
@@ -27,7 +27,7 @@ export function ShopCatalog() {
     [query, category],
   );
   // Ein durchgehendes Raster statt Gruppen je Kategorie: keine halbleeren Reihen, weniger Höhe.
-  // Die Gruppierung übernehmen die Kategorie-Chips, die Karte nennt ihre Kategorie.
+  // Die Gruppierung übernehmen die Kategorie-Chips; die Kategorie steht im Detail-Dialog.
 
   return (
     <div>
@@ -105,7 +105,7 @@ export function ShopCatalog() {
           <h2 id="shop-products-title" className="sr-only">
             Produkte
           </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 min-[1024px]:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-5 min-[640px]:grid-cols-2 min-[1024px]:grid-cols-3 lg:gap-6">
             {matches.map((product, index) => (
               <ProductCard
                 key={product.id}

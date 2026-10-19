@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
-import { SkipLink } from '@/components/ui/SkipLink';
 import type { LegalBlock, LegalDocument } from '@/content/legal/types';
 import { pageMetadata } from '@/lib/seo';
 import { site } from '@/lib/site';
@@ -47,7 +46,6 @@ function Block({ block }: { readonly block: LegalBlock }) {
 export function LegalPage({ document }: { readonly document: LegalDocument }) {
   return (
     <>
-      <SkipLink />
       <SiteHeader />
       <main id="main" className="shell py-14 max-md:py-10">
         {/* Rechtstitel sind lange Komposita („Geschäftsbedingungen“) – hier trennen statt hart umbrechen. */}

@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
-import { SkipLink } from '@/components/ui/SkipLink';
 import { pageMetadata, routes } from '@/lib/seo';
 import { site } from '@/lib/site';
 
@@ -15,7 +14,6 @@ export const metadata: Metadata = pageMetadata({
 export default function ImpressumPage() {
   return (
     <>
-      <SkipLink />
       <SiteHeader />
       <main id="main" className="shell py-14 max-md:py-10">
         <h1 className="display-page mb-12">Impressum</h1>

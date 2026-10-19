@@ -3,10 +3,9 @@ import { notFound } from 'next/navigation';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { SkipLink } from '@/components/ui/SkipLink';
 import { serviceAreas } from '@/content/areas';
 import { areaLocation, findArea, isInDeliveryArea, otherAreas } from '@/lib/areas';
-import { areaPath, breadcrumbJsonLd, faqPageJsonLd, pageMetadata, routes } from '@/lib/seo';
+import { areaPath, faqPageJsonLd, pageMetadata, routes } from '@/lib/seo';
 import { AreaLanding } from '../_components/AreaLanding';
 
 type AreaPageProps = {
@@ -37,9 +36,7 @@ export default async function AreaPage({ params }: AreaPageProps) {
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd(breadcrumbs)} />
       <JsonLd data={faqPageJsonLd(area.faqs)} />
-      <SkipLink />
       <SiteHeader />
       <AreaLanding
         area={area}

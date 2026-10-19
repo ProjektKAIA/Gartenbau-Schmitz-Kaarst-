@@ -1,13 +1,13 @@
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { ContactCtaBand } from '@/components/pages/ContactCtaBand';
-import { PageIntro } from '@/components/pages/PageIntro';
-import { pageMetadata, routes } from '@/lib/seo';
+import { JumpLinks } from '@/components/pages/JumpLinks';
+import { PageHero } from '@/components/pages/PageHero';
+import { PageSection } from '@/components/pages/PageSection';
 import { ExtraServiceCard, ServiceDetailBlock } from '@/components/pages/ServiceDetailBlock';
 import { ButtonLink } from '@/components/ui/Button';
-import { Eyebrow } from '@/components/ui/SectionLabel';
-import { SkipLink } from '@/components/ui/SkipLink';
 import { coreServices, extraServices, leistungenPage, shopTeaser } from '@/content/leistungen';
+import { pageBreadcrumbs, pageMetadata, routes } from '@/lib/seo';
 
 export const metadata = pageMetadata({
   title: 'Leistungen – Gartengestaltung, Pflaster & Gartenpflege in Kaarst',
@@ -16,65 +16,54 @@ export const metadata = pageMetadata({
   path: routes.services.path,
 });
 
-const allServices = [...coreServices, ...extraServices];
+const EXTRAS_ID = 'technik-service';
+
+const jumps = [
+  ...coreServices.map((service) => ({ href: `#${service.id}`, label: service.title })),
+  { href: `#${EXTRAS_ID}`, label: leistungenPage.extrasLabel },
+];
 
 export default function LeistungenPage() {
   return (
     <>
-      <SkipLink />
       <SiteHeader />
       <main id="main">
-        <PageIntro
+        <PageHero
+          breadcrumbs={pageBreadcrumbs(leistungenPage.label, routes.services.path)}
           label={leistungenPage.label}
           title={leistungenPage.title}
-          intro={leistungenPage.intro}
-          image={{ src: '/assets/hero.webp', alt: leistungenPage.imageAlt }}
+          lead={leistungenPage.intro}
         >
-          <nav aria-label={leistungenPage.jumpLabel} className="mt-8">
-            <ul className="flex list-none flex-wrap gap-2 p-0">
-              {allServices.map((service) => (
-                <li key={service.id}>
-                  <a
-                    href={`#${service.id}`}
-                    className="inline-flex min-h-[40px] items-center border border-line bg-white px-3.5 text-[0.85rem] font-semibold transition-colors hover:border-olive hover:text-olive"
-                  >
-                    {service.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </PageIntro>
+          <JumpLinks label={leistungenPage.jumpLabel} links={jumps} />
+        </PageHero>
 
         {coreServices.map((service, index) => (
-          <ServiceDetailBlock key={service.id} service={service} dark={index % 2 === 0} />
+          <ServiceDetailBlock key={service.id} service={service} tone={index % 2 === 0 ? 'paper' : 'mist'} />
         ))}
 
-        <section aria-labelledby="extras-title" className="bg-mist py-[96px] max-md:py-16">
-          <div className="shell">
-            <Eyebrow>{leistungenPage.extrasLabel}</Eyebrow>
-            <h2 id="extras-title" className="display-2 max-w-[760px]">
-              {leistungenPage.extrasTitle}
-            </h2>
-            <p className="mt-6 max-w-[560px] text-stone">{leistungenPage.extrasBody}</p>
-            <div className="mt-12 grid grid-cols-2 gap-[18px] max-md:grid-cols-1">
-              {extraServices.map((service) => (
-                <ExtraServiceCard key={service.id} service={service} />
-              ))}
-            </div>
+        <PageSection
+          id={EXTRAS_ID}
+          label={leistungenPage.extrasLabel}
+          title={leistungenPage.extrasTitle}
+          intro={leistungenPage.extrasBody}
+          tone={coreServices.length % 2 === 0 ? 'paper' : 'mist'}
+        >
+          <div className="grid grid-cols-2 gap-[18px] max-md:grid-cols-1">
+            {extraServices.map((service) => (
+              <ExtraServiceCard key={service.id} service={service} />
+            ))}
           </div>
-        </section>
+        </PageSection>
 
-        <section aria-labelledby="shop-teaser-title" className="bg-sand py-[80px] max-md:py-14">
+        <section aria-labelledby="shop-teaser-title" className="border-t border-line bg-sand py-14 max-md:py-12">
           <div className="shell flex items-center justify-between gap-10 max-md:flex-col max-md:items-start">
             <div>
-              <Eyebrow>{shopTeaser.label}</Eyebrow>
-              <h2 id="shop-teaser-title" className="max-w-[680px] text-[clamp(1.8rem,3vw,2.6rem)] leading-[1.08] font-bold tracking-[-0.03em]">
+              <h2 id="shop-teaser-title" className="display-section max-w-[680px]">
                 {shopTeaser.title}
               </h2>
-              <p className="mt-4 max-w-[560px] text-stone">{shopTeaser.body}</p>
+              <p className="mt-3 max-w-[560px] text-stone">{shopTeaser.body}</p>
             </div>
-            <ButtonLink href="/shop" variant="dark">
+            <ButtonLink href={routes.shop.path} variant="dark">
               {shopTeaser.cta}
             </ButtonLink>
           </div>

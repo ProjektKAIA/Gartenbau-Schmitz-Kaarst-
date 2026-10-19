@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { PageHero } from '@/components/pages/PageHero';
 import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/SectionLabel';
 import { areaPageCopy as copy, type ServiceArea } from '@/content/areas';
@@ -29,8 +30,6 @@ function locationText(location: AreaLocation): string {
   }
 }
 
-const sectionTitle = 'text-[clamp(1.8rem,3vw,2.6rem)] leading-tight font-bold';
-
 /** Interner Textlink mit Pfeil – wie TextLink, aber über next/link (kein voller Seiten-Reload). */
 function ArrowLink({ href, children }: { readonly href: string; readonly children: string }) {
   return (
@@ -38,33 +37,6 @@ function ArrowLink({ href, children }: { readonly href: string; readonly childre
       {children}
       <span aria-hidden="true">→</span>
     </Link>
-  );
-}
-
-/** Sichtbarer Seitenpfad – dieselben Einträge wie im BreadcrumbList-JSON-LD. */
-function Breadcrumbs({ items }: { readonly items: readonly BreadcrumbItem[] }) {
-  return (
-    <nav aria-label={copy.breadcrumbLabel} className="mb-8 text-[0.82rem] text-stone">
-      <ol className="flex list-none flex-wrap gap-2 p-0">
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1;
-          return (
-            <li key={item.path} className="flex gap-2">
-              {isLast ? (
-                <span aria-current="page">{item.name}</span>
-              ) : (
-                <>
-                  <Link href={item.path} className="underline underline-offset-2 hover:text-charcoal">
-                    {item.name}
-                  </Link>
-                  <span aria-hidden="true">/</span>
-                </>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
   );
 }
 
@@ -78,38 +50,31 @@ export function AreaLanding({ area, breadcrumbs, location, deliverable, others }
 
   return (
     <main id="main" className="bg-paper">
-      {/* Kompakter Seitenkopf statt Hero – der Inhalt steht im Vordergrund. */}
-      <section aria-labelledby="area-title" className="bg-mist pt-12 pb-14 max-md:pt-8">
-        <div className="shell">
-          <Breadcrumbs items={breadcrumbs} />
-          <Eyebrow>{copy.eyebrow(area.county)}</Eyebrow>
-          <h1 id="area-title" className="display-page max-w-[920px]">
-            {area.headline}
-          </h1>
-          <p className="mt-6 max-w-[700px] text-[1.05rem] text-stone">{area.lead}</p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <ButtonLink href={contactHref()}>{copy.ctaProject(area.city)}</ButtonLink>
-            {deliverable ? (
-              <ButtonLink href={routes.shop.path} variant="dark">
-                {copy.ctaShop}
-              </ButtonLink>
-            ) : null}
-          </div>
-          <dl className="mt-10 grid grid-cols-3 gap-0 border-t border-line max-md:grid-cols-1">
-            {facts.map((fact) => (
-              <div key={fact.label} className="border-line py-5 pr-6 md:border-r md:last:border-r-0 max-md:border-b">
-                <dt className="text-[0.75rem] font-bold tracking-[0.13em] text-stone uppercase">{fact.label}</dt>
-                <dd className="m-0 mt-1 text-[0.95rem]">{fact.value}</dd>
-              </div>
-            ))}
-          </dl>
+      <PageHero breadcrumbs={breadcrumbs} label={copy.eyebrow(area.county)} title={area.headline} lead={area.lead}>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <ButtonLink href={contactHref()} variant="light">
+            {copy.ctaProject(area.city)}
+          </ButtonLink>
+          {deliverable ? (
+            <ButtonLink href={routes.shop.path} variant="olive">
+              {copy.ctaShop}
+            </ButtonLink>
+          ) : null}
         </div>
-      </section>
+        <dl className="mt-10 grid grid-cols-3 border-t border-white/15 max-md:grid-cols-1">
+          {facts.map((fact) => (
+            <div key={fact.label} className="border-white/15 py-5 pr-6 md:border-r md:pl-6 md:first:pl-0 md:last:border-r-0 max-md:border-b">
+              <dt className="text-[0.72rem] font-bold tracking-[0.13em] text-white/55 uppercase">{fact.label}</dt>
+              <dd className="m-0 mt-1 text-[0.95rem] text-white/90">{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </PageHero>
 
       <section aria-labelledby="local-title" className="py-20 max-md:py-14">
         <div className="shell grid grid-cols-[1.2fr_0.8fr] gap-16 max-md:grid-cols-1 max-md:gap-10">
           <div>
-            <h2 id="local-title" className={sectionTitle}>
+            <h2 id="local-title" className="display-section">
               {area.localTitle}
             </h2>
             <p className="mt-5 max-w-[640px] text-stone">{area.localBody}</p>
@@ -132,7 +97,7 @@ export function AreaLanding({ area, breadcrumbs, location, deliverable, others }
       <section aria-labelledby="focus-title" className="bg-mist py-20 max-md:py-14">
         <div className="shell">
           <Eyebrow>{copy.focusLabel(area.city)}</Eyebrow>
-          <h2 id="focus-title" className={sectionTitle}>
+          <h2 id="focus-title" className="display-section">
             {copy.focusTitle}
           </h2>
           <ul className="mt-10 grid list-none grid-cols-3 gap-[18px] p-0 max-lg:grid-cols-2 max-sm:grid-cols-1">
@@ -156,7 +121,7 @@ export function AreaLanding({ area, breadcrumbs, location, deliverable, others }
         <section aria-labelledby="delivery-title" className="py-20 max-md:py-14">
           <div className="shell grid grid-cols-[1.2fr_0.8fr] items-center gap-16 max-md:grid-cols-1 max-md:gap-8">
             <div>
-              <h2 id="delivery-title" className={sectionTitle}>
+              <h2 id="delivery-title" className="display-section">
                 {copy.deliveryTitle(area.city)}
               </h2>
               <p className="mt-5 max-w-[640px] text-stone">{copy.deliveryBody(area.city)}</p>
@@ -170,7 +135,7 @@ export function AreaLanding({ area, breadcrumbs, location, deliverable, others }
 
       <section aria-labelledby="faq-title" className="border-t border-line py-20 max-md:py-14">
         <div className="shell">
-          <h2 id="faq-title" className={sectionTitle}>
+          <h2 id="faq-title" className="display-section">
             {copy.faqTitle(area.city)}
           </h2>
           <dl className="mt-8 grid max-w-[820px] gap-0">
@@ -184,10 +149,10 @@ export function AreaLanding({ area, breadcrumbs, location, deliverable, others }
         </div>
       </section>
 
-      <section aria-labelledby="cta-title" className="bg-olive py-20 text-white">
+      <section aria-labelledby="cta-title" className="bg-olive py-16 text-white max-md:py-12">
         <div className="shell flex items-center justify-between gap-10 max-md:flex-col max-md:items-start">
           <div>
-            <h2 id="cta-title" className="text-[clamp(2rem,3.4vw,3rem)] leading-tight font-bold">
+            <h2 id="cta-title" className="display-section max-w-[620px]">
               {copy.ctaTitle(area.city)}
             </h2>
             <p className="mt-3 max-w-[560px] text-white/75">{copy.ctaBody}</p>

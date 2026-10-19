@@ -391,7 +391,6 @@ export type ServiceAreaSlug = (typeof serviceAreas)[number]['slug'];
 
 /** Feste Texte der Ortsseiten; ortsbezogene Inhalte stehen in `serviceAreas`. */
 export const areaPageCopy = {
-  breadcrumbLabel: 'Seitenpfad',
   eyebrow: (county: string) => `Einsatzgebiet · ${county}`,
   ctaProject: (city: string) => `Projekt in ${city} anfragen`,
   ctaShop: 'Material bestellen',

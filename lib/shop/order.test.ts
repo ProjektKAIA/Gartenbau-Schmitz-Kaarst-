@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { ShopProduct } from '@/content/shop';
 import { shopCustomerSchema, shopOrderSchema, type ShopCustomer } from '@/types/shop';
-import { formatPrice, formatShopPrice } from './price';
+import { formatPrice } from './price';
 import {
   buildBusinessMail,
   buildCustomerConfirmation,
@@ -46,23 +46,19 @@ describe('formatPrice', () => {
   });
 });
 
-describe('formatShopPrice / formatOrderTotal', () => {
-  it('zeigt „Preis folgt", solange der Katalogpreis 0 ist', () => {
-    expect(formatShopPrice(0)).toBe('Preis folgt');
-    expect(formatShopPrice(4550)).toBe(eur('45,50'));
-  });
-
-  it('zeigt keinen Teil-Gesamtpreis, wenn eine Position noch keinen Preis hat', () => {
-    const unpriced: readonly ShopProduct[] = [
+describe('formatOrderTotal', () => {
+  it('summiert alle Positionen – auch Platzhalterpreise (0 €) erscheinen als Betrag, nie als Text', () => {
+    const withPlaceholder: readonly ShopProduct[] = [
       ...catalog,
       { ...catalog[0]!, id: 'sand', variants: [{ id: 'sand', size: '0–2 mm', packaging: 'lose', unit: 'm³', priceCents: 0 }] },
     ];
-    const lines = resolveLines(unpriced, [
-      { variantId: 'kies-16-32', quantity: 1 },
-      { variantId: 'sand', quantity: 1 },
+    const lines = resolveLines(withPlaceholder, [
+      { variantId: 'kies-16-32', quantity: 2 },
+      { variantId: 'sand', quantity: 3 },
     ]);
-    expect(formatOrderTotal(lines)).toBe('Preis folgt');
-    expect(formatOrderTotal(lines.slice(0, 1))).toBe(eur('45,50'));
+    expect(formatOrderTotal(lines)).toBe(eur('91,00'));
+    expect(formatOrderTotal(lines.slice(1))).toBe(eur('0,00'));
+    expect(formatOrderTotal([])).toBe(eur('0,00'));
   });
 });
 

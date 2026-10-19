@@ -5,14 +5,13 @@
  */
 
 import { site } from '@/lib/site';
-import { about, career, intro } from './home';
+import { about, intro } from './home';
 
 export const ueberUnsPage = {
   label: about.label,
   titleFirst: about.titleFirst,
   titleSecond: about.titleSecond,
   intro: about.body,
-  imageAlt: `Signet von ${site.name}: Blatt über Pflasterfläche`,
 } as const;
 
 export const facts = [
@@ -38,18 +37,11 @@ export const training = {
   label: 'Ausbildung',
   title: `Ausbildungsbetrieb seit ${site.trainingCompanySince}.`,
   body: 'Wir geben unser Handwerk weiter. Wer den Garten- und Landschaftsbau von Grund auf lernen möchte, kann sich gern bei uns melden.',
-  cta: 'Nach einem Ausbildungsplatz fragen',
+  cta: 'Zur Karriereseite',
 } as const;
 
 export const area = {
   label: 'Einsatzgebiet',
   title: site.serviceArea,
   body: `Von unserem Sitz in ${site.address.city} aus sind wir in diesen Orten für Sie im Einsatz:`,
-} as const;
-
-export const careerTeaser = {
-  label: career.label,
-  title: career.title,
-  body: career.body,
-  cta: 'Mehr zur Karriere',
 } as const;

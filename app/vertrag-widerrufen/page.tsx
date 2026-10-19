@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
-import { SkipLink } from '@/components/ui/SkipLink';
 import { WithdrawalForm } from '@/components/withdrawal/WithdrawalForm';
 import { withdrawalCopy } from '@/content/withdrawal';
 
@@ -15,7 +14,6 @@ export const metadata: Metadata = {
 export default function WithdrawalPage() {
   return (
     <>
-      <SkipLink />
       <SiteHeader />
       <main id="main" className="shell py-14 max-md:py-10">
         <h1 className="display-page mb-6">{withdrawalCopy.title}</h1>

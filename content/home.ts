@@ -4,6 +4,7 @@
  */
 
 import type { ContactTopicId } from '@/content/contact';
+import { routes } from '@/lib/routes';
 
 export type NavLink = {
   readonly label: string;
@@ -15,30 +16,24 @@ export type NavItem = NavLink & {
   readonly children?: readonly NavLink[];
 };
 
-/** Hrefs mit `/` davor, damit die Anker auch von Unterseiten (Shop, AGB …) funktionieren. */
+/** Jeder Menüpunkt führt auf eine eigene Unterseite – keine Sprünge in Abschnitte der Startseite. */
 export const nav = [
-  { label: 'Leistungen', href: '/leistungen' },
+  { label: 'Leistungen', href: routes.services.path },
   {
     label: 'Projekte',
-    href: '/projekte',
+    href: routes.projects.path,
     children: [
-      { label: 'Projekte', href: '/projekte' },
-      { label: 'Ablauf', href: '/projekte#ablauf' },
+      { label: 'Projekte', href: routes.projects.path },
+      { label: 'Ablauf', href: routes.process.path },
     ],
   },
-  { label: 'Über uns', href: '/ueber-uns' },
-  { label: 'Shop', href: '/shop' },
+  { label: 'Über uns', href: routes.about.path },
+  { label: 'Karriere', href: routes.career.path },
+  { label: 'Shop', href: routes.shop.path },
 ] as const satisfies readonly NavItem[];
 
 /** Hervorgehobener Kontakt-Button rechts in der Navigation. */
-export const navContact = {
-  label: 'Kontakt',
-  href: '/kontakt',
-  children: [
-    { label: 'Kontaktformular', href: '/kontakt' },
-    { label: 'Karriere', href: '/karriere' },
-  ],
-} as const satisfies NavItem;
+export const navContact = { label: 'Kontakt', href: routes.contact.path } as const satisfies NavItem;
 
 export const hero = {
   eyebrow: 'Garten- & Landschaftsbau aus Kaarst',
@@ -122,7 +117,7 @@ export const project = {
   titleFirst: 'Garten und Wege',
   titleSecond: 'als eine Einheit',
   cta: 'Ähnliches Projekt anfragen',
-  moreLink: 'Alle Projekte & unser Ablauf',
+  moreLink: 'Alle Projekte ansehen',
   imageAlt: 'Moderner Garten mit Natursteinwegen und gepflegten Grünflächen',
   draftNote: 'Entwurfsbild – wird später durch ein echtes Kundenprojekt ersetzt.',
 } as const;
@@ -145,6 +140,7 @@ export const process = {
   titleSecond: 'Sauber umgesetzt.',
   intro:
     'Vier nachvollziehbare Schritte sorgen dafür, dass aus Ihrer Vorstellung ein Garten wird, der wirklich zu Ihnen passt.',
+  moreLink: 'Mehr zum Ablauf',
   steps: [
     {
       number: '01',

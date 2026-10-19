@@ -26,7 +26,6 @@ export const leistungenPage = {
   label: 'Leistungen',
   title: 'Gestalten, bauen, pflegen – aus einer Hand.',
   intro: `${services.intro} Für private Auftraggeber, Gewerbekunden und Hausverwaltungen in Kaarst, Neuss und Umgebung.`,
-  imageAlt: 'Gestalteter Garten mit Wegen und Pflanzflächen',
   jumpLabel: 'Direkt zu',
   includesLabel: 'Dazu gehört',
   benefitsLabel: 'Ihr Nutzen',
@@ -128,7 +127,6 @@ export const extraServices = [
 ] as const satisfies readonly ServiceDetail[];
 
 export const shopTeaser = {
-  label: 'Material-Shop',
   title: 'Kies, Splitt, Rinde & Co. – Lieferung bis zum Haus.',
   body: 'Sie legen lieber selbst Hand an? Im Material-Shop bestellen Sie Schüttgüter, Rindenmulch und Streugranulat für Ihren Garten.',
   cta: 'Zum Material-Shop',

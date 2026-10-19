@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { shopModeCopy, shopProducts, shopTerms, type ShopProduct } from '@/content/shop';
-import { findVariant, priceUnitLabel, sizesOf, variantLabel, variantsForSize } from './catalog';
+import {
+  findVariant,
+  priceUnitLabel,
+  resolveVariant,
+  sizesOf,
+  unitPriceLabel,
+  variantLabel,
+  variantsForSize,
+} from './catalog';
 
 const product = (id: string): ShopProduct => {
   const match = shopProducts.find((candidate) => candidate.id === id);
@@ -32,6 +40,24 @@ describe('Katalog', () => {
   });
 });
 
+describe('resolveVariant', () => {
+  const rinde = product('pinienrinde');
+  const mulch = product('rindenmulch');
+
+  it('behält die gewählte Lieferform, wenn es sie für die Körnung gibt', () => {
+    expect(resolveVariant(rinde, '7–15 mm', 'pinienrinde-7-15-sack').id).toBe('pinienrinde-7-15-sack');
+  });
+
+  it('fällt bei neuer Körnung auf die erste Lieferform dieser Körnung zurück', () => {
+    expect(resolveVariant(rinde, '15–25 mm', 'pinienrinde-7-15-sack').id).toBe('pinienrinde-15-25');
+    expect(resolveVariant(mulch, '10–40 mm', 'rindenmulch-0-20').id).toBe('rindenmulch-10-40-sack');
+  });
+
+  it('nimmt bei unbekannter Körnung die erste Variante des Produkts', () => {
+    expect(resolveVariant(rinde, 'gibt-es-nicht', 'x').id).toBe('pinienrinde-0-8');
+  });
+});
+
 describe('findVariant / Labels', () => {
   it('findet Produkt und Variante oder liefert undefined', () => {
     expect(findVariant(shopProducts, 'pinienrinde-15-25-sack')?.product.id).toBe('pinienrinde');
@@ -46,6 +72,14 @@ describe('findVariant / Labels', () => {
     expect(variantLabel(erde.product, erde.variant)).toBe('Pflanzenerde, 70-L-Sack');
     expect(priceUnitLabel(rinde.variant)).toBe('70-L-Sack');
     expect(priceUnitLabel(product('kies').variants[0])).toBe('m³ lose');
+  });
+
+  it('zeigt den Preis mit Bezugsgröße – 0 € als „0,00 €", nicht als Text', () => {
+    const eur = (amount: string) => `${amount}\u00a0€`;
+    const sack = findVariant(shopProducts, 'pinienrinde-7-15-sack');
+    if (!sack) throw new Error('Variante fehlt');
+    expect(unitPriceLabel(product('kies').variants[0])).toBe(`${eur('0,00')} / m³ lose`);
+    expect(unitPriceLabel({ ...sack.variant, priceCents: 1250 })).toBe(`${eur('12,50')} / 70-L-Sack`);
   });
 
   it('beschriftet den Bestellknopf exakt nach § 312j Abs. 3 BGB', () => {

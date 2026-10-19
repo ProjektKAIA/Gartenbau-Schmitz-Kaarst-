@@ -47,7 +47,8 @@ export type ShopCategory = (typeof shopCategories)[number];
 /** Einheit für lose geladene Schüttgüter – hier zentral, falls auf Tonnen umgestellt wird. */
 const LOOSE_UNIT = 'm³';
 const SACK_UNIT = 'Sack';
-const PRICE_PENDING = 0;
+/** Platzhalterpreis: angezeigt als „0,00 €", bis der Kunde die echten Preise liefert. */
+const PLACEHOLDER_PRICE_CENTS = 0;
 
 const img = (name: string) => `/assets/shop/${name}.webp`;
 
@@ -57,7 +58,7 @@ const loose = (id: string, size: string, image?: string): ShopVariant => ({
   size,
   packaging: 'lose',
   unit: LOOSE_UNIT,
-  priceCents: PRICE_PENDING,
+  priceCents: PLACEHOLDER_PRICE_CENTS,
   ...(image ? { image } : {}),
 });
 
@@ -67,7 +68,7 @@ const sack = (id: string, size: string, liters: number, image?: string): ShopVar
   size,
   packaging: `${liters}-L-Sack`,
   unit: SACK_UNIT,
-  priceCents: PRICE_PENDING,
+  priceCents: PLACEHOLDER_PRICE_CENTS,
   ...(image ? { image } : {}),
 });
 
@@ -203,7 +204,7 @@ const DELIVERY_RADIUS_KM = 30;
 export const shopTerms = {
   /**
    * Bestell-Modus. Solange `false`, sendet der Warenkorb eine **unverbindliche Anfrage**
-   * (Preise folgen, Knopf „Unverbindlich anfragen", keine AGB-Anhänge in der Bestätigung).
+   * (Platzhalterpreise 0 €, Knopf „Unverbindlich anfragen", keine AGB-Anhänge in der Bestätigung).
    * Erst auf `true` setzen, wenn alle Preise gesetzt und die Rechtstexte anwaltlich geprüft sind –
    * dann gilt die verbindliche Bestellung mit „zahlungspflichtig bestellen".
    */
@@ -241,6 +242,7 @@ export const shopModeCopy = {
 } as const;
 
 export const shopCopy = {
+  breadcrumb: 'Shop',
   label: 'Materiallieferung',
   title: 'Kies, Schotter & Rinde – bis vor Ihr Haus.',
   intro: 'Material wählen, in den Warenkorb legen – wir liefern und Sie zahlen auf Rechnung.',

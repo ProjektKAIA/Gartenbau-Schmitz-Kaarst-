@@ -9,6 +9,7 @@ import { formatOrderTotal, requestKindOf, resolveLines } from '@/lib/shop/order'
 import { CartLineItem } from './CartLineItem';
 import { CheckoutForm } from './CheckoutForm';
 import { useCart } from './useCart';
+import { lockPageScroll } from '@/lib/scroll-lock';
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]):not([tabindex="-1"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -23,8 +24,7 @@ const useModalBehavior = (
 ) => {
   useEffect(() => {
     const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const unlockScroll = lockPageScroll();
     initialFocusRef.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -54,7 +54,7 @@ const useModalBehavior = (
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = previousOverflow;
+      unlockScroll();
       trigger?.focus();
     };
   }, [dialogRef, initialFocusRef]);

@@ -3,7 +3,7 @@ import type { BusinessContact, MailContent } from '@/lib/mail';
 import type { ShopCustomer } from '@/types/shop';
 import type { CartLine } from './cart';
 import { findVariant, variantLabel } from './catalog';
-import { PRICE_PENDING_LABEL, formatPrice, isPricePending } from './price';
+import { formatPrice } from './price';
 
 export type ResolvedLine = {
   readonly variantId: string;
@@ -16,7 +16,7 @@ export type ResolvedLine = {
 
 /**
  * Art des Vorgangs: verbindliche Bestellung (Shop offen) oder unverbindliche Anfrage
- * (Vorschau-Modus, Preise folgen). Einzige Stelle, die den Schalter auswertet –
+ * (Vorschau-Modus, Platzhalterpreise). Einzige Stelle, die den Schalter auswertet –
  * UI und API leiten beide daraus ab.
  */
 export type ShopRequestKind = 'order' | 'inquiry';
@@ -46,9 +46,8 @@ export const resolveLines = (
 export const totalCents = (lines: readonly ResolvedLine[]): number =>
   lines.reduce((sum, line) => sum + line.totalCents, 0);
 
-/** Gesamtpreis für die Anzeige – „Preis folgt", sobald eine Position noch keinen Preis hat. */
-export const formatOrderTotal = (lines: readonly ResolvedLine[]): string =>
-  lines.some((line) => isPricePending(line.unitPriceCents)) ? PRICE_PENDING_LABEL : formatPrice(totalCents(lines));
+/** Gesamtpreis für die Anzeige (Warenkorb, Bestellübersicht). */
+export const formatOrderTotal = (lines: readonly ResolvedLine[]): string => formatPrice(totalCents(lines));
 
 /** Warenkorb als Mail-Text – Ausweg per E-Mail, wenn der Online-Versand nicht klappt. */
 export const orderListMailBody = (lines: readonly ResolvedLine[]): string =>
@@ -63,7 +62,7 @@ export const orderListMailBody = (lines: readonly ResolvedLine[]): string =>
     'Telefon:',
   ].join('\n');
 
-/** Positionen mit Preisen (Bestellung) bzw. nur Mengen (Anfrage – Preise folgen). */
+/** Positionen mit Preisen (Bestellung) bzw. nur Mengen (Anfrage – Platzhalterpreise werden nicht genannt). */
 const positionLines = (lines: readonly ResolvedLine[], kind: ShopRequestKind): string[] => {
   switch (kind) {
     case 'order':

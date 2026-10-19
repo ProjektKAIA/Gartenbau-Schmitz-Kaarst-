@@ -3,7 +3,7 @@
 import { MAX_QUANTITY, MIN_QUANTITY } from '@/lib/shop/cart';
 import { cartStore } from '@/lib/shop/cart-store';
 import type { ResolvedLine } from '@/lib/shop/order';
-import { formatShopPrice } from '@/lib/shop/price';
+import { formatPrice } from '@/lib/shop/price';
 
 const stepClass =
   'grid size-9 place-items-center border border-line bg-white text-[1.1rem] leading-none hover:bg-mist disabled:cursor-not-allowed disabled:opacity-40';
@@ -16,7 +16,7 @@ export function CartLineItem({ line }: { readonly line: ResolvedLine }) {
   return (
     <li className="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 border-b border-line pb-3">
       <span className="text-[0.9rem] font-semibold">{line.label}</span>
-      <span className="text-right text-[0.88rem] whitespace-nowrap">{formatShopPrice(line.totalCents)}</span>
+      <span className="text-right text-[0.88rem] whitespace-nowrap">{formatPrice(line.totalCents)}</span>
       <span className="flex items-center gap-1.5 text-[0.8rem] text-stone">
         <button
           type="button"

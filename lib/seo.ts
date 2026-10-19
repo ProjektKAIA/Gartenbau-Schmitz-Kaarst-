@@ -8,6 +8,7 @@ import type { Metadata, MetadataRoute } from 'next';
 import { serviceAreas, type AreaFaq } from '@/content/areas';
 import { extras, services } from '@/content/home';
 import { site } from '@/lib/site';
+import { routes, type SitemapSettings } from './routes';
 
 /* ------------------------------------------------------------------ URLs & Titel */
 
@@ -38,27 +39,7 @@ export const defaultShareImage = {
 
 /* ------------------------------------------------------------------ Routen */
 
-type SitemapSettings = Pick<MetadataRoute.Sitemap[number], 'changeFrequency' | 'priority'>;
-
-export type IndexableRoute = SitemapSettings & { readonly path: `/${string}` };
-
-/**
- * Alle festen, indexierbaren Routen. Neue Seite → hier eintragen, dann landet sie in der Sitemap.
- * Nicht indexiert (und deshalb nicht hier): /vertrag-widerrufen (Formular), /api/*.
- */
-export const routes = {
-  home: { path: '/', changeFrequency: 'monthly', priority: 1 },
-  services: { path: '/leistungen', changeFrequency: 'monthly', priority: 0.9 },
-  about: { path: '/ueber-uns', changeFrequency: 'yearly', priority: 0.6 },
-  projects: { path: '/projekte', changeFrequency: 'monthly', priority: 0.7 },
-  career: { path: '/karriere', changeFrequency: 'monthly', priority: 0.5 },
-  contact: { path: '/kontakt', changeFrequency: 'yearly', priority: 0.8 },
-  shop: { path: '/shop', changeFrequency: 'weekly', priority: 0.8 },
-  imprint: { path: '/impressum', changeFrequency: 'yearly', priority: 0.2 },
-  privacy: { path: '/datenschutz', changeFrequency: 'yearly', priority: 0.2 },
-  terms: { path: '/agb', changeFrequency: 'yearly', priority: 0.2 },
-  withdrawal: { path: '/widerruf', changeFrequency: 'yearly', priority: 0.2 },
-} as const satisfies Record<string, IndexableRoute>;
+export { routes, type IndexableRoute, type SitemapSettings } from './routes';
 
 /** Pfad der lokalen Landingpage eines Orts – einzige Stelle, die das URL-Schema kennt. */
 export function areaPath(slug: string): `/gartenbau/${string}` {
@@ -208,6 +189,14 @@ export function localBusinessJsonLd(): JsonLdObject {
 }
 
 export type BreadcrumbItem = { readonly name: string; readonly path: string };
+
+/** Seitenpfad einer Unterseite: Startseite → Seite. Einzige Stelle für den Namen der Startseite im Pfad. */
+export function pageBreadcrumbs(name: string, path: string): readonly BreadcrumbItem[] {
+  return [
+    { name: 'Startseite', path: routes.home.path },
+    { name, path },
+  ];
+}
 
 export function breadcrumbJsonLd(items: readonly BreadcrumbItem[]): JsonLdObject {
   return {

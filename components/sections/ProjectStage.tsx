@@ -5,12 +5,7 @@ import { project } from '@/content/home';
 import { contactHref } from '@/lib/contact';
 import { routes } from '@/lib/seo';
 
-type ProjectStageProps = {
-  /** Startseite: Link auf die Unterseite /projekte. Auf der Unterseite selbst entfällt er. */
-  readonly showMoreLink?: boolean;
-};
-
-export function ProjectStage({ showMoreLink = false }: ProjectStageProps) {
+export function ProjectStage() {
   return (
     <section
       id="projekte"
@@ -51,11 +46,9 @@ export function ProjectStage({ showMoreLink = false }: ProjectStageProps) {
           </div>
         </div>
         <p className="mt-3.5 text-[0.78rem] text-[#8a8984]">{project.draftNote}</p>
-        {showMoreLink ? (
-          <TextLink href={routes.projects.path} className="mt-8">
-            {project.moreLink}
-          </TextLink>
-        ) : null}
+        <TextLink href={routes.projects.path} className="mt-8">
+          {project.moreLink}
+        </TextLink>
       </div>
     </section>
   );

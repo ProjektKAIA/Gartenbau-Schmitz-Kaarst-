@@ -14,7 +14,6 @@ export const karrierePage = {
   label: career.label,
   title: career.title,
   intro: `${career.body} Oder du suchst einen Ausbildungsplatz? Seit ${site.trainingCompanySince} bilden wir selbst aus.`,
-  imageAlt: 'Gepflegter Garten mit Natursteinwegen – ein typisches Projekt unseres Teams',
 } as const;
 
 export const openings = {

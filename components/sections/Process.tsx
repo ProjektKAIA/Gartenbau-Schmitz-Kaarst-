@@ -1,5 +1,7 @@
+import { TextLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/SectionLabel';
 import { process } from '@/content/home';
+import { routes } from '@/lib/seo';
 
 export function Process() {
   return (
@@ -27,7 +29,12 @@ export function Process() {
               {process.titleSecond}
             </h2>
           </div>
-          <p className="max-w-[460px] text-stone">{process.intro}</p>
+          <div className="max-w-[460px]">
+            <p className="text-stone">{process.intro}</p>
+            <TextLink href={routes.process.path} className="mt-6">
+              {process.moreLink}
+            </TextLink>
+          </div>
         </div>
 
         <div aria-hidden="true" className="mt-6 h-px bg-line max-md:hidden" />
