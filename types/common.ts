@@ -30,12 +30,15 @@ export const postalCodeField = z
   .trim()
   .regex(/^\d{5}$/, 'Bitte geben Sie eine fünfstellige Postleitzahl an.');
 
-export const phoneField = z
-  .string('Bitte geben Sie eine Telefonnummer für Rückfragen an.')
-  .trim()
-  .regex(/^[+\d][\d\s/()-]{5,30}$/, 'Bitte geben Sie eine Telefonnummer für Rückfragen an.');
+/** Telefonnummer: Ziffern, Leerzeichen, + / ( ) - – einzige Quelle für das Format. */
+const PHONE_PATTERN = /^[+\d][\d\s/()-]{5,30}$/;
 
-export const emailField = z.email('Bitte geben Sie eine gültige E-Mail-Adresse an.').max(254);
+/** Telefon- und E-Mail-Regel mit eigener Ansprache (Kundenformulare „Sie", Bewerbung „du"). */
+export const phoneFieldWith = (message: string) => z.string(message).trim().regex(PHONE_PATTERN, message);
+export const emailFieldWith = (message: string) => z.email(message).max(254);
+
+export const phoneField = phoneFieldWith('Bitte geben Sie eine Telefonnummer für Rückfragen an.');
+export const emailField = emailFieldWith('Bitte geben Sie eine gültige E-Mail-Adresse an.');
 
 /** Honeypot: für Menschen unsichtbar, Bots füllen es aus. */
 export const honeypotField = z.string().max(200);

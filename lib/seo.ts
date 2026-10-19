@@ -190,12 +190,14 @@ export function localBusinessJsonLd(): JsonLdObject {
 
 export type BreadcrumbItem = { readonly name: string; readonly path: string };
 
-/** Seitenpfad einer Unterseite: Startseite → Seite. Einzige Stelle für den Namen der Startseite im Pfad. */
+/** Seitenpfad ab der Startseite. Einzige Stelle für den Namen der Startseite im Pfad. */
+export function breadcrumbTrail(...items: readonly BreadcrumbItem[]): readonly BreadcrumbItem[] {
+  return [{ name: 'Startseite', path: routes.home.path }, ...items];
+}
+
+/** Seitenpfad einer Unterseite der ersten Ebene: Startseite → Seite. */
 export function pageBreadcrumbs(name: string, path: string): readonly BreadcrumbItem[] {
-  return [
-    { name: 'Startseite', path: routes.home.path },
-    { name, path },
-  ];
+  return breadcrumbTrail({ name, path });
 }
 
 export function breadcrumbJsonLd(items: readonly BreadcrumbItem[]): JsonLdObject {

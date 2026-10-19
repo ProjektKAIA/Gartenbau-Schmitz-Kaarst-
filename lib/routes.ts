@@ -20,6 +20,7 @@ export const routes = {
   projects: { path: '/projekte', changeFrequency: 'monthly', priority: 0.7 },
   process: { path: '/ablauf', changeFrequency: 'yearly', priority: 0.6 },
   career: { path: '/karriere', changeFrequency: 'monthly', priority: 0.5 },
+  careerApply: { path: '/karriere/bewerben', changeFrequency: 'yearly', priority: 0.3 },
   contact: { path: '/kontakt', changeFrequency: 'yearly', priority: 0.8 },
   shop: { path: '/shop', changeFrequency: 'weekly', priority: 0.8 },
   imprint: { path: '/impressum', changeFrequency: 'yearly', priority: 0.2 },

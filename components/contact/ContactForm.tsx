@@ -3,7 +3,9 @@
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
 import { buttonVariants } from '@/components/ui/Button';
+import { clearErrorOnChange, ErrorText, focusFirstError, formText, SentMessage, type FormStatus } from '@/components/forms/form-parts';
 import { Honeypot } from '@/components/ui/Honeypot';
+import { RadioGroup } from '@/components/ui/RadioGroup';
 import { Select } from '@/components/ui/Select';
 import { TextField } from '@/components/ui/TextField';
 import { contactCopy as copy, contactTopics, replyChannels, type ContactTopicId } from '@/content/contact';
@@ -12,38 +14,10 @@ import { fieldErrorsFrom, readApiError, type FieldErrors } from '@/lib/forms';
 import { site } from '@/lib/site';
 import { contactSchema } from '@/types/contact';
 
-type Status =
-  | { readonly state: 'idle' }
-  | { readonly state: 'sending' }
-  | { readonly state: 'failed'; readonly message: string }
-  | { readonly state: 'sent' };
-
 const fallbackMessage = `Der Versand ist fehlgeschlagen. Bitte rufen Sie uns an (${site.contact.phone}) oder schreiben Sie an ${site.contact.email}.`;
 
-const text = (data: FormData, name: string): string => {
-  const value = data.get(name);
-  return typeof value === 'string' ? value : '';
-};
-
-/** Fokus auf das erste fehlerhafte Feld setzen (Tastatur- und Screenreader-Nutzer). */
-const focusFirstError = (form: HTMLFormElement, errors: FieldErrors) => {
-  const first = Object.keys(errors)[0];
-  if (!first) return;
-  const element = form.elements.namedItem(first);
-  const target = element instanceof RadioNodeList ? element[0] : element;
-  if (target instanceof HTMLElement) target.focus();
-};
-
-function ErrorText({ name, error }: { readonly name: string; readonly error: string | undefined }) {
-  return error ? (
-    <span id={`err-${name}`} className="text-[0.75rem] text-error">
-      {error}
-    </span>
-  ) : null;
-}
-
 export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactTopicId | undefined }) {
-  const [status, setStatus] = useState<Status>({ state: 'idle' });
+  const [status, setStatus] = useState<FormStatus>({ state: 'idle' });
   const [errors, setErrors] = useState<FieldErrors>({});
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -51,16 +25,16 @@ export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactT
     const form = event.currentTarget;
     const data = new FormData(form);
     const parsed = contactSchema.safeParse({
-      name: text(data, 'name'),
-      email: text(data, 'email'),
-      phone: text(data, 'phone'),
-      replyVia: text(data, 'replyVia'),
-      topic: text(data, 'topic'),
-      street: text(data, 'street'),
-      postalCode: text(data, 'postalCode'),
-      city: text(data, 'city'),
-      timeframe: text(data, 'timeframe'),
-      message: text(data, 'message'),
+      name: formText(data, 'name'),
+      email: formText(data, 'email'),
+      phone: formText(data, 'phone'),
+      replyVia: formText(data, 'replyVia'),
+      topic: formText(data, 'topic'),
+      street: formText(data, 'street'),
+      postalCode: formText(data, 'postalCode'),
+      city: formText(data, 'city'),
+      timeframe: formText(data, 'timeframe'),
+      message: formText(data, 'message'),
     });
     if (!parsed.success) {
       const nextErrors = fieldErrorsFrom(parsed.error.issues);
@@ -75,7 +49,7 @@ export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactT
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contact: parsed.data, website: text(data, 'website') }),
+        body: JSON.stringify({ contact: parsed.data, website: formText(data, 'website') }),
       });
       if (!response.ok) {
         setStatus({ state: 'failed', message: await readApiError(response, fallbackMessage) });
@@ -90,28 +64,12 @@ export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactT
     }
   };
 
-  if (status.state === 'sent') {
-    return (
-      <div
-        role="status"
-        tabIndex={-1}
-        // Nach dem Absenden steht man unten am Formular – die Meldung ins Bild holen und fokussieren.
-        ref={(node) => {
-          node?.scrollIntoView({ block: 'center' });
-          node?.focus({ preventScroll: true });
-        }}
-        className="border-l-4 border-olive bg-mist p-6 outline-none"
-      >
-        <h2 className="text-[1.6rem] leading-tight font-bold text-charcoal">{copy.sentTitle}</h2>
-        <p className="mt-2 text-stone">{copy.sentBody}</p>
-      </div>
-    );
-  }
+  if (status.state === 'sent') return <SentMessage title={copy.sentTitle} body={copy.sentBody} />;
 
   const sending = status.state === 'sending';
 
   return (
-    <form noValidate onSubmit={onSubmit} className="relative grid grid-cols-2 gap-x-5 gap-y-5 max-sm:grid-cols-1" aria-busy={sending}>
+    <form noValidate onSubmit={onSubmit} onChange={clearErrorOnChange(setErrors)} className="relative grid grid-cols-2 gap-x-5 gap-y-5 max-sm:grid-cols-1" aria-busy={sending}>
       <Honeypot />
       <p className="col-span-full text-[0.8rem] text-stone">{copy.requiredNote}</p>
 
@@ -128,24 +86,13 @@ export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactT
         error={errors.phone}
       />
 
-      <fieldset className="grid gap-1" aria-describedby={errors.replyVia ? 'err-replyVia' : undefined}>
-        <legend className="mb-1 text-[0.75rem] font-bold text-stone">{copy.fields.replyVia}</legend>
-        <div className="flex flex-wrap gap-x-6 gap-y-1">
-          {replyChannels.map((channel, index) => (
-            <label key={channel.id} className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-[0.92rem]">
-              <input
-                type="radio"
-                name="replyVia"
-                value={channel.id}
-                defaultChecked={index === 0}
-                className="size-5 accent-olive"
-              />
-              {channel.label}
-            </label>
-          ))}
-        </div>
-        <ErrorText name="replyVia" error={errors.replyVia} />
-      </fieldset>
+      <RadioGroup
+        name="replyVia"
+        legend={copy.fields.replyVia}
+        options={replyChannels}
+        defaultValue={replyChannels[0].id}
+        error={errors.replyVia}
+      />
 
       <div className="col-span-full grid gap-1">
         <Select

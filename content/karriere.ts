@@ -1,34 +1,24 @@
 /**
- * Inhalte der Unterseite /karriere.
- * Nur belegte Fakten (Ausbildungsbetrieb seit, Einsatzgebiet, Leistungen) – keine Gehälter,
- * Benefits oder Teamgrößen, solange der Betrieb sie nicht geliefert hat. Vom Betrieb gegenzulesen.
+ * Inhalte der Unterseiten /karriere und /karriere/bewerben.
+ * Nur belegte Fakten – Details zur Stelle (Arbeitszeiten, Vergütung, Benefits) liefert der Betrieb nach.
+ * Die Auswahllisten sind die einzige Quelle für Formular, Zod-Schema und Bewerbungs-Mail.
  */
 
 import { site } from '@/lib/site';
 import { career } from './home';
 
-/** Bewerbung per E-Mail – einzige Stelle für Betreff und Adresse. */
-export const careerApplyHref = `mailto:${site.contact.email}?subject=${encodeURIComponent('Bewerbung bei Gartenbau Kaarst')}`;
-
 export const karrierePage = {
   label: career.label,
   title: career.title,
-  intro: `${career.body} Oder du suchst einen Ausbildungsplatz? Seit ${site.trainingCompanySince} bilden wir selbst aus.`,
+  intro: career.body,
 } as const;
 
-export const openings = {
-  label: 'Wen wir suchen',
-  title: 'Zwei Wege in unser Team.',
-  items: [
-    {
-      title: 'Landschaftsgärtner/in (m/w/d)',
-      body: 'Du hast deine Ausbildung im Garten- und Landschaftsbau abgeschlossen oder bringst vergleichbare Erfahrung mit und packst bei Pflaster, Pflanzung und Pflege mit an.',
-    },
-    {
-      title: 'Ausbildung Gärtner/in, Garten- & Landschaftsbau (m/w/d)',
-      body: `Du arbeitest gern draußen und mit den Händen? Als Ausbildungsbetrieb seit ${site.trainingCompanySince} begleiten wir dich vom ersten Tag bis zur Prüfung.`,
-    },
-  ],
+export const opening = {
+  label: 'Offene Stelle',
+  title: 'Landschaftsgärtner/in (m/w/d)',
+  terms: ['Vollzeit oder Teilzeit', `${site.address.city} & Umgebung`],
+  body: 'Du packst bei Gestaltung, Pflaster, Pflanzung und Pflege mit an und setzt unsere Projekte gemeinsam mit dem Team sauber um.',
+  applyCta: 'Hier bewerben',
 } as const;
 
 export const workPoints = {
@@ -41,10 +31,64 @@ export const workPoints = {
   ],
 } as const;
 
-export const applyBand = {
+/* ------------------------------------------------------------------ Bewerbungsformular */
+
+export const workloads = [
+  { id: 'vollzeit', label: 'Vollzeit' },
+  { id: 'teilzeit', label: 'Teilzeit' },
+] as const;
+export type WorkloadId = (typeof workloads)[number]['id'];
+
+export const yesNo = [
+  { id: 'ja', label: 'Ja' },
+  { id: 'nein', label: 'Nein' },
+] as const;
+export type YesNoId = (typeof yesNo)[number]['id'];
+
+export const experienceLevels = [
+  { id: 'keine', label: 'Keine' },
+  { id: 'unter-1', label: 'Unter 1 Jahr' },
+  { id: '1-3', label: '1–3 Jahre' },
+  { id: '3-5', label: '3–5 Jahre' },
+  { id: 'ueber-5', label: 'Mehr als 5 Jahre' },
+] as const;
+export type ExperienceId = (typeof experienceLevels)[number]['id'];
+
+export const licenseClasses = [
+  { id: 'keiner', label: 'Kein Führerschein' },
+  { id: 'b', label: 'Klasse B' },
+  { id: 'be', label: 'Klasse BE (mit Anhänger)' },
+  { id: 'c1e', label: 'Klasse C1E oder höher' },
+] as const;
+export type LicenseId = (typeof licenseClasses)[number]['id'];
+
+export const applicationCopy = {
   label: 'Bewerbung',
-  title: 'Kein Anschreiben-Marathon.',
-  body: 'Ein paar Zeilen zu dir, gern mit Lebenslauf – per E-Mail, über das Kontaktformular oder einfach anrufen.',
-  mailCta: 'Per E-Mail bewerben',
-  formCta: 'Über das Formular',
+  title: 'Bewirb dich als Landschaftsgärtner/in.',
+  intro: 'Ein paar Angaben genügen – kein Anschreiben nötig. Wir melden uns persönlich bei dir.',
+  requiredNote: 'Mit * markierte Felder sind Pflichtfelder.',
+  fields: {
+    name: 'Name *',
+    email: 'E-Mail *',
+    phone: 'Telefon *',
+    city: 'Wohnort *',
+    workload: 'Gewünschte Arbeitszeit *',
+    galabauTraining: 'Abgeschlossene Ausbildung im Garten- und Landschaftsbau? *',
+    otherTraining: 'Andere handwerkliche Ausbildung',
+    otherTrainingHint: 'z. B. Maurer/in, Tischler/in – oder „keine"',
+    experience: 'Berufserfahrung im GaLaBau *',
+    experiencePlaceholder: 'Bitte wählen',
+    license: 'Führerschein *',
+    licensePlaceholder: 'Bitte wählen',
+    availableFrom: 'Verfügbar ab *',
+    availableFromHint: 'z. B. „sofort" oder „01.03.2027"',
+    message: 'Noch etwas zu dir? (optional)',
+    privacyBefore: 'Informationen zur Verarbeitung deiner Daten findest du in unserer ',
+    privacyLink: 'Datenschutzerklärung',
+    privacyAfter: '.',
+  },
+  submitLabel: 'Bewerbung senden',
+  sendingLabel: 'Wird gesendet …',
+  sentTitle: 'Vielen Dank für deine Bewerbung.',
+  sentBody: 'Wir melden uns zeitnah bei dir.',
 } as const;

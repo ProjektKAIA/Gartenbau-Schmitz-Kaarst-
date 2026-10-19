@@ -4,14 +4,13 @@ import { PageHero } from '@/components/pages/PageHero';
 import { PageSection } from '@/components/pages/PageSection';
 import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/SectionLabel';
-import { applyBand, careerApplyHref, karrierePage, openings, workPoints } from '@/content/karriere';
-import { contactHref } from '@/lib/contact';
+import { karrierePage, opening, workPoints } from '@/content/karriere';
 import { pageBreadcrumbs, pageMetadata, routes } from '@/lib/seo';
-import { site } from '@/lib/site';
 
 export const metadata = pageMetadata({
-  title: 'Karriere – Jobs & Ausbildung im Garten- und Landschaftsbau in Kaarst',
-  description: `Landschaftsgärtner/in oder Ausbildung im GaLaBau gesucht? Gartenbau Kaarst ist Ausbildungsbetrieb seit ${site.trainingCompanySince} – jetzt einfach bewerben.`,
+  title: 'Karriere – Landschaftsgärtner/in (m/w/d) in Kaarst gesucht',
+  description:
+    'Gartenbau Kaarst sucht Landschaftsgärtner/innen (m/w/d) in Vollzeit oder Teilzeit für Kaarst, Neuss und Umgebung – jetzt in wenigen Minuten online bewerben.',
   path: routes.career.path,
 });
 
@@ -25,24 +24,31 @@ export default function KarrierePage() {
           label={karrierePage.label}
           title={karrierePage.title}
           lead={karrierePage.intro}
-        >
-          <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href={careerApplyHref} variant="light">
-              {applyBand.mailCta}
-            </ButtonLink>
-          </div>
-        </PageHero>
+        />
 
-        <PageSection id="stellen" label={openings.label} title={openings.title}>
-          <div className="grid grid-cols-2 gap-[18px] max-md:grid-cols-1">
-            {openings.items.map((item) => (
-              <article key={item.title} className="border border-line bg-white p-8 max-sm:p-6">
-                <h3 className="text-[1.3rem] leading-tight font-bold">{item.title}</h3>
-                <p className="mt-3 text-stone">{item.body}</p>
-              </article>
-            ))}
+        <section aria-labelledby="opening-title" className="bg-paper py-16 max-md:py-12">
+          <div className="shell">
+            <article className="flex items-center justify-between gap-10 border border-line bg-white p-10 max-md:flex-col max-md:items-start max-md:gap-6 max-sm:p-6">
+              <div>
+                <Eyebrow className="mb-3">{opening.label}</Eyebrow>
+                <h2 id="opening-title" className="display-section">
+                  {opening.title}
+                </h2>
+                <ul className="mt-4 flex list-none flex-wrap gap-2 p-0">
+                  {opening.terms.map((term) => (
+                    <li key={term} className="border border-line bg-mist px-3 py-1 text-[0.85rem] font-semibold">
+                      {term}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 max-w-[620px] text-stone">{opening.body}</p>
+              </div>
+              <ButtonLink href={routes.careerApply.path} variant="olive" className="shrink-0">
+                {opening.applyCta}
+              </ButtonLink>
+            </article>
           </div>
-        </PageSection>
+        </section>
 
         <PageSection id="arbeiten" label={workPoints.label} title={workPoints.title} tone="mist">
           <ul className="grid list-none grid-cols-3 gap-10 p-0 max-md:grid-cols-1 max-md:gap-7">
@@ -53,32 +59,10 @@ export default function KarrierePage() {
               </li>
             ))}
           </ul>
+          <ButtonLink href={routes.careerApply.path} variant="olive" className="mt-10">
+            {opening.applyCta}
+          </ButtonLink>
         </PageSection>
-
-        <section aria-labelledby="apply-title" className="bg-olive py-16 text-white max-md:py-12">
-          <div className="shell flex items-center justify-between gap-10 max-lg:flex-col max-lg:items-start">
-            <div>
-              <Eyebrow tone="light" className="mb-3">
-                {applyBand.label}
-              </Eyebrow>
-              <h2 id="apply-title" className="display-section max-w-[620px]">
-                {applyBand.title}
-              </h2>
-              <p className="mt-3 max-w-[560px] text-white/75">{applyBand.body}</p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <ButtonLink href={careerApplyHref} variant="light">
-                {applyBand.mailCta}
-              </ButtonLink>
-              <ButtonLink href={contactHref('karriere')} variant="dark">
-                {applyBand.formCta}
-              </ButtonLink>
-              <ButtonLink href={site.contact.phoneHref} variant="dark">
-                {site.contact.phone}
-              </ButtonLink>
-            </div>
-          </div>
-        </section>
       </main>
       <SiteFooter />
     </>

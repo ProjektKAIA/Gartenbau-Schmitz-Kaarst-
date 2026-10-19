@@ -1,7 +1,6 @@
 import { ButtonLink, TextLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/SectionLabel';
 import { career } from '@/content/home';
-import { careerApplyHref } from '@/content/karriere';
 import { routes } from '@/lib/seo';
 
 export function Career() {
@@ -28,7 +27,7 @@ export function Career() {
           </TextLink>
         </div>
         <ButtonLink
-          href={careerApplyHref}
+          href={routes.careerApply.path}
           variant="dark"
           className="max-lg:col-start-2 max-lg:justify-self-start max-md:col-start-auto"
         >

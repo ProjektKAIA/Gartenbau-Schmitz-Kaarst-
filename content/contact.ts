@@ -14,7 +14,6 @@ export const contactTopics = [
   { id: 'winterdienst', label: 'Winterdienst' },
   { id: 'sturmschaden', label: 'Sturmschaden' },
   { id: 'material', label: 'Materiallieferung / Shop' },
-  { id: 'karriere', label: 'Bewerbung / Karriere' },
   { id: 'sonstiges', label: 'Sonstiges' },
 ] as const;
 

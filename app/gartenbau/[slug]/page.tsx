@@ -5,7 +5,7 @@ import { SiteHeader } from '@/components/layout/SiteHeader';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { serviceAreas } from '@/content/areas';
 import { areaLocation, findArea, isInDeliveryArea, otherAreas } from '@/lib/areas';
-import { areaPath, faqPageJsonLd, pageMetadata, routes } from '@/lib/seo';
+import { areaPath, faqPageJsonLd, pageBreadcrumbs, pageMetadata } from '@/lib/seo';
 import { AreaLanding } from '../_components/AreaLanding';
 
 type AreaPageProps = {
@@ -29,10 +29,7 @@ export default async function AreaPage({ params }: AreaPageProps) {
   const area = findArea((await params).slug);
   if (!area) notFound();
 
-  const breadcrumbs = [
-    { name: 'Startseite', path: routes.home.path },
-    { name: `Gartenbau ${area.city}`, path: areaPath(area.slug) },
-  ] as const;
+  const breadcrumbs = pageBreadcrumbs(`Gartenbau ${area.city}`, areaPath(area.slug));
 
   return (
     <>

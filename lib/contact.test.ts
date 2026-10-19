@@ -53,7 +53,7 @@ describe('topicFromQuery', () => {
   it('liest bekannte Anliegen und normalisiert Schreibweise', () => {
     expect(topicFromQuery('winterdienst')).toBe('winterdienst');
     expect(topicFromQuery(' Winterdienst ')).toBe('winterdienst');
-    expect(topicFromQuery(['pflege', 'karriere'])).toBe('pflege');
+    expect(topicFromQuery(['pflege', 'winterdienst'])).toBe('pflege');
   });
 
   it('ignoriert unbekannte oder fehlende Werte', () => {

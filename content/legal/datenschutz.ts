@@ -45,6 +45,7 @@ export const datenschutz = {
             'Der Warenkorb des Shops wird nur im Speicher Ihres Browsers (sessionStorage) abgelegt – technisch notwendig, ohne Cookie und ohne Tracking.',
             'Wenn Sie über den Shop anfragen oder bestellen, erhalten wir Ihre Angaben per E-Mail und verwenden sie für Ihre Anfrage bzw. Bestellung.',
             'Wenn Sie uns über das Kontaktformular schreiben, erhalten wir Ihre Angaben per E-Mail und verwenden sie für die Bearbeitung Ihres Anliegens.',
+            'Wenn Sie sich über die Karriereseite bewerben, erhalten wir Ihre Angaben per E-Mail und verwenden sie nur für das Bewerbungsverfahren.',
           ],
         },
       ],
@@ -157,7 +158,7 @@ export const datenschutz = {
         },
         {
           type: 'p',
-          text: 'Zweck: Wir verwenden die Angaben, um Ihr Anliegen zu bearbeiten, mit Ihnen auf dem gewünschten Weg Kontakt aufzunehmen und gegebenenfalls einen Termin vor Ort vorzubereiten. Geht es um einen möglichen oder bestehenden Auftrag, ist Rechtsgrundlage die Durchführung vorvertraglicher Maßnahmen bzw. die Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO). Bei sonstigen Anfragen (z. B. allgemeine Fragen oder eine erste Kontaktaufnahme wegen einer Bewerbung) ist Rechtsgrundlage unser berechtigtes Interesse an der Beantwortung Ihrer Anfrage (Art. 6 Abs. 1 lit. f DSGVO).',
+          text: 'Zweck: Wir verwenden die Angaben, um Ihr Anliegen zu bearbeiten, mit Ihnen auf dem gewünschten Weg Kontakt aufzunehmen und gegebenenfalls einen Termin vor Ort vorzubereiten. Geht es um einen möglichen oder bestehenden Auftrag, ist Rechtsgrundlage die Durchführung vorvertraglicher Maßnahmen bzw. die Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO). Bei sonstigen Anfragen (z. B. allgemeine Fragen) ist Rechtsgrundlage unser berechtigtes Interesse an der Beantwortung Ihrer Anfrage (Art. 6 Abs. 1 lit. f DSGVO).',
         },
         {
           type: 'p',
@@ -169,12 +170,43 @@ export const datenschutz = {
         },
         {
           type: 'p',
-          text: 'Speicherdauer: Wir löschen Ihre Anfrage, sobald sie abschließend bearbeitet ist und keine Rückfragen mehr zu erwarten sind. Entsteht daraus ein Auftrag, gelten die gesetzlichen Aufbewahrungsfristen (Abschnitt 8).',
+          text: 'Speicherdauer: Wir löschen Ihre Anfrage, sobald sie abschließend bearbeitet ist und keine Rückfragen mehr zu erwarten sind. Entsteht daraus ein Auftrag, gelten die gesetzlichen Aufbewahrungsfristen (Abschnitt 9).',
         },
       ],
     },
     {
-      heading: '6. Online-Widerruf',
+      heading: '6. Bewerbungen',
+      blocks: [
+        {
+          type: 'p',
+          text: 'Wenn Sie sich über das Bewerbungsformular auf unserer Karriereseite bewerben, verarbeiten wir folgende Angaben:',
+        },
+        {
+          type: 'list',
+          items: [
+            'Name, E-Mail-Adresse, Telefonnummer und Wohnort',
+            'gewünschte Arbeitszeit (Vollzeit oder Teilzeit) und frühestmöglicher Beginn',
+            'Angaben zu Ihrer Ausbildung, Berufserfahrung und Ihrem Führerschein',
+            'Ihre freiwillige Nachricht',
+            'Datum und Uhrzeit des Eingangs',
+          ],
+        },
+        {
+          type: 'p',
+          text: 'Zweck und Rechtsgrundlage: Wir verwenden die Angaben ausschließlich, um über die Begründung eines Beschäftigungsverhältnisses zu entscheiden. Rechtsgrundlage ist die Durchführung vorvertraglicher Maßnahmen auf Ihre Anfrage (Art. 6 Abs. 1 lit. b DSGVO). Bitte geben Sie keine besonderen Kategorien personenbezogener Daten (z. B. Gesundheitsdaten) an, die für die Bewerbung nicht erforderlich sind.',
+        },
+        {
+          type: 'p',
+          text: 'Technischer Ablauf und Empfänger: Ihre Angaben werden verschlüsselt an unseren Server bei Vercel übertragen (Abschnitt 3), dort geprüft und als E-Mail an unser Postfach gesendet. Empfänger sind unser E-Mail-Versanddienst und der Anbieter unseres Postfachs (Abschnitt 4). Eine Bestätigungs-E-Mail versenden wir nicht; nach dem Absenden sehen Sie direkt auf der Seite, dass Ihre Bewerbung angekommen ist. Innerhalb unseres Betriebs erhalten nur die Personen Zugriff, die über die Einstellung entscheiden.',
+        },
+        {
+          type: 'p',
+          text: 'Speicherdauer: Kommt ein Beschäftigungsverhältnis zustande, nehmen wir die erforderlichen Angaben in die Personalakte auf. Andernfalls löschen wir Ihre Bewerbung spätestens sechs Monate nach Abschluss des Bewerbungsverfahrens, soweit wir sie nicht länger zur Abwehr von Rechtsansprüchen (z. B. nach dem Allgemeinen Gleichbehandlungsgesetz) benötigen.',
+        },
+      ],
+    },
+    {
+      heading: '7. Online-Widerruf',
       blocks: [
         {
           type: 'p',
@@ -183,7 +215,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '7. Kontakt per E-Mail oder Telefon',
+      heading: '8. Kontakt per E-Mail oder Telefon',
       blocks: [
         {
           type: 'p',
@@ -192,7 +224,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '8. Speicherdauer',
+      heading: '9. Speicherdauer',
       blocks: [
         {
           type: 'p',
@@ -209,7 +241,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '9. Links zu Instagram und Facebook',
+      heading: '10. Links zu Instagram und Facebook',
       blocks: [
         {
           type: 'p',
@@ -218,7 +250,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '10. Verschlüsselung',
+      heading: '11. Verschlüsselung',
       blocks: [
         {
           type: 'p',
@@ -227,7 +259,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '11. Ihre Rechte',
+      heading: '12. Ihre Rechte',
       blocks: [
         {
           type: 'p',
@@ -254,7 +286,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '12. Beschwerderecht bei der Aufsichtsbehörde',
+      heading: '13. Beschwerderecht bei der Aufsichtsbehörde',
       blocks: [
         {
           type: 'p',
@@ -267,7 +299,7 @@ export const datenschutz = {
       ],
     },
     {
-      heading: '13. Keine automatisierte Entscheidungsfindung',
+      heading: '14. Keine automatisierte Entscheidungsfindung',
       blocks: [
         {
           type: 'p',
