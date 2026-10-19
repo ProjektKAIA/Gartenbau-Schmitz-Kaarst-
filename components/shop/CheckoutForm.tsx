@@ -27,7 +27,7 @@ type SubmitState =
 
 const fields = [
   { name: 'name', label: 'Name', autoComplete: 'name', type: 'text', wide: true },
-  { name: 'street', label: 'Straße & Hausnummer', autoComplete: 'street-address', type: 'text', wide: true },
+  { name: 'street', label: 'Straße & Hausnummer', autoComplete: 'address-line1', type: 'text', wide: true },
   { name: 'postalCode', label: 'PLZ', autoComplete: 'postal-code', type: 'text', wide: false },
   { name: 'city', label: 'Ort', autoComplete: 'address-level2', type: 'text', wide: false },
   { name: 'phone', label: 'Telefon', autoComplete: 'tel', type: 'tel', wide: false },

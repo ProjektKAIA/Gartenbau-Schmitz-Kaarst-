@@ -169,7 +169,7 @@ export function ContactForm({ initialTopic }: { readonly initialTopic?: ContactT
         <TextField
           name="street"
           label={copy.fields.street}
-          autoComplete="street-address"
+          autoComplete="address-line1"
           maxLength={120}
           required={false}
           error={errors.street}

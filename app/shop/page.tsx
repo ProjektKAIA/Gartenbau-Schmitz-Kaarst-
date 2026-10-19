@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
-import { PageHero } from '@/components/pages/PageHero';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { ShopCatalog } from '@/components/shop/ShopCatalog';
 import { ButtonLink } from '@/components/ui/Button';
 import { shopCategories, shopCopy, shopProducts, shopTerms } from '@/content/shop';
-import { pageBreadcrumbs, pageMetadata, routes } from '@/lib/seo';
+import { breadcrumbJsonLd, pageBreadcrumbs, pageMetadata, routes } from '@/lib/seo';
 import { buildShopItemList } from '@/lib/shop/structured-data';
 import { site } from '@/lib/site';
 
@@ -23,29 +22,24 @@ export default function ShopPage() {
       <SiteHeader />
       <main id="main" className="bg-paper">
         <JsonLd data={itemListJsonLd} />
-        <PageHero
-          breadcrumbs={pageBreadcrumbs(shopCopy.breadcrumb, routes.shop.path)}
-          label={shopCopy.label}
-          title={shopCopy.title}
-          lead={shopCopy.intro}
-          size="compact"
-        >
-          <ul className="mt-5 flex list-none flex-wrap gap-2 p-0 max-sm:gap-1.5">
+        <JsonLd data={breadcrumbJsonLd(pageBreadcrumbs(shopCopy.breadcrumb, routes.shop.path))} />
+        <h1 className="sr-only">{shopCopy.title}</h1>
+
+        {/* Liefer- und Zahlungshinweise als ruhige Info-Leiste – bewusst nicht als Knöpfe, damit sie nicht wie Filter wirken. */}
+        <div className="border-b border-line bg-mist">
+          <ul className="shell flex list-none flex-wrap gap-x-8 gap-y-1.5 py-3 text-[0.85rem] font-semibold max-sm:flex-col">
             {shopTerms.items.map((term) => (
-              <li
-                key={term}
-                className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-white/20 px-3 text-[0.8rem] font-semibold max-sm:min-h-7 max-sm:px-2.5 max-sm:text-[0.72rem]"
-              >
-                <span aria-hidden="true" className="text-olive-pale">
+              <li key={term} className="flex items-center gap-2">
+                <span aria-hidden="true" className="text-olive">
                   ✓
                 </span>
                 {term}
               </li>
             ))}
           </ul>
-        </PageHero>
+        </div>
 
-        <div className="shell pt-8 pb-16">
+        <div className="shell pt-6 pb-16">
           <ShopCatalog />
         </div>
 

@@ -243,12 +243,9 @@ export const shopModeCopy = {
 
 export const shopCopy = {
   breadcrumb: 'Shop',
-  label: 'Materiallieferung',
-  title: 'Kies, Schotter & Rinde – bis vor Ihr Haus.',
-  intro: 'Material wählen, in den Warenkorb legen – wir liefern und Sie zahlen auf Rechnung.',
+  /** Nur für Screenreader und Suchmaschinen – sichtbar startet der Shop direkt mit den Produkten. */
+  title: 'Material-Shop: Kies, Schotter, Sand & Rindenmulch mit Lieferung',
   moreTitle: 'Ihre Anfrage ist hier nicht aufgeführt?',
   moreBody: 'Wir bieten vieles mehr an – kontaktieren Sie uns direkt.',
-  noResultsTitle: 'Keine Treffer',
-  noResultsBody: 'Ihr Material ist nicht dabei? Wir besorgen vieles auf Anfrage – rufen Sie uns an oder schreiben Sie uns.',
   emptyCart: 'Ihr Warenkorb ist leer. Wählen Sie Material, Körnung und Menge im Shop.',
 } as const;
