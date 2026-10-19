@@ -10,7 +10,7 @@ export function ProjectStage() {
     <section
       id="projekte"
       aria-labelledby="project-title"
-      className="relative isolate overflow-hidden bg-paper pt-[160px] pb-[132px] max-md:py-[92px] max-sm:pt-[100px]"
+      className="relative isolate overflow-hidden bg-paper section-pad"
     >
       <div
         aria-hidden="true"
@@ -18,7 +18,7 @@ export function ProjectStage() {
       />
 
       <div className="shell relative z-[2]">
-        <div className="relative min-h-[660px] overflow-hidden shadow-frame max-md:min-h-[560px] max-sm:min-h-[620px]">
+        <div className="relative min-h-[540px] overflow-hidden shadow-frame max-md:min-h-[480px] max-sm:min-h-[520px]">
           <div
             role="img"
             aria-label={project.imageAlt}

@@ -19,7 +19,7 @@ export function PageSection({ id, label, title, intro, tone = 'paper', children 
     <section
       id={id}
       aria-labelledby={`${id}-title`}
-      className={cn('py-20 max-md:py-14', tone === 'mist' ? 'bg-mist' : 'bg-paper')}
+      className={cn('section-pad', tone === 'mist' ? 'bg-mist' : 'bg-paper')}
     >
       <div className="shell">
         {label ? <Eyebrow className="mb-3">{label}</Eyebrow> : null}

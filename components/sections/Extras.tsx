@@ -7,7 +7,7 @@ export function Extras() {
   return (
     <section
       aria-labelledby="extras-title"
-      className="relative isolate overflow-hidden bg-mist py-[132px] max-md:py-[92px]"
+      className="relative isolate overflow-hidden bg-mist section-pad"
     >
       <div
         aria-hidden="true"
@@ -18,8 +18,8 @@ export function Extras() {
         className="pointer-events-none absolute top-[4%] -right-[9%] -z-10 h-[118%] w-[42%] rotate-[8deg] rounded-[48%_0_0_55%] border border-[rgba(83,92,38,.09)] max-sm:hidden"
       />
 
-      <div className="shell relative z-[2] grid grid-cols-[0.8fr_1.2fr] gap-[100px] max-lg:gap-[55px] max-md:grid-cols-1">
-        <div className="sticky top-10 self-start max-md:static">
+      <div className="shell relative z-[2] grid grid-cols-[0.8fr_1.2fr] gap-16 max-lg:gap-10 max-md:grid-cols-1">
+        <div className="sticky top-[calc(var(--header-h)+32px)] self-start max-md:static">
           <Eyebrow>{extras.label}</Eyebrow>
           <h2 id="extras-title" className="display-2">
             {extras.title}

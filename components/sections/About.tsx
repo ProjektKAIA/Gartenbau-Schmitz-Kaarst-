@@ -10,10 +10,10 @@ export function About() {
     <section
       id="ueber-uns"
       aria-labelledby="about-title"
-      className="relative isolate overflow-hidden bg-charcoal py-[132px] text-white max-md:py-[92px]"
+      className="relative isolate overflow-hidden bg-charcoal section-pad text-white"
     >
-      <div className="shell relative z-[2] grid grid-cols-[0.75fr_1.25fr] items-center gap-[90px] max-md:grid-cols-1 max-md:gap-12">
-        <div className="grid min-h-[510px] place-items-center overflow-hidden bg-[#f4f4ef] max-md:min-h-[420px] max-sm:min-h-[340px]">
+      <div className="shell relative z-[2] grid grid-cols-[0.75fr_1.25fr] items-center gap-16 max-md:grid-cols-1 max-md:gap-12">
+        <div className="grid min-h-[420px] place-items-center overflow-hidden bg-[#f4f4ef] max-md:min-h-[320px] max-sm:min-h-[260px]">
           <Image
             src="/assets/logo.png"
             alt={`Signet ${about.label}: Blatt über Pflasterfläche`}
@@ -30,8 +30,8 @@ export function About() {
             <br />
             {about.titleSecond}
           </h2>
-          <p className="my-[34px] max-w-[650px] text-[1.04rem] text-white/70">{about.body}</p>
-          <dl className="my-[38px] grid grid-cols-3 gap-5 border-y border-white/16 py-7 max-sm:grid-cols-1">
+          <p className="my-6 max-w-[650px] text-[1.04rem] text-white/70">{about.body}</p>
+          <dl className="my-8 grid grid-cols-3 gap-5 border-y border-white/16 py-7 max-sm:grid-cols-1">
             {about.facts.map((fact) => (
               <div key={fact.label} className="grid">
                 <dt className="order-2 text-[0.76rem] text-white/56">{fact.label}</dt>

@@ -17,7 +17,7 @@ function ServiceMark({ icon, dark }: { readonly icon: ServiceIcon; readonly dark
       <div
         aria-hidden="true"
         className={cn(
-          'relative mt-[68px] mb-7 size-[92px] -rotate-[38deg] rounded-[90%_12%_88%_15%] border-2',
+          'relative mt-8 mb-7 size-[92px] -rotate-[38deg] rounded-[90%_12%_88%_15%] border-2',
           stroke,
         )}
       >
@@ -32,13 +32,13 @@ function ServiceMark({ icon, dark }: { readonly icon: ServiceIcon; readonly dark
     return (
       <div
         aria-hidden="true"
-        className="relative mt-[68px] mb-7 size-[92px] -skew-y-12 bg-[repeating-linear-gradient(0deg,transparent_0_23px,rgba(255,255,255,.78)_23px_25px),repeating-linear-gradient(90deg,transparent_0_43px,rgba(255,255,255,.78)_43px_45px)]"
+        className="relative mt-8 mb-7 size-[92px] -skew-y-12 bg-[repeating-linear-gradient(0deg,transparent_0_23px,rgba(255,255,255,.78)_23px_25px),repeating-linear-gradient(90deg,transparent_0_43px,rgba(255,255,255,.78)_43px_45px)]"
       />
     );
   }
 
   return (
-    <div aria-hidden="true" className="relative mt-[68px] mb-7 size-[92px]">
+    <div aria-hidden="true" className="relative mt-8 mb-7 size-[92px]">
       <span className={cn('absolute top-10 left-2 h-0.5 w-[78px] rotate-[32deg]', bar)} />
       <span className={cn('absolute top-10 left-2 h-0.5 w-[78px] -rotate-[32deg]', bar)} />
     </div>
@@ -50,7 +50,7 @@ export function Services() {
     <section
       id="leistungen"
       aria-labelledby="services-title"
-      className="relative isolate overflow-hidden bg-paper py-[132px] max-md:py-[92px]"
+      className="relative isolate overflow-hidden bg-paper section-pad"
     >
       <div
         aria-hidden="true"
@@ -62,7 +62,7 @@ export function Services() {
       />
 
       <div className="shell relative z-[2]">
-        <div className="mb-[70px] grid grid-cols-[1.35fr_0.65fr] items-end gap-[70px] max-md:grid-cols-1 max-md:gap-7">
+        <div className="mb-12 grid grid-cols-[1.35fr_0.65fr] items-end gap-12 max-md:grid-cols-1 max-md:gap-7">
           <div>
             <Eyebrow>{services.label}</Eyebrow>
             <h2 id="services-title" className="display-2">
@@ -91,9 +91,8 @@ export function Services() {
             >
               <article
                 className={cn(
-                  'group flex h-full min-h-[560px] flex-col border border-line p-[34px] transition-[transform,box-shadow] duration-200 hover:-translate-y-[7px] hover:shadow-frame max-sm:min-h-[520px] max-sm:p-7',
+                  'group flex h-full flex-col border border-line p-[34px] transition-[transform,box-shadow] duration-200 hover:-translate-y-[7px] hover:shadow-frame max-sm:p-7',
                   service.dark ? 'bg-charcoal text-white' : 'bg-white',
-                  index === services.items.length - 1 && 'max-lg:min-h-[470px] max-sm:min-h-[520px]',
                 )}
               >
                 <p className="text-[0.75rem] text-stone">{service.index}</p>

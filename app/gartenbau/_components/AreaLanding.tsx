@@ -71,7 +71,7 @@ export function AreaLanding({ area, breadcrumbs, location, deliverable, others }
         </dl>
       </PageHero>
 
-      <section aria-labelledby="local-title" className="py-20 max-md:py-14">
+      <section aria-labelledby="local-title" className="section-pad">
         <div className="shell grid grid-cols-[1.2fr_0.8fr] gap-16 max-md:grid-cols-1 max-md:gap-10">
           <div>
             <h2 id="local-title" className="display-section">
@@ -94,7 +94,7 @@ export function AreaLanding({ area, breadcrumbs, location, deliverable, others }
         </div>
       </section>
 
-      <section aria-labelledby="focus-title" className="bg-mist py-20 max-md:py-14">
+      <section aria-labelledby="focus-title" className="bg-mist section-pad">
         <div className="shell">
           <Eyebrow>{copy.focusLabel(area.city)}</Eyebrow>
           <h2 id="focus-title" className="display-section">
@@ -118,7 +118,7 @@ export function AreaLanding({ area, breadcrumbs, location, deliverable, others }
       </section>
 
       {deliverable ? (
-        <section aria-labelledby="delivery-title" className="py-20 max-md:py-14">
+        <section aria-labelledby="delivery-title" className="section-pad">
           <div className="shell grid grid-cols-[1.2fr_0.8fr] items-center gap-16 max-md:grid-cols-1 max-md:gap-8">
             <div>
               <h2 id="delivery-title" className="display-section">
@@ -133,7 +133,7 @@ export function AreaLanding({ area, breadcrumbs, location, deliverable, others }
         </section>
       ) : null}
 
-      <section aria-labelledby="faq-title" className="border-t border-line py-20 max-md:py-14">
+      <section aria-labelledby="faq-title" className="border-t border-line section-pad">
         <div className="shell">
           <h2 id="faq-title" className="display-section">
             {copy.faqTitle(area.city)}

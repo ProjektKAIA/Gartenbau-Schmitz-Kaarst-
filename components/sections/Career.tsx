@@ -8,7 +8,7 @@ export function Career() {
     <section
       id="karriere"
       aria-labelledby="career-title"
-      className="relative isolate overflow-hidden bg-sand py-[92px]"
+      className="relative isolate overflow-hidden bg-sand py-16 max-md:py-12"
     >
       <div
         aria-hidden="true"

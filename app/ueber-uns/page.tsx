@@ -37,7 +37,7 @@ export default function UeberUnsPage() {
           </dl>
         </PageHero>
 
-        <section aria-labelledby="owner-title" className="bg-paper py-20 max-md:py-14">
+        <section aria-labelledby="owner-title" className="bg-paper section-pad">
           <div className="shell grid grid-cols-2 gap-16 max-md:grid-cols-1 max-md:gap-12">
             <div>
               <Eyebrow className="mb-3">{owner.label}</Eyebrow>
@@ -55,7 +55,7 @@ export default function UeberUnsPage() {
           </div>
         </section>
 
-        <section aria-labelledby="training-title" className="bg-mist py-20 max-md:py-14">
+        <section aria-labelledby="training-title" className="bg-mist section-pad">
           <div className="shell grid grid-cols-2 gap-16 max-md:grid-cols-1 max-md:gap-12">
             <div>
               <Eyebrow className="mb-3">{training.label}</Eyebrow>

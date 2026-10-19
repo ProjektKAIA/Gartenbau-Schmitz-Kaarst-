@@ -8,7 +8,7 @@ export function Process() {
     <section
       id="ablauf"
       aria-labelledby="process-title"
-      className="relative isolate overflow-hidden bg-paper py-[132px] max-md:py-[92px]"
+      className="relative isolate overflow-hidden bg-paper section-pad"
     >
       <div
         aria-hidden="true"
@@ -20,7 +20,7 @@ export function Process() {
       />
 
       <div className="shell relative z-[2]">
-        <div className="mb-[70px] grid grid-cols-[1.35fr_0.65fr] items-end gap-[70px] max-md:grid-cols-1 max-md:gap-7">
+        <div className="mb-12 grid grid-cols-[1.35fr_0.65fr] items-end gap-12 max-md:grid-cols-1 max-md:gap-7">
           <div>
             <Eyebrow>{process.label}</Eyebrow>
             <h2 id="process-title" className="display-2">
@@ -44,7 +44,7 @@ export function Process() {
             <li key={step.number}>
               <span
                 aria-hidden="true"
-                className="mb-[38px] block size-[15px] rounded-full bg-olive max-md:mb-5"
+                className="mb-6 block size-[15px] rounded-full bg-olive max-md:mb-5"
               />
               <span className="text-[0.76rem] text-olive">{step.number}</span>
               <h3 className="mt-3 mb-[18px] text-[1.55rem] leading-[1.02] font-bold tracking-[-0.035em]">

@@ -25,7 +25,7 @@ export function ServiceDetailBlock({ service, tone }: { readonly service: Servic
     <section
       id={service.id}
       aria-labelledby={`${service.id}-title`}
-      className={cn('py-20 max-md:py-14', tone === 'mist' ? 'bg-mist' : 'bg-paper')}
+      className={cn('section-pad', tone === 'mist' ? 'bg-mist' : 'bg-paper')}
     >
       <div className="shell grid grid-cols-[0.85fr_1.15fr] gap-16 max-lg:gap-10 max-md:grid-cols-1">
         <div>

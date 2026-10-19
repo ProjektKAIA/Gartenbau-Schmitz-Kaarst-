@@ -16,9 +16,9 @@ export function Contact() {
     <section
       id="kontakt"
       aria-labelledby="contact-title"
-      className="relative isolate overflow-hidden bg-olive py-[132px] text-white max-md:py-[92px]"
+      className="relative isolate overflow-hidden bg-olive section-pad text-white"
     >
-      <div className="shell relative z-[2] grid grid-cols-[1.15fr_0.85fr] items-center gap-[100px] max-md:grid-cols-1 max-md:gap-12">
+      <div className="shell relative z-[2] grid grid-cols-[1.15fr_0.85fr] items-center gap-16 max-md:grid-cols-1 max-md:gap-12">
         <div>
           <Eyebrow tone="light">{contact.label}</Eyebrow>
           <h2 id="contact-title" className="display-2 max-w-[780px]">
