@@ -112,10 +112,6 @@ export const agb = {
           type: 'p',
           text: 'Der Rechnungsbetrag ist innerhalb von 14 Tagen nach Erhalt der Rechnung ohne Abzug zu zahlen.',
         },
-        {
-          type: 'todo',
-          text: 'Zahlungsziel (oben 14 Tage) mit dem Betrieb bestätigen. Die Bankverbindung steht auf der Rechnung und muss hier nicht genannt werden.',
-        },
       ],
     },
     {
@@ -150,6 +146,10 @@ export const agb = {
         {
           type: 'p',
           text: 'Als Verbraucher haben Sie ein gesetzliches Widerrufsrecht. Einzelheiten stehen in unserer Widerrufsbelehrung, die auch das Muster-Widerrufsformular enthält. Den Widerruf können Sie außerdem online über die Schaltfläche „Vertrag widerrufen" erklären.',
+        },
+        {
+          type: 'p',
+          text: 'Das Widerrufsrecht besteht nicht, wenn die Ware nach der Lieferung auf Grund ihrer Beschaffenheit untrennbar mit anderen Gütern vermischt wurde (§ 312g Abs. 2 Nr. 4 BGB), etwa wenn Sand, Erde, Rinde oder Streugut bereits ausgebracht, eingearbeitet oder mit anderem Material vermischt wurde. Für einen Wertverlust durch einen Umgang mit der Ware, der zur Prüfung nicht notwendig war, müssen Sie Wertersatz leisten. Einzelheiten stehen in der Widerrufsbelehrung.',
         },
       ],
     },
