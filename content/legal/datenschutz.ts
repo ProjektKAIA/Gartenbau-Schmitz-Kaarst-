@@ -72,8 +72,10 @@ export const datenschutz = {
           text: 'Diese Daten sind technisch nötig, um die Website auszuliefern, ihre Stabilität und Sicherheit zu gewährleisten und Angriffe oder Fehler zu erkennen. Rechtsgrundlage ist unser berechtigtes Interesse an einem sicheren und funktionsfähigen Internetauftritt (Art. 6 Abs. 1 lit. f DSGVO). Wir führen diese Daten nicht mit anderen Daten zusammen und werten sie nicht zu Werbe- oder Analysezwecken aus.',
         },
         {
-          type: 'todo',
-          text: 'Speicherdauer der Logdaten bei Vercel für den gebuchten Tarif prüfen (Vercel-Dashboard / Dokumentation „Runtime Logs") und hier konkret eintragen.',
+          // Quelle: vercel.com/docs/logs/runtime (Stand 28.08.2026) – Pro: 1 Tag, Pro mit
+          // Observability Plus: 30 Tage. „Höchstens 30 Tage" stimmt für beide Einstellungen.
+          type: 'p',
+          text: 'Speicherdauer: In unserem Tarif (Vercel Pro) werden die Logdaten höchstens 30 Tage vorgehalten und danach nicht mehr gespeichert.',
         },
         {
           type: 'p',
