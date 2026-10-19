@@ -77,10 +77,6 @@ export const agb = {
           type: 'p',
           text: 'Nehmen wir Ihre Bestellung nicht innerhalb von 5 Werktagen an, sind Sie nicht mehr an sie gebunden.',
         },
-        {
-          type: 'todo',
-          text: 'Annahmefrist (oben 5 Werktage) mit dem Betrieb abstimmen – bis wann kann Herr Schmitz Bestellungen realistisch bestätigen?',
-        },
       ],
     },
     {

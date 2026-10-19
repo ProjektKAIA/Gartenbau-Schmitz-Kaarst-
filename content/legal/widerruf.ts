@@ -60,11 +60,7 @@ export const widerruf = {
         },
         {
           type: 'p',
-          text: 'Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.',
-        },
-        {
-          type: 'todo',
-          text: 'Pflichtangabe ergänzen, weil Schüttgut und schwere Sackware nicht normal mit der Post zurückgesandt werden können: „Die Kosten werden auf höchstens etwa … EUR geschätzt." (z. B. Kosten einer Abholfahrt im Liefergebiet). Alternative: Der Betrieb übernimmt die Kosten – dann beide Sätze ersetzen durch „Wir holen die Waren ab." und „Wir tragen die Kosten der Rücksendung der Waren."',
+          text: 'Sie tragen die unmittelbaren Kosten der Rücksendung der Waren. Die Kosten werden auf höchstens etwa 80 EUR geschätzt.',
         },
         {
           type: 'p',
