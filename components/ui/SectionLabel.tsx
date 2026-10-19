@@ -32,7 +32,7 @@ export function SectionKicker({ number, children, className }: SectionKickerProp
   return (
     <p
       className={cn(
-        'flex gap-4 pt-2.5 text-[0.82rem] tracking-[0.14em] text-stone uppercase max-sm:mb-[30px]',
+        'flex gap-4 pt-2.5 text-[0.82rem] tracking-[0.14em] text-stone uppercase',
         className,
       )}
     >

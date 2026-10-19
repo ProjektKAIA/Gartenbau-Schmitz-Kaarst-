@@ -15,14 +15,14 @@ export function Intro() {
         className="pointer-events-none absolute top-[7%] right-[5%] -z-10 h-[520px] w-[340px] rotate-[24deg] rounded-[55%_42%_58%_38%] border border-[rgba(83,92,38,.1)] max-sm:hidden"
       />
 
-      <div className="shell relative z-[2] grid grid-cols-[1fr_3fr] gap-[60px] max-md:grid-cols-1">
+      <div className="shell relative z-[2] grid grid-cols-[1fr_3fr] gap-[60px] max-md:grid-cols-1 max-md:gap-5">
         <SectionKicker number={intro.number}>{intro.label}</SectionKicker>
         <Reveal className="max-w-[900px]">
           <h2 className="display-2">
             {intro.titleLead}
             <em className="text-olive not-italic">{intro.titleAccent}</em>
           </h2>
-          <p className="mt-[38px] ml-auto max-w-[690px] text-[1.1rem] text-stone max-md:ml-0">
+          <p className="mt-[38px] max-w-[690px] text-[1.1rem] text-stone">
             {intro.body}
           </p>
         </Reveal>
