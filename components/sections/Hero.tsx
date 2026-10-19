@@ -8,7 +8,7 @@ export function Hero() {
     <section
       id="top"
       aria-labelledby="hero-title"
-      className="relative grid min-h-[860px] items-center overflow-hidden text-white max-md:min-h-[790px] max-sm:min-h-[820px]"
+      className="relative grid min-h-[860px] items-center overflow-hidden text-white max-md:flex max-md:min-h-svh max-md:flex-col max-md:justify-between"
     >
       <div
         aria-hidden="true"
@@ -24,7 +24,7 @@ export function Hero() {
         className="absolute top-[12%] left-[53%] h-[105%] w-[38vw] rotate-[19deg] rounded-t-[48%_45%] border border-white/24"
       />
 
-      <div className="shell relative z-[2] pt-[110px] max-md:pt-[70px]">
+      <div className="shell relative z-[2] pt-[110px] max-md:pt-[calc(var(--header-h)+36px)] max-md:pb-10">
         <div className="max-w-[710px]">
           <p className="mb-[18px] text-[0.78rem] font-extrabold tracking-[0.18em] text-olive-pale uppercase">
             {hero.eyebrow}
@@ -46,14 +46,14 @@ export function Hero() {
         </div>
       </div>
 
-      <ul className="absolute bottom-0 left-1/2 z-[2] grid list-none -translate-x-1/2 grid-cols-3 bg-[rgba(28,30,22,.84)] p-0 backdrop-blur-[14px] max-md:w-[calc(100%-32px)] max-md:grid-cols-1 max-sm:bottom-[18px]">
-        {hero.facts.map((fact, index) => (
+      <ul className="absolute bottom-0 left-1/2 z-[2] grid list-none -translate-x-1/2 grid-cols-3 bg-[rgba(28,30,22,.84)] p-0 backdrop-blur-[14px] max-md:static max-md:mx-4 max-md:mb-4 max-md:w-auto max-md:translate-x-0 max-md:grid-cols-3">
+        {hero.facts.map((fact) => (
           <li
             key={fact.title}
-            className={`flex min-h-[92px] flex-col justify-center border-r border-white/15 px-7 py-3.5 last:border-r-0 max-md:min-h-0 max-md:border-r-0 max-md:px-[18px] max-md:py-3 ${index < hero.facts.length - 1 ? 'max-md:border-b max-md:border-b-white/13' : ''}`}
+            className="flex min-h-[92px] flex-col justify-center border-r border-white/15 px-7 py-3.5 last:border-r-0 max-md:min-h-0 max-md:px-3 max-md:py-3"
           >
-            <strong className="text-[0.94rem]">{fact.title}</strong>
-            <span className="text-[0.8rem] text-white/66">{fact.text}</span>
+            <strong className="text-[0.94rem] max-md:text-[0.82rem] max-md:leading-tight">{fact.title}</strong>
+            <span className="text-[0.8rem] text-white/66 max-md:mt-0.5 max-md:text-[0.72rem] max-md:leading-snug">{fact.text}</span>
           </li>
         ))}
       </ul>

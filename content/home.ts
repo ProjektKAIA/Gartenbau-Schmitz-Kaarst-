@@ -44,8 +44,9 @@ export const hero = {
   secondaryCta: 'Leistungen ansehen',
   facts: [
     { title: 'Seit 2015', text: 'regional verwurzelt' },
-    { title: 'Seit 2020', text: 'Ausbildungsbetrieb' },
-    { title: 'Privat · Gewerbe', text: 'und Hausverwaltungen' },
+    // \u00AD = weiche Trennstelle: In den schmalen Spalten am Handy bricht das Wort sauber mit Bindestrich um.
+    { title: 'Seit 2020', text: 'Ausbildungs\u00ADbetrieb' },
+    { title: 'Privat · Gewerbe', text: 'und Haus\u00ADverwaltungen' },
   ],
 } as const;
 
